@@ -1,0 +1,106 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Revisión de Documentos</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamentos" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewRevisiones" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Documentos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewPdf" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button (click)="backRevisiones()" class="btn btn-outline-info"><a>Documentos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>PDF</a></button></li>
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+
+
+                                <!-- Row -->
+                                <div class="row" *ngIf="viewDepartamentos" >
+                                    <!-- column -->
+                                    <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                                        <!-- Card -->
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                                <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getDocumentos(departamento)" >Consultar</a></div>
+                                            </div>
+                                        </div>
+                                        <!-- Card -->
+                                    </div>
+                                    <!-- column -->
+                                    <!-- column -->
+                                </div>
+                                <!-- Row -->
+
+                                <div class="card" *ngIf="viewRevisiones">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="myTable" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Autor</th>                                                    
+                                                        <th>Tipo Documento</th>
+                                                        <th>Documento</th>
+                                                        <th>Vigencia</th>
+                                                        <th>Fecha de Creación</th>
+                                                        <th>Rivisado</th>
+                                                        <th>Ver </th>
+                                                        <th>Autorizar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let documento of listDocumentos | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                                                        <th>{{i+1}}</th>
+                                                        <th>{{documento.nombre}} {{documento.apellidos}}</th>
+                                                        <th>{{documento.tipoDocument}}</th> 
+                                                        <th>{{documento.nom_document}}</th>
+                                                        <th>{{documento.nom_vigencia}}</th>
+                                                        <th>{{documento.fecha_creacion | date:'medium'}}</th>
+                                                        <th>
+                                                            <span *ngIf="documento.revisado == 0" class="label label-warning">Proceso</span> 
+                                                            <span *ngIf="documento.revisado == 1" class="label label-success">Revisado</span> 
+                                                            <span *ngIf="documento.revisado == 2" class="label label-danger">Rechazado</span> 
+                                                            
+                                                        
+                                                        <th *ngIf="usuarioLog.revisaVer">
+                                                            
+                                                            <a style="color: red ;" class="ver ml-1" (click)="getPdf(documento)" ><i class="mdi mdi-file-pdf fa-lg" ></i></a>
+                                                        </th>
+                                                        <th *ngIf="documento.revisado <= 0">
+                                                            <button *ngIf="usuarioLog.revisaRevisar" type="button" class="btn btn-success btn-circle btn-sm mx-2" (click)="updateRecisarAprobado(documento)"><i class="mdi mdi-check "></i> </button>
+                                                            <button *ngIf="usuarioLog.revisaRevisar" type="button" class="btn btn-danger btn-circle btn-sm" (click)="updateRecisarReprobado(documento)" ><i class="mdi mdi-close"></i> </button>
+                                                        </th>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" *ngIf="viewPdf" >
+                                 
+                                    <pdf-viewer [src]="pdfSrc"
+                                    [render-text]="true"
+                                    [original-size]="false"
+                                    style="width: 100%; height: 100vh"
+                                  ></pdf-viewer>
+                                </div>
+

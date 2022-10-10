@@ -1,0 +1,328 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Pendientes</h3>
+                    </div>
+
+                </div>
+                
+                
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div *ngIf="numAcompana>0" class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/income.png" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h4 class="text-muted m-t-10 m-b-0">Acompañameinto/Revisar</h4>
+                                        <h2 class="m-t-0">{{numAcompana}}</h2></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="numAprueba>0" class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/assets.png" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h4 class="text-muted m-t-10 m-b-0">C. Documentos /Aprobar </h4>
+                                        <h2 class="m-t-0">{{numAprueba}}</h2></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="numRevisa>0" class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/assets.png" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h4 class="text-muted m-t-10 m-b-0">C. Documentos /Revisar </h4>
+                                        <h2 class="m-t-0">{{numRevisa}}</h2></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="numAmef>0" class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/expense.png" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h4 class="text-muted m-t-10 m-b-0">AMEF/Por terminar </h4>
+                                        <h2 class="m-t-0">{{numAmef}}</h2></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- Projects of the month -->
+
+
+            <!-- ============================================================== -->
+            <div *ngIf="numAcompana>0"  class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Acompañameinto/Revisar</h3>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                       
+                                <div class="table-responsive">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="texto-centrado">No</th>                                                
+                                                <th class="texto-centrado">Autor</th>
+                                                <th class="texto-centrado">R. interno</th>                                                    
+                                                <th class="texto-centrado">R. externo</th>                                                    
+                                                <th class="texto-centrado">Proceso</th>
+                                                <th class="texto-centrado">Documento</th>                                                    
+                                                <th class="texto-centrado">R. interna</th>                              
+                                                <th class="texto-centrado">R. externa</th>
+                                                                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let acompana of listAcompanamiento; let i =index">   
+                                                <tr class="texto-centrado" *ngFor="let solicitud of listAcompanamiento; let i=index">
+                                                    <th class="texto-centrado">{{i+1}}</th>                                                
+                                                    <th class="texto-centrado">{{solicitud.nom_autor}} {{solicitud.apell_autor}}</th>
+                                                    <th class="texto-centrado">{{solicitud.nom_interno}} {{solicitud.ape_interno}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.nom_externo}} {{solicitud.ape_externo}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.departamento}}</th>                                                     
+                                                    <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
+                                                                                                                                                        
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_interna == 0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-primary">Observación</span>
+                                                    </th>
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_externa == 0 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-primary">Observación</span>
+                                                        
+                                                    </th>
+                                                
+                                            </tr>
+
+                                        </tbody>
+        
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+            <!-- ============================================================== -->
+            <div *ngIf="numAprueba>0" class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Control de Documentos /Aprobar</h3>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                   
+                                            <div class="table-responsive">
+                                                <table id="myTable" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Autor</th>                                                    
+                                                            <th>Tipo Documento</th>
+                                                            <th>Documento</th>
+                                                            <th>Vigencia</th>
+                                                            <th>Fecha de Creación</th>
+                                                            <th>Aprobado</th>                                                                                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let aprueba of listAprueba; let i =index">   
+                                                            <td>{{i+1}}</td>                                                                                                                                                                                          
+                                                            <td>{{aprueba.nom_autor}} {{aprueba.apell_autor}}</td> 
+                                                            <td>{{aprueba.tipoDocument}}</td>                                               
+                                                            <td>{{aprueba.nom_document}}</td>
+                                                            <td>{{aprueba.nom_vigencia}}</td>
+                                                            <td>{{aprueba.fecha_creacion | date}}</td>                                                
+                                                            <td>
+                                                                <span *ngIf="aprueba.aprobado == 0" class="label label-warning">Proceso</span>                                                 
+                                                            </td>
+                                                            
+                                                        </tr>
+            
+                                                    </tbody>
+                    
+                                                </table>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+            <!-- ============================================================== -->
+            <div *ngIf="numRevisa>0" class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Control de Documentos /Revisar</h3>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                   
+                                            <div class="table-responsive">
+                                                <table id="myTable" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Autor</th>                                                    
+                                                            <th>Tipo Documento</th>
+                                                            <th>Documento</th>
+                                                            <th>Vigencia</th>
+                                                            <th>Fecha de Creación</th>
+                                                            <th>Aprobado</th>                                                                                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let revisa of listRevisa; let i =index">   
+                                                            <td>{{i+1}}</td>                                                                                                                                                                                          
+                                                            <td>{{revisa.nom_autor}} {{revisa.apell_autor}}</td> 
+                                                            <td>{{revisa.tipoDocument}}</td>                                               
+                                                            <td>{{revisa.nom_document}}</td>
+                                                            <td>{{revisa.nom_vigencia}}</td>
+                                                            <td>{{revisa.fecha_creacion | date}}</td>                                                
+                                                            <td>
+                                                                <span *ngIf="revisa.aprobado == 0" class="label label-warning">Proceso</span>                                                 
+                                                            </td>
+                                                            
+                                                        </tr>
+            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+                <!-- ============================================================== -->
+
+
+            <!-- ============================================================== -->
+            <div *ngIf="numAmef>0" class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">AMEF /Terminar</h3>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                   
+                                            <div class="table-responsive">
+                                                <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Autor</th>
+                                                            <th>Proceso</th>
+                                                            <th>Tipo de modelo</th>
+                                                            <th>Componente evaluado</th>
+                                                            <th>Componente finción</th>
+                                                            <th>Estatus</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let amef of listAmef; let i =index">   
+                                                            <td>{{i+1}}</td>                                                                                                                                                                             
+                                                            <td>{{amef.nombre | uppercase}} {{amef.apellidos | uppercase}}</td>                                                
+                                                            <td>{{amef.departamento}}</td>
+                                                            <td>{{amef.amef_modelo}}</td>
+                                                            <td>{{amef.amef_componente_eva}}</td>
+                                                            <td>{{amef.amef_componente_func}}</td>                                    
+                                                            
+                                                            <td>
+                                                                <span *ngIf="amef.amef_planifica_estatus == 2" class="label label-success">Terminado</span> 
+                                                                <span *ngIf="amef.amef_planifica_estatus == 0 || amef.amef_planifica_estatus == 1" class="label label-warning">En proceso</span> 
+                        
+                                                            </td>
+                                                                                    
+                                                        </tr>
+                        
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                
+                                                            </td>
+                                                            <td colspan="7">
+                                                                <div class="text-right">
+                                                                    <ul class="pagination"> </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+                <!-- ============================================================== -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

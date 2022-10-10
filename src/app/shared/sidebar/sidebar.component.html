@@ -1,0 +1,96 @@
+<!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="user-profile"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><img src="assets/images/users/profile.png" alt="user" /><span>{{usuario.nombre | uppercase}} {{usuario.apellidos | uppercase}} </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a routerLink="/login" (click)="salida()">Salida</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-devider"></li>
+                        <li class="nav-small-cap">Menu</li>
+                    
+                        <li routerLinkActive="active" *ngIf="usuarioLog.calidad">
+                             <a class=" waves-effect waves-dark" routerLink="/dashboard/manual-calidad"  aria-expanded="false"><i class="mdi mdi-certificate"></i><span class="hide-menu">Manual de Calidad</span></a>
+
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.operacion">
+                             <a class="waves-effect waves-dark" routerLink="/dashboard/manual-operaciones"  aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Manual de Operación</span></a>
+
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.registros"> 
+                            <a class="waves-effect waves-dark" routerLink="/dashboard/registros" aria-expanded="false"><i class="mdi mdi-book-open"></i><span class="hide-menu">Registros</span></a>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.marcoLegal">
+                             <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-book"></i><span class="hide-menu">Marco Legal</span></a>
+                             <ul aria-expanded="false" class="collapse">
+                                <li *ngIf="usuarioLog.norma"><a routerLinkActive="active" routerLink="/dashboard/normas-iso" >Normas ISO</a></li>
+                                <li *ngIf="usuarioLog.marco"><a routerLinkActive="active" routerLink="/dashboard/marco-legal" >Marco Legal</a></li>
+                            </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.diagramas">
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-chart-pie"></i><span class="hide-menu">Diagramas</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                               <li *ngIf="usuarioLog.foda"><a routerLinkActive="active" routerLink="/dashboard/diagrama-foda" >FODA</a></li>
+                               <li *ngIf="usuarioLog.toruga"><a routerLinkActive="active" routerLink="/dashboard/diagrama-tortuga" >Tortuga</a></li>
+                           </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.amef">
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-chart-histogram"></i><span class="hide-menu">AMEF</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                               <li *ngIf="usuarioLog.amef_amef"><a routerLinkActive="active" routerLink="/dashboard/amef" >AMEF</a></li>
+                               <li *ngIf="usuarioLog.efecto_fallo"><a routerLinkActive="active" routerLink="/dashboard/efecto" >Efecto de fallo</a></li>
+                           </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.acompanamiento"> 
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Acompañamiento</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li *ngIf="usuarioLog.solicitaAcom"><a routerLinkActive="active" routerLink="/dashboard/solicita-acompanamiento" >Solicitud</a></li>
+                                <li *ngIf="usuarioLog.revisaAcom"><a routerLinkActive="active" routerLink="/dashboard/resisa-acompanamiento" >Revisión</a></li>                                
+                            </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.controlDocumento"> 
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-file-document"></i><span class="hide-menu">Control de Documentos</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li *ngIf="usuarioLog.asigna"><a routerLinkActive="active" routerLink="/dashboard/asignacion-documentos" >Asignación</a></li>
+                                <li *ngIf="usuarioLog.revisa"><a routerLinkActive="active" routerLink="/dashboard/revision-documentos" >Revisión</a></li>
+                                <li *ngIf="usuarioLog.aprueba"><a routerLinkActive="active" routerLink="/dashboard/aprobacion-documentos" >Aprobación </a></li>
+                            </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.proceso"> 
+                            <a class="has-arrow waves-effect waves-dark"  aria-expanded="false"><i class="mdi mdi-home-modern"></i><span class="hide-menu">Procesos</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a routerLinkActive="active" routerLink="/dashboard/procesos" >Procesos</a></li>
+                                
+                            </ul>
+                        </li> 
+
+                        <li routerLinkActive="active"*ngIf="usuarioLog.usuarios">
+                             <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-account-circle"></i><span class="hide-menu">Usuarios</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li ><a *ngIf="usuarioLog.usuario" routerLinkActive="active" routerLink="/dashboard/usuarios">Usuarios</a></li>
+                                <li ><a *ngIf="usuarioLog.permiso" routerLinkActive="active" routerLink="/dashboard/permisos-usuarios">Permisos de Usuario</a></li>
+                                <li ><a *ngIf="usuarioLog.historial" routerLinkActive="active" routerLink="/dashboard/historial">Historial</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.configuracion">
+                            <a class=" waves-effect waves-dark" routerLink="/dashboard/configuracion"  aria-expanded="false"><i class="mdi mdi-nut"></i><span class="hide-menu">Configuración</span></a>
+
+                       </li>
+
+
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->

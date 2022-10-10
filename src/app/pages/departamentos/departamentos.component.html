@@ -1,0 +1,129 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Procesos</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamento"  >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewDataDepartamento" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backDepartamento()"><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>{{departamento.departamento}}</a></button></li>
+
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                           
+                        
+                        <!-- Row -->
+                        <div class="row" *ngIf="viewDepartamento">
+                            <div *ngIf="usuarioLog.procesoAdd" class="col-lg-12 mb-4"> <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact">Agregar nuevo Proceso</button></div>
+                            <!-- column -->
+                            
+                            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="dataDepartamento(departamento)">Consultar</a></div>
+                                    </div>
+                                </div>
+                                <!-- Card -->
+                            </div>
+                            <!-- column -->
+                            <!-- column -->
+                        </div>
+                        <!-- Row -->
+    
+                    <!-- Sales overview chart -->
+                    <!-- ============================================================== -->
+                    <div class="row" *ngIf="viewDataDepartamento">
+                        <div class="card">
+                            <div class="card-body">
+                                <form name="formUsuario" [formGroup]="formUsuario">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" formControlName="departamento"  placeholder="Nombre" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Dirección</label>
+                                                <input type="text" class="form-control" id="direccion" formControlName="direccion"  placeholder="Dirección"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Descripción</label>
+                                                <input type="email" class="form-control" id="descripcion" formControlName="descripcion"  placeholder="Descripción" required>
+                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <button *ngIf="usuarioLog.procesoUpdate" type="button" class="btn btn-info waves-effect submit-btn mt-3" data-dismiss="modal" [disabled]="formUsuario.invalid" (click)="updateProceso()">Actializar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="add-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myLargeModalLabel">Agregar Proceso </h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                    <form name="formUsuario1" [formGroup]="formUsuario1">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombre" formControlName="departamento"  placeholder="Nombre" required>
+                                                     
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Dirección</label>
+                                                    <input type="text" class="form-control" id="direccion" formControlName="direccion"  placeholder="Dirección"required>
+                                                     
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Descripción</label>
+                                                    <input type="email" class="form-control" id="descripcion" formControlName="descripcion"  placeholder="Descripción" required>
+                                                     
+                                                </div>
+                                            </div>
+    
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario1.invalid" (click)="addDepartamento()">Guardar</button>
+                                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

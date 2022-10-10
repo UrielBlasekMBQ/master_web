@@ -1,0 +1,387 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Solicitud de acompañamiento</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamentos" >
+                              <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li> 
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewTabla" >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info "><a>Procesos</a></button></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Solicitudes</a></button></li>
+                              
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewPdf" >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                            <li class="breadcrumb-item "><button (click)="backTable()" class="btn btn-outline-info" ><a>Solicitudes</a></button></li>
+                            
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>PDF</a></button></li>
+                              
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+
+                 <!-- ============================================================== -->
+
+                        <!-- Row -->
+                        <div class="row" *ngIf="viewDepartamentos" >
+                            
+                            <!-- column -->
+                            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getSolicitudes(departamento)" >Consultar</a></div>
+                                    </div>
+                                </div>
+                                <!-- Card -->
+                            </div>
+                            <!-- column -->
+                            <!-- column -->
+                        </div>
+                        <!-- Row -->
+
+                        <div class="col-sm-12" *ngIf="viewTabla">
+                            <div class="col-lg-12 mb-3">
+                                <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" (click)="cleanForm()">Agregar acompañamiento</button>
+                            </div>
+                            <div class="card" >
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="myTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="texto-centrado">No</th>                                                
+                                                    <th class="texto-centrado">Autor</th>
+                                                    <th class="texto-centrado">R. interno</th>                                                    
+                                                    <th class="texto-centrado">R. externo</th>                                                    
+                                                    <th class="texto-centrado">Proceso</th>
+                                                    <th class="texto-centrado">Documento</th>                                                    
+                                                    <th class="texto-centrado">R. interna</th>                              
+                                                    <th class="texto-centrado">R. externa</th>
+                                                    <th class="texto-centrado">Descarga </th>
+                                                    <th class="texto-centrado">Accion </th>
+                                                    <th class="texto-centrado">Corregir</th>
+                                                    
+    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr class="texto-centrado" *ngFor="let solicitud of solicitudes | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                                                    <th class="texto-centrado">{{i+1}}</th>                                                
+                                                    <th class="texto-centrado">{{solicitud.nom_autor}} {{solicitud.ape_autor}}</th>
+                                                    <th class="texto-centrado">{{solicitud.nom_interno}} {{solicitud.ape_interno}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.nom_externo}} {{solicitud.ape_externo}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.nom_proceso}}</th>                                                     
+                                                    <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
+                                                                                                                                                        
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_interna == 0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-primary">Observación</span>
+                                                    </th>
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_externa == 0 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-primary">Observación</span>
+                                                        
+                                                    </th>
+                                                    <th class="texto-centrado"> 
+                                                        <a style="color: #398bf7 ;" class="ver ml-1" href="{{downPDF+solicitud.solicita_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>
+                                                    </th>
+                                                    <th *ngIf="solicitud.revision_interna > 1 || solicitud.revision_externa >1 " class="texto-centrado">
+                                                        <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion" (click)="getObservacion(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
+                                                    </th>
+                                                    <th *ngIf="solicitud.revision_interna > 1 || solicitud.revision_externa >1 " class="texto-centrado">
+                                                        <button type="button" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#corregir" (click)="getSolicitud(solicitud)"><i class="mdi mdi-wrench"></i> </button>
+                                                    </th>
+                                                </tr>
+    
+                                            </tbody>
+                                        </table>
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Sales overview chart -->
+                         <div class="col-md-12"  *ngIf="viewPdf" >
+                                 
+                            <pdf-viewer  [src]="pdfSrc"
+                            [render-text]="true"
+                            [original-size]="false"
+                            style="width: 100%; height: 100vh"
+                          ></pdf-viewer>
+                        </div>
+                    <!-- ============================================================== -->
+
+
+
+
+                    <div id="add-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myLargeModalLabel">Agregar solicitud</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                    <form name="formUsuario" [formGroup]="formUsuario">
+                                        <div class="form-body">
+                                            <!--/row-->
+                                            <div class="row">
+                                               
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Proceso</label>
+                                                        <select class="form-control" formControlName="proceso" (change)="capturaProceso()">
+                                                            <option value="volvo" disabled selected >Selecciona quien revisa</option>
+                                                            <option *ngFor="let proceso of listProcesosRevisar" 
+                                                                [value]="proceso.id_proceso">{{proceso.departamento}} 
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                  <!--/span-->                                                
+                                                  <div class="col-md-6" *ngIf="formUsuario.value.proceso">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Revisión interna :</label>
+                                                        <select class="form-control" formControlName="revisa_document_interno">
+                                                            <option value="volvo" disabled selected>Selecciona quien revisa</option>
+                                                            <option *ngFor="let revisor of revisores_internos" 
+                                                                [value]="revisor.id_usuario">{{revisor.nombre}} {{revisor.apellidos}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                                                            <!--/row-->
+                                            <div class="col-md-6" *ngIf="formUsuario.value.revisa_document_interno">
+                                                <div class="form-group">
+                                                    <label class="control-label">Nombre del Documento</label>
+                                                    <input type="text" class="form-control" formControlName="solicita_nom" placeholder="Nombre del Documento">
+                                                </div>
+                                            </div>
+                                            <!--/span--> 
+                                            <!--/span-->
+                                            <div class="col-md-6" *ngIf="rev_externa">
+                                                <div class="form-group">
+                                                    <label class="control-label">Revisión Externa:</label>
+                                                    <select class="form-control" formControlName="revisa_document_externo">
+                                                        <option value="volvo" disabled selected>Selecciona quien revisa</option>
+                                                        <option *ngFor="let revisor of revisores_externos" 
+                                                            [value]="revisor.id_usuario">{{revisor.nombre}} {{revisor.apellidos}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6" *ngIf="formUsuario.value.solicita_nom">
+                                                    <div class="form-group">
+                                                        <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Documento</span>
+                                                            <input type="file" class="upload" name="foto" formControlName="documento" (change)="capturarFile($event)" > 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <!--/span-->
+
+                                                <div class="col-md-6" *ngIf="formUsuario.value.documento">
+                                                    <div class="switch">
+                                                        <div class="">Revisión externa: </div>
+                                                        <label>
+                                                            <input type="checkbox" (change)="revChange()" [value]="rev_externa"><span class="lever switch-col-red"></span> 
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-actions">
+                                        <button *ngIf="rev_externa==false" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="formUsuario.invalid"  (click)="sendDatos()"> <i class="fa fa-check"></i> Enviar</button>
+                                        <button *ngIf="rev_externa==true" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]=" formUsuario.value.revisa_document_externo <= 0"  (click)="sendDatos()"> <i class="fa fa-check"></i> Enviar</button>
+                                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                    <div id="Observacion" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myLargeModalLabel">Observación </h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body"> 
+                                    
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Observación:</label>
+                                                    
+                                                    <textarea class="form-control" rows="6" id="observacion" [(ngModel)]="observacion" [disabled]="true"></textarea>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-actions">
+                                        
+                                        <button type="button" class="btn btn-info waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                    <div id="corregir" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myLargeModalLabel">Corrección: </h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body"> 
+                                    
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">                                                    
+                                                    
+                                                    <form name="formUsuario1" [formGroup]="formUsuario1">
+                                                        <div class="form-body">
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                               
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Proceso</label>
+                                                                        <select class="form-control" formControlName="proceso" (change)="capturaProceso()">
+                                                                            <option value="volvo" disabled selected >Selecciona quien revisa</option>
+                                                                            <option *ngFor="let proceso of listProcesosRevisar" 
+                                                                                [value]="proceso.id_proceso">{{proceso.departamento}} 
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                  <!--/span-->                                                
+                                                                  <div class="col-md-6" *ngIf="formUsuario1.value.proceso">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Revisión interna :</label>
+                                                                        <select class="form-control" formControlName="revisa_document_interno">
+                                                                            <option value="volvo" disabled selected>Selecciona quien revisa</option>
+                                                                            <option *ngFor="let revisor of revisores_internos" 
+                                                                                [value]="revisor.id_usuario">{{revisor.nombre}} {{revisor.apellidos}}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                                                            <!--/row-->
+                                                            <div class="col-md-6" *ngIf="formUsuario1.value.revisa_document_interno">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Nombre del Documento</label>
+                                                                    <input type="text" class="form-control" formControlName="solicita_nom" placeholder="Nombre del Documento">
+                                                                </div>
+                                                            </div>
+                                                            <!--/span--> 
+                                                            <!--/span-->
+                                                            <div class="col-md-6" *ngIf="rev_externa">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Revisión Externa:</label>
+                                                                    <select class="form-control" formControlName="revisa_document_externo">
+                                                                        <option value="volvo" disabled selected>Selecciona quien revisa</option>
+                                                                        <option *ngFor="let revisor of revisores_externos" 
+                                                                            [value]="revisor.id_usuario">{{revisor.nombre}} {{revisor.apellidos}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!--/span-->
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6" *ngIf="formUsuario1.value.solicita_nom">
+                                                                    <div class="form-group">
+                                                                        <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Documento</span>
+                                                                            <input type="file" class="upload" name="foto" formControlName="documento" (change)="capturarFile($event)" > 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <!--/span-->
+                
+                                                                <div class="col-md-6" *ngIf="formUsuario1.value.documento">
+                                                                    <div class="switch">
+                                                                        <div class="">Revisión externa: </div>
+                                                                        <label>
+                                                                            <input type="checkbox" (change)="revChange()" [value]="rev_externa"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                
+                                                        </div>
+                
+                                                    </form>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-actions">
+                                        <button *ngIf="rev_externa==false" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="formUsuario1.invalid"  (click)="sendSolicitud()"> <i class="fa fa-check"></i> Enviar</button>
+                                        <button *ngIf="rev_externa==true" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]=" formUsuario1.value.revisa_document_externo <= 0"  (click)="sendSolicitud()"> <i class="fa fa-check"></i> Enviar</button>
+                                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

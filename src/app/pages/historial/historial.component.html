@@ -1,0 +1,125 @@
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Historial</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol *ngIf="procesos" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+            </ol>
+            <ol *ngIf="viewUsuarios" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info " (click)="backProcesos()"><a>Procesos</a></button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Usuarios</a></button></li>
+            </ol>
+            <ol *ngIf="historial" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backProcesos()"><a>Procesos</a></button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info " (click)="backUsuarios()"><a>Usuarios</a></button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Historial</a></button></li>
+            </ol>
+
+
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+
+        <!-- Row -->
+        <div *ngIf="procesos" class="row" >           
+            <!-- column -->
+            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                <!-- Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="lisUsuarios(departamento)" >Consultar</a></div>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <!-- column -->
+            <!-- column -->
+        </div>
+        <!-- Row -->
+
+    <!-- ============================================================== -->
+
+        <!-- Row -->
+        <div class="card" *ngIf="viewUsuarios">
+            <div class="card-body">
+                <div class="table-responsive m-t-40">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Departamento</th>
+                                <th>Tipo Usuario</th>
+                                <th>Estatus</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of listarUsuarios | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">
+                                <th>{{i+1}}</th>
+                                <td>
+                                    <img src="../assets/images/big/usuario.png" alt="user" width="40" class="img-circle" /> {{usuario.usuario}}
+                                </td>    
+                                <th>{{usuario.nombre}} {{usuario.apellidos}}</th>
+                                <th>{{usuario.email}}</th>
+                                <th>{{usuario.departamento}}</th>
+                                <th>{{usuario.tipoUsuario}}</th>
+                                <th>
+                                    <span *ngIf="usuario.estatus == 1" class="label label-success">Activo</span> 
+                                    <span *ngIf="usuario.estatus == 0" class="label label-danger">Inactivo</span> 
+                                </th>
+                                <th><button class="btn btn-primary" (click)="getListadoHistorial(usuario)" >Consultar</button></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+        <!-- ROW -->
+
+    <div *ngIf="historial" class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="texto-centrado">
+                                    <th class="texto-centrado">No</th>                                                
+                                    <th class="texto-centrado">Usuairo</th>
+                                    <th class="texto-centrado">Modulo</th>                                                    
+                                    <th class="texto-centrado">Fecha de acceso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="texto-centrado" *ngFor="let historia of listHistorial | paginate: { itemsPerPage: 10, currentPage: p }; let i=index ">
+                                    <th class="texto-centrado">{{i+1}}</th>                                                
+                                    <th class="texto-centrado">{{historia.nombre}} {{historia.apellidos}}</th>                                    
+                                    <th class="texto-centrado">{{historia.modulo_acceso}}</th>                                                     
+                                    <th class="texto-centrado">{{historia.fecha_actual |  date:'medium'}}</th>                                                                                                                                                                                            
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

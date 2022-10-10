@@ -1,0 +1,29 @@
+#fondo{
+    background-image: url(/assets/images/background/login-register.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+
+}
+
+.login-caja{
+    width: 400px;
+    margin-top:7%;
+    margin-left: 40%;
+}
+
+.ver{
+    cursor: pointer;
+
+}
+letra-roja{
+    color: red;
+}
+
+.letra-btn{
+    cursor: pointer;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,150 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Efecto potencial de fallo</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb"   >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Efectos</a></button></li>
+                        </ol>
+                        <!-- <ol class="breadcrumb" *ngIf="viewDataDepartamento" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backDepartamento()"><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>{{departamento.departamento}}</a></button></li>
+
+                        </ol> -->
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+
+                <div class="row">
+                    <div class="col-lg-12 mb-3"><button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" (click)="cleanForm()">Agregar efecto potencia del riesgo</button></div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Efecto potencial de fallo </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let efecto of listEfectos | paginate: { itemsPerPage: 10, currentPage: p }; let i =index">   
+                                                <td>{{i+1}}</td>                                                                                                                                                                               
+                                                <td>{{efecto.nom_efecto}}</td>                                         
+
+                                                <td>
+                                                    <button  type="button" class="btn btn-info btn-sm mr-2 " data-toggle="modal" data-target="#edit-contact" (click)="llenarModal(efecto)" ><i class="mdi mdi-lead-pencil"></i></button>
+                                                    <button  type="button" class="btn btn-danger  btn-sm  " data-toggle="modal" data-target="#delete" (click)="llenarModal(efecto)" ><i class="ti-close" aria-hidden="true"></i></button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Eliminar efecto</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <h4>Confirmar para eliminar efecto</h4>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal" (click)="deleteEfecto()">Confirmar</button>
+                                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+
+                <!-- ============================================================== -->
+                <!-- Sales overview chart -->
+                <!-- ============================================================== -->
+                <div id="add-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Agregar efecto</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuario" [formGroup]="formUsuario">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre del efecto</label>
+                                                <input type="text" class="form-control" id="nom_efecto" formControlName="nom_efecto"  placeholder="Efecto potencial" required>
+                                                 
+                                            </div>
+                                        </div>                                        
+
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario.invalid" (click)="addEfecto()">Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <div id="edit-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Agregar efecto</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuario1" [formGroup]="formUsuario1">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre del efecto</label>
+                                                <input type="text" class="form-control" id="nom_efecto" formControlName="nom_efecto"  placeholder="Efecto potencial" required>
+                                                 
+                                            </div>
+                                        </div>                                        
+
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario1.invalid" (click)="updateEfectos()">Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>

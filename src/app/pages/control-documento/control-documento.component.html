@@ -1,0 +1,244 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Asignación de Documentos</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamentos" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewTabla" >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info "><a>Procesos</a></button></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Documentos</a></button></li>
+                              
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewPdf" >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                            <li class="breadcrumb-item "><button (click)="backTable()" class="btn btn-outline-info" ><a>Documentos</a></button></li>
+                            
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>PDF</a></button></li>
+                              
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+
+                 <!-- ============================================================== -->
+
+                        <!-- Row -->
+                        <div class="row" *ngIf="viewDepartamentos" >
+                            
+                            <!-- column -->
+                            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getTabla(departamento)" >Consultar</a></div>
+                                    </div>
+                                </div>
+                                <!-- Card -->
+                            </div>
+                            <!-- column -->
+                            <!-- column -->
+                        </div>
+                        <!-- Row -->
+
+                        <div class="col-sm-12" *ngIf="viewTabla">
+                            <div class="col-lg-12 mb-2">
+                                <button *ngIf="usuarioLog.asignaAdd" type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact">Agregar Documento para asignar</button>
+                            </div>
+                            <div class="card" >
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="myTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>                                                
+                                                    <th>Autor</th>
+                                                    <th>Revisa</th>
+                                                    <th>Aprueba</th>
+                                                    <th>Proceso</th>
+                                                    <th>Tipo Documento</th>
+                                                    <th>Documento</th>
+                                                    <th>Vigencia</th>
+                                                    <th>Revisado</th>
+                                                    <th>Aprobado</th>
+                                                    <th>Ver </th>
+    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let documento of archivos | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                                                    <th>{{i+1}}</th>                                                
+                                                    <th>{{documento.nom_autor}} {{documento.apell_autor}}</th>
+                                                    <th>{{documento.nom_revisor}} {{documento.apell_revisor}} </th>
+                                                    <th>{{documento.nom_aprueba}} {{documento.apell_aprueba}}</th>
+                                                    <th>{{documento.nom_proceso}}</th>
+                                                    <th>{{documento.tipoDocument}}</th>
+                                                    <th>{{documento.nom_document}}</th>
+                                                    <th>{{documento.nom_vigencia}}</th>
+                                                    <th>
+                                                        <span *ngIf="documento.revisado == 0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="documento.revisado == 1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="documento.revisado == 2" class="label label-danger">Rechazado</span> 
+                                                        
+                                                    <th>
+                                                        <span *ngIf="documento.aprobado == 0" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="documento.aprobado == 1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="documento.aprobado == 2" class="label label-danger">Rechazado</span> 
+                                                        
+    
+                                                    </th>
+                                                    <th>
+                                                        
+                                                        <a *ngIf="usuarioLog.asignaVer" style="color: red ;" class="ver ml-1" (click)="getPdf(documento)" ><i class="mdi mdi-file-pdf fa-lg" ></i></a>
+                                                    </th>
+                                                </tr>
+    
+                                            </tbody>
+                                        </table>
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12"  *ngIf="viewPdf" >
+                                 
+                            <pdf-viewer  [src]="pdfSrc"
+                            [render-text]="true"
+                            [original-size]="false"
+                            style="width: 100%; height: 100vh"
+                          ></pdf-viewer>
+                        </div>
+
+
+
+
+    
+                    <!-- Sales overview chart -->
+                    <!-- ============================================================== -->
+
+
+                    <div id="add-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myLargeModalLabel">Agregar Asignación</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                    <form name="formUsuario" [formGroup]="formUsuario">
+                                        <div class="form-body">
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group ">
+                                                        <label class="control-label">Tipo de Documento</label>
+                                                            <input type="text" class="form-control" formControlName="tipoDocumento" placeholder="Tipo de Documento">
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nombre del Documento</label>
+                                                        <input type="text" class="form-control" formControlName="nombreDocumento" placeholder="Nombre del Documento">
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Vigencia del documento</label>
+                                                        <select class="form-control custom-select" formControlName="vigencia">
+                                                            <option value="volvo" disabled selected>Selecciona una vigencia</option>
+                                                            <option *ngFor="let vigencia of listVigencias" 
+                                                             value="{{vigencia.id_vigencia }}">{{vigencia.nom_vigencia}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Fecha de creación del documento</label>
+                                                        <input type="date" class="form-control" formControlName="fecha_creacion" placeholder="DD/MM/YYYY">
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">¿Quien revisa el documento?</label>
+                                                        <select class="form-control" formControlName="revisa_document">
+                                                            <option value="volvo" disabled selected>Selecciona quien revisa</option>
+                                                            <option *ngFor="let usuario of revisores" 
+                                                                [value]="usuario.id_usuario">{{usuario.nombre}} {{usuario.apellidos}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">¿Quien aprueba el documento?</label>                                            
+                                                        <select class="form-control" formControlName="aprueba_document">
+                                                            <option value="volvo" disabled selected>Selecciona quien aprueba</option>
+                                                            <option *ngFor="let usuario of aprobadores" 
+                                                                [value]="usuario.id_usuario">{{usuario.nombre}} {{usuario.apellidos}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Documento</span>
+                                                            <input type="file" class="upload" name="foto" accept="application/pdf" formControlName="documento" (change)="capturarFile($event)" > 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="formUsuario.invalid"  (click)="sendDatos()"> <i class="fa fa-check"></i> Enviar</button>
+                                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+
+
+
+

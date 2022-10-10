@@ -1,0 +1,673 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-3 align-self-center">
+                        <h3 class="text-themecolor">Permisos de Usuario</h3>
+                    </div>
+                    <div class="col-md-9 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamento" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+
+                        <ol class="breadcrumb" *ngIf="viewUsuarios" >
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                        <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info "><a>Procesos</a></button></li>                        
+                        <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Usuarios </a></button></li>
+                        </ol>
+
+                        <ol class="breadcrumb" *ngIf="viewPermisos" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>                        
+                            <li class="breadcrumb-item "><button (click)="backUsuarios()" class="btn btn-outline-info"><a>Usuarios </a></button></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>{{usuario.nombre}} {{usuario.apellidos}}</a></button></li>
+                        </ol>
+
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                        <!-- Row -->
+                        <div class="row" *ngIf="viewDepartamento" >
+                            <!-- column -->
+                            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="lisUsuarios(departamento)">Consultar</a></div>
+                                    </div>
+                                </div>
+                                <!-- Card -->
+                            </div>
+                            <!-- column -->
+                            <!-- column -->
+                        </div>
+                        <!-- Row -->
+                        <div class="card"  *ngIf="viewUsuarios">
+                            <div class="card-body">
+                                <div class="table-responsive m-t-40">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Usuario</th>
+                                                <th>Nombre</th>
+                                                <th>Correo</th>
+                                                <th>Departamento</th>
+                                                <th>Tipo Usuario</th>
+                                                <th>Estatus</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let usuario of listarUsuarios | paginate: { itemsPerPage: 10, currentPage: p }; let i =index">
+                                                <th>{{i+1}}</th>
+                                                <td>
+                                                    <img src="../assets/images/big/usuario.png" alt="user" width="40" class="img-circle" /> {{usuario.usuario}}
+                                                </td>    
+                                                <th>{{usuario.nombre}} {{usuario.apellidos}}</th>
+                                                <th>{{usuario.email}}</th>
+                                                <th>{{usuario.departamento}}</th>
+                                                <th>{{usuario.tipoUsuario}}</th>
+                                                <th>
+                                                    <span *ngIf="usuario.estatus == 1" class="label label-success">Activo</span> 
+                                                    <span *ngIf="usuario.estatus == 0" class="label label-danger">Incativo</span> 
+                                                </th>
+                                                <th><button class="btn btn-primary" (click)="getPermisos(usuario)">Consultar</button></th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW -->
+
+
+                        <div class="row" *ngIf="viewPermisos">
+                           
+                                
+                                    <form [formGroup]="formPermisos">
+                                        <h4 class="card-title" *ngIf="usuarioLog.permisoAdd">Switch de Permisos <button class="btn btn-success" (click)="actualizaPermisos()">Actualizar</button></h4>
+                                        <div class="row demo-swtich">
+                                        
+                                    
+                                            <div class="col-sm-12" >
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Manual de Calidad</div>
+                                                        <div class="switch">                                                            
+                                                            <div class="switch">
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidad"><span class="lever switch-col-red"></span> : </label>
+                                                            </div>
+                                                        </div>
+                                                            <!---EXTRA PERMISOS-->
+                                                        <div class="container mt-3" *ngIf="formPermisos.value.calidad">
+                                                            <div class="switch">
+                                                                <div class="">Ver Documentos</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidadVer"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Descargar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidadDescargar"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Agregar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidadAdd"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Editar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidadUpdate"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Eliminar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="calidadDelete"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+        
+                                                        </div>
+        
+                                                            <!---EXTRA PERMISOS-->
+                                                    </div>
+                                                </div>
+   
+                                            </div>
+
+                                           
+                                            <div class="col-sm-12">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Manual de operación</div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="operacion"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+                                                            <!---EXTRA PERMISOS-->
+                                                            <div class="container mt-3" *ngIf="formPermisos.value.operacion" >
+                                                                <div class="switch">
+                                                                    <div class="">Ver Documentos</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="operacionVer"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+                                                                <div class="switch">
+                                                                    <div class="">Descargar</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="operacionDescargar"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+                                                                <div class="switch">
+                                                                    <div class="">Agregar</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="operacionAdd"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+                                                                <div class="switch">
+                                                                    <div class="">Editar</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="operacionUpdate"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+                                                                <div class="switch">
+                                                                    <div class="">Eliminar</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="operacionDelete"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+            
+                                                            </div>
+                                                            <!---EXTRA PERMISOS-->
+                                                    </div>
+                                                    </div>
+                                            </div>
+
+
+
+                                            <div class="col-sm-12">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Registros</div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="registros"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+                                                            <!---EXTRA PERMISOS-->
+                                                            <div class="container mt-3" *ngIf="formPermisos.value.registros" >
+                                                            <div class="switch">
+                                                                <div class="">Ver Documentos</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="registrosVer"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Descargar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="registrosDescargar"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Agregar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="registrosAdd"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Editar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="registrosUpdate"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Eliminar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="registrosDelete"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+        
+                                                        </div>
+                                                        <!---EXTRA PERMISOS-->
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <!--///////////Marco legal//////////-->
+
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Marco Legal </div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="marcoLegal"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+                                                        <div class="row mt-4" *ngIf="formPermisos.value.marcoLegal">                                                        
+                                                            <div class="col-sm-12 ">
+                                                                <hr>
+                                                                <div class="">Normas ISO </div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="norma"><span class="lever switch-col-red"></span></label>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div *ngIf="formPermisos.value.norma"  >
+                                                                    <div class="switch">
+                                                                        <div class="">Ver Documentos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="normaVer"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Descargar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="normaDescargar"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Agregar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="normaAdd"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Editar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="normaUpdate"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Eliminar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="normaDelete"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>                                                            
+                                                            <div class="col-sm-12 mt-4">
+                                                                <hr>
+                                                                <div class="">Marco Legal </div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="marco"><span class="lever switch-col-red"></span></label>
+                                                                </div>
+                                                                
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div *ngIf="formPermisos.value.marco" >
+                                                                    <div class="switch">
+                                                                        <div class="">Ver Documentos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="marcoVer"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Descargar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="marcoDescargar"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Agregar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="marcoAdd"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Editar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="marcoUpdate"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Eliminar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="marcoDelete"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <!--///////////Marco legal//////////-->
+
+                                            <div class="col-sm-12">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Control de documetos</div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="controlDocumento"><span class="lever switch-col-red"></span></label>                                                      
+                                                        </div>
+                                                        <div class="row" *ngIf="formPermisos.value.controlDocumento">
+                                                            <div class="col-sm-12">
+                                                                <hr>
+                                                                <div class="">Asignación</div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="asigna"><span class="lever switch-col-red"></span></label>                                                      
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div class="" *ngIf="formPermisos.value.asigna" >
+                                                                    <div class="switch">
+                                                                        <div class="" >Ver Documentos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="asignaVer"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="" >Asignar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="asignaAdd"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+        
+                
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <hr>
+                                                                <div class="">Revisión</div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="revisa"><span class="lever switch-col-red"></span></label>                                                      
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div class="" *ngIf="formPermisos.value.revisa" >
+                                                                    <div class="switch">
+                                                                        <div class="">Ver Documentos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="revisaVer"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Revisar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="revisaRevisar"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+        
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <hr>
+                                                                <div class="">Aprobación</div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="aprueba"><span class="lever switch-col-red"></span></label>                                                      
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div class="" *ngIf="formPermisos.value.aprueba" >
+                                                                    <div class="switch">
+                                                                        <div class="">Ver Documentos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="apruebaVer"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Aprobar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="apruebaAprueba"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+ 
+                                            </div>
+
+                                            <div class="col-sm-12">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Procesos</div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="proceso"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+                                                        <!---EXTRA PERMISOS-->
+                                                        <div class="" *ngIf="formPermisos.value.proceso" >
+                                                            <div class="switch">
+                                                                <div class="">Agregar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="procesoAdd"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Editar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="procesoUpdate"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                            <div class="switch">
+                                                                <div class="">Eliminar</div>
+                                                                <label>
+                                                                    <input type="checkbox"  formControlName="procesoDelete"><span class="lever switch-col-red"></span> 
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <!---EXTRA PERMISOS-->
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--///////////// Diagramas ////////////-->
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Diagramas </div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="diagramas"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+        
+                                                        <div *ngIf="formPermisos.value.amef">
+                                                            
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div  >
+                                                                    <div class="switch">
+                                                                        <div class="">FODA</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="foda"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Tortuga</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="toruga"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--///////////// Diagramas ////////////-->
+
+                                            <!--///////////// AMEF ////////////-->
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">AMEF </div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="amef"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+        
+                                                        <div *ngIf="formPermisos.value.amef">
+                                                            
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div  >
+                                                                    <div class="switch">
+                                                                        <div class="">AMEF</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="amef_amef"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Efecto de fallos</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="efecto_fallo"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--///////////// AMEF ////////////-->
+
+                                            <!--////////Acopanamiento//////////-->
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Acompañamiento </div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="acompanamiento"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+        
+                                                        <div *ngIf="formPermisos.value.acompanamiento">
+                                                            
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div >
+                                                                    <div class="switch">
+                                                                        <div class="">Soicitud</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="solicitaAcom"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Revisar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="revisaAcom"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--////////Acopanamiento//////////-->
+
+                                            <div class="col-sm-12">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="">Usuarios </div>
+                                                        <div class="switch">
+                                                            <label>
+                                                                <input type="checkbox"  formControlName="usuarios"><span class="lever switch-col-red"></span></label>
+                                                        </div>
+        
+                                                        <div class="row" *ngIf="formPermisos.value.usuarios">
+                                                            <div class="col-sm-12">
+                                                                <hr>
+                                                                <div class="">Usuarios </div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="usuario"><span class="lever switch-col-red"></span></label>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div class="" *ngIf="formPermisos.value.usuario" >
+                                                                    <div class="switch">
+                                                                        <div class="">Agregar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="usuarioAdd"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Editar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="usuarioUpdate"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Eliminar</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="usuarioDelete"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="switch">
+                                                                        <div class="">Historial</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="historial"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                    <div *ngIf="true" class="switch">
+                                                                        <div class="">Configuracion</div>
+                                                                        <label>
+                                                                            <input type="checkbox"  formControlName="historial"><span class="lever switch-col-red"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <hr>
+                                                                <div class="">Permisos </div>
+                                                                <div class="switch">
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="permiso"><span class="lever switch-col-red"></span></label>
+                                                                </div>
+                                                                <!---EXTRA PERMISOS-->
+                                                                <div class="" *ngIf="formPermisos.value.permiso">
+                                                                <div class="switch">
+                                                                    <div class="">Agregar</div>
+                                                                    <label>
+                                                                        <input type="checkbox"  formControlName="permisoAdd"><span class="lever switch-col-red"></span> 
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <!---EXTRA PERMISOS-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        
+                                    </form>
+                                
+                        </div>

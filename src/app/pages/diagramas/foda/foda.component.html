@@ -1,0 +1,251 @@
+
+    <!-- ============================================================== -->
+    <div class="row page-titles" id="inicio">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Diagrama FODA</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb" >   
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>FODA</a></button></li>
+            </ol>       
+            <ol *ngIf="false" class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item"><button class="btn btn-outline-info" ><a >Procesos</a></button></li>
+
+            </ol>
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-md pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    
+    <div class="row"  id="contentToConvert">
+        <div class="col-md-12">
+            <h2 style="text-align: center;">Diagrama FODA</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">    
+
+                            <div class="list-group">
+                                <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#fortaleza" (click)="cleanForm()">Fortaleza</li>
+                                
+                                
+                                <ul class="list-group list-group-flush" *ngFor="let fortaleza of lisFortaleza; let i =index">           
+                                    <li class="list-group-item ver" data-toggle="modal" data-target="#fortaleza" (click)="clicFortaleza(fortaleza, i)">{{fortaleza.fortaleza}}</li>                                                                                             
+                                  </ul>
+                              </div>
+
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
+
+                            <div class="list-group">
+                                <span class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#oportunidades"  (click)="cleanForm()">Oportunidades</span>
+
+                                <ul class="list-group list-group-flush" *ngFor="let oportinidad of lisOportunidad; let i =index">
+                                    <li class="list-group-item" data-toggle="modal" data-target="#oportunidades"(click)="clicOportunidad(oportinidad, i)">{{oportinidad.oportinidad}}</li>
+                                </ul>
+                              </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">                
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2 texto-centrado">
+                            <h2>FODA</h2>
+                        </div>
+                        <div class="col-md-5"></div>                
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+
+                            <div class="list-group">
+                                <span class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#debilidades" (click)="cleanForm()">Debilidades</span>
+
+                            <ul class="list-group list-group-flush">
+
+                                <ul class="list-group list-group-flush" *ngFor="let debilidad of lisDebilidad; let i =index">
+                                    <li class="list-group-item" data-toggle="modal" data-target="#debilidades" (click)="clicDebilidad(debilidad, i)">{{debilidad.debilidad}}</li>
+                                </ul>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
+                            <div class="list-group">
+                                <span class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#amenazas" (click)="cleanForm()">Amenazas</span>
+
+                                <ul class="list-group list-group-flush" *ngFor="let amenaza of listAmenaza; let i =index" >
+                                    <li class="list-group-item" data-toggle="modal" data-target="#amenazas" (click)="clicAmenaza(amenaza, i)">{{amenaza.amenaza}}</li>
+
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+<div style="text-align: center;">
+  <input type="button" class="btn btn-danger" value="Generar PDF" (click)="convertToPDF()" />
+</div>
+
+
+
+
+
+
+    <!-- sample modal content -->
+<div id="fortaleza" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fortaleza" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fortaleza">Frotaleza</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                
+                <form name="formFortaleza" [formGroup]="formFortaleza">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Fortaleza: </label>
+                                <input type="text" class="form-control" id="usuario" formControlName="fortaleza"  placeholder="Fortaleza" required>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteFortaleza()">Eliminar</button>
+                <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formFortaleza.invalid" (click)="updateFortaleza()"> <i class="fa fa-check"></i> Actializar</button>
+                <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formFortaleza.invalid"  (click)="saveFortaleza()"> <i class="fa fa-check"></i> Enviar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="oportunidades" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Oportinidades</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+               
+                <form name="formOportunidad" [formGroup]="formOportunidad">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Oportinidad: </label>
+                                <input type="text" class="form-control" id="usuario" formControlName="oportinidad"  placeholder="Oportinidad" required>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteOportunidad()">Eliminar</button>
+                <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formOportunidad.invalid" (click)="updateOportunidad()"> <i class="fa fa-check"></i> Actializar</button>
+                <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formOportunidad.invalid"  (click)="saveOportunidad()"> <i class="fa fa-check"></i> Enviar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="debilidades" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Debilidad</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <form name="formDebilidad" [formGroup]="formDebilidad">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Debilidad: </label>
+                                <input type="text" class="form-control" id="debilidad" formControlName="debilidad"  placeholder="Debilidad" required>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </form>            
+                
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteDebilidad()">Eliminar</button>
+                <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formDebilidad.invalid" (click)="updateDebilidad()"> <i class="fa fa-check"></i> Actializar</button>
+                <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formDebilidad.invalid"  (click)="saveDebilidad()"> <i class="fa fa-check"></i> Enviar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="amenazas" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Amenaza</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+               
+                <form name="formAmenaza" [formGroup]="formAmenaza">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Amenaza: </label>
+                                <input type="text" class="form-control" id="amenaza" formControlName="amenaza"  placeholder="Amenaza" required>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+                
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteAmenaza()">Eliminar</button>
+                <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formAmenaza.invalid" (click)="updateAmenaza()"> <i class="fa fa-check"></i> Actializar</button>
+                <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formAmenaza.invalid"  (click)="saveAmenaza()"> <i class="fa fa-check"></i> Enviar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

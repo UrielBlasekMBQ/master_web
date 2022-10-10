@@ -1,0 +1,10 @@
+.imagen-responsiva{
+    width: 40%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.texto-centrado{
+    text-align: center;
+}

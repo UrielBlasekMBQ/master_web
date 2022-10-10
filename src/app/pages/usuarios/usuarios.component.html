@@ -1,0 +1,553 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Usuarios</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+                        <ol class="breadcrumb" *ngIf="viewDepartamentos" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewUsuarios" >
+                              <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Usuarios</a></button></li>
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+
+                 <!-- ============================================================== -->
+
+                        <!-- Row -->
+                        <div class="row" *ngIf="viewDepartamentos" >
+                        <div *ngIf="usuarioLog.usuarioAdd " class="col-lg-12 mb-3">
+                            <button *ngIf="muitiForm ==1" type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact-multi" (click)="limpiaForm()">Agregar usuario</button>
+                            <button *ngIf="muitiForm ==0" type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" (click)="limpiaForm()">Agregar usuario</button>
+                        </div>
+                        <!-- column -->
+                        <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                            <!-- Card -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                                    <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                    <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="lisUsuarios(departamento)" >Consultar</a></div>
+                                </div>
+                            </div>
+                            <!-- Card -->
+                        </div>
+                        <!-- column -->
+                        <!-- column -->
+                    </div>
+                    <!-- Row -->
+
+                <!-- Sales overview chart -->
+                <!-- ============================================================== -->
+                <div class="row" *ngIf="viewUsuarios">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Usuario</th>
+                                                <th>Nombre</th>
+                                                <th>Correo</th>
+                                                <th>Proceso</th>
+                                                <th>Tipo de usuario</th>
+                                                <th>Estatus</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let usuario of listarUsuarios | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
+                                                <td>{{i+1}}</td>                                                                                            
+                                                <td>
+                                                    <a href="javascript:void(0)"><img src="../assets/images/big/usuario.png" alt="user" width="40" class="img-circle" /> {{usuario.usuario}}</a>
+                                                </td>                                                
+                                                
+                                                <td>{{usuario.nombre}} {{usuario.apellidos}}</td>                                                
+                                                <td>{{usuario.email}}</td>
+                                                <td>{{usuario.departamento}}</td>
+                                                <td>{{usuario.tipoUsuario}}</td>
+                                                <td>
+                                                    <span *ngIf="usuario.estatus == 1" class="label label-success">Activo</span> 
+                                                    <span *ngIf="usuario.estatus == 0" class="label label-danger">Inactivo</span> 
+
+                                                
+                                                </td>
+                                                
+
+                                                <td>
+                                                        <button *ngIf="muitiForm ==1 && usuarioLog.usuarioUpdate" type="button" class="btn btn-info btn-sm mr-2 " data-toggle="modal" data-target="#edit-contact-multi" (click)="llenarModalMultiProceso(usuario)" ><i class="mdi mdi-lead-pencil"></i></button>
+                                                        <button *ngIf="muitiForm ==0 && usuarioLog.usuarioUpdate" type="button" class="btn btn-info btn-sm mr-2 " data-toggle="modal" data-target="#edit-contact" (click)="llenarModal(usuario)" ><i class="mdi mdi-lead-pencil"></i></button>
+
+                                                   <button *ngIf="usuarioLog.usuarioDelete" type="button" class="btn btn-danger  btn-sm  " data-toggle="modal" data-target="#delete" (click)="llenarModal(usuario)" ><i class="ti-close" aria-hidden="true"></i></button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Eliminar Usuario</h4>
+                                
+                            </div>
+                            <div class="modal-body">
+                                <h4>Confirmar para eliminar al usuario</h4>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal" (click)="deleteUsuario()">Confirmar</button>
+                                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+
+                <!-- ============================================================== -->
+                <!-- Sales overview chart -->
+                <!-- ==============================MULTI PROCESO======================= -->
+                <div id="add-contact-multi" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Agregar Usuario</h3>
+                                
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuarioMulti" [formGroup]="formUsuarioMulti">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <input type="text" class="form-control" id="usuario" formControlName="usuario"  placeholder="Usuario" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" formControlName="nombre"  placeholder="Nombre"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="apellidos" formControlName="apellidos"  placeholder="Apellidos"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Correo</label>
+                                                <input type="email" class="form-control" id="email" formControlName="email"  placeholder="Email" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                        
+                                        <!--Using items input-->
+                                        <ng-select [items]="listProcesos" 
+                                                    [multiple]="true"
+                                                    [closeOnSelect]="false"
+                                                    [searchable]="false"
+                                                    bindLabel="departamento"
+                                                    bindLabel="departamento" 
+                                                    [(ngModel)]="logProcesos"  formControlName="departamento">
+                                        </ng-select>
+                                        
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category"  id="departamento" [(ngModel)]="departamento"  formControlName="departamento" required>
+                                                    <option *ngFor="let departamento of listProcesos " [value]="departamento.id_proceso" >
+                                                        {{departamento.departamento}}</option>
+                                                </select>
+ 
+                                                 
+                                            </div>
+                                        </div> -->
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Tipo de Usuario</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category" id="tipoUsuario" formControlName="tipoUsuario" required>
+                                                    <option *ngFor="let catTipoUduario of listCatTipoUsuario " [value]="catTipoUduario.id_cat_usuarios" >
+                                                        {{catTipoUduario.tipoUsuario}}</option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" formControlName="password"  placeholder="Contraseña">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Estatus</label>
+                                                <div class="switch">
+                                                    <label>
+                                                        <input type="checkbox" id="estatus" formControlName="estatus"><span class="lever switch-col-light-green"></span></label>
+                                                </div>
+                                                
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" >
+                                            <div class="form-group">
+                                                <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Imagen</span>
+                                                    <input type="file" class="upload" name="foto" formControlName="foto"> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuarioMulti.invalid" (click)="addUsuarioMultiProceso()">Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+                <div id="edit-contact-multi" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Editar Usuario</h3>
+                                
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuarioMulti1" [formGroup]="formUsuarioMulti1">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <input type="text" class="form-control" id="usuario" formControlName="usuario"  placeholder="Usuario" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" formControlName="nombre"  placeholder="Nombre"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="apellidos" formControlName="apellidos"  placeholder="Apellidos"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Correo</label>
+                                                <input type="email" class="form-control" id="email" formControlName="email"  placeholder="Email" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                        
+                                        <!--Using items input-->
+                                        <ng-select [items]="listProcesos" 
+                                                    [multiple]="true"
+                                                    [closeOnSelect]="false"
+                                                    [searchable]="false"
+                                                    bindLabel="departamento"
+                                                    bindLabel="departamento" 
+                                                    [(ngModel)]="logProcesos"  formControlName="departamento">
+                                        </ng-select>
+                                        
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category"  id="departamento" [(ngModel)]="departamento"  formControlName="departamento" required>
+                                                    <option *ngFor="let departamento of listProcesos " [value]="departamento.id_proceso" >
+                                                        {{departamento.departamento}}</option>
+                                                </select>
+ 
+                                                 
+                                            </div>
+                                        </div> -->
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Tipo de Usuario</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category" id="tipoUsuario" formControlName="tipoUsuario" required>
+                                                    <option *ngFor="let catTipoUduario of listCatTipoUsuario" [value]="catTipoUduario.id_cat_usuarios" >
+                                                        {{catTipoUduario.tipoUsuario}}
+                                                    </option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" formControlName="password"  placeholder="Contraseña">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Estatus</label>
+                                                <div class="switch">
+                                                    <label>
+                                                        <input type="checkbox" id="estatus" formControlName="estatus" checked><span class="lever switch-col-light-green"></span></label>
+                                                </div>
+                                                
+                                                 
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuarioMulti1.invalid" (click)="editUsuarioMultiProceso()">Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- ==============================MULTI PROCESO======================= -->
+
+                
+                <!-- ==============================UN PROCESO======================= -->
+                <div id="add-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Agregar Usuario</h3>
+                                
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuario" [formGroup]="formUsuario">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <input type="text" class="form-control" id="usuario" formControlName="usuario"  placeholder="Usuario" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" formControlName="nombre"  placeholder="Nombre"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="apellidos" formControlName="apellidos"  placeholder="Apellidos"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Correo</label>
+                                                <input type="email" class="form-control" id="email" formControlName="email"  placeholder="Email" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category"  id="departamento" [(ngModel)]="departamento"  formControlName="departamento" required>
+                                                    <option *ngFor="let departamento of listProcesos " [value]="departamento.id_proceso" >
+                                                        {{departamento.departamento}}</option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+ 
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Tipo de Usuario</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category" id="tipoUsuario" formControlName="tipoUsuario" required>
+                                                    <option *ngFor="let catTipoUduario of listCatTipoUsuario " [value]="catTipoUduario.id_cat_usuarios" >
+                                                        {{catTipoUduario.tipoUsuario}}</option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" formControlName="password"  placeholder="Contraseña">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Estatus</label>
+                                                <div class="switch">
+                                                    <label>
+                                                        <input type="checkbox" id="estatus" formControlName="estatus"><span class="lever switch-col-light-green"></span></label>
+                                                </div>
+                                                
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" >
+                                            <div class="form-group">
+                                                <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Imagen</span>
+                                                    <input type="file" class="upload" name="foto" formControlName="foto"> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario.invalid" (click)="addUsuario()" >Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+
+                <div id="edit-contact" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myLargeModalLabel">Editar Usuario</h3>
+                                
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <form name="formUsuario" [formGroup]="formUsuario1">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <input type="text" class="form-control" id="usuario" formControlName="usuario"  placeholder="Usuario" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" formControlName="nombre"  placeholder="Nombre"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="apellidos" formControlName="apellidos"  placeholder="Apellidos"required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Correo</label>
+                                                <input type="email" class="form-control" id="email" formControlName="email"  placeholder="Email" required>
+                                                 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Departamento</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category"  id="departamento" [(ngModel)]="departamento"  formControlName="departamento" required>
+                                                    <option *ngFor="let departamento of listProcesos " [value]="departamento.id_proceso" >
+                                                        {{departamento.departamento}}</option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Tipo de Usuario</label>
+                                                <select class="form-control custom-select" data-placeholder="Choose a Category" id="tipoUsuario" formControlName="tipoUsuario" required>
+                                                    <option *ngFor="let catTipoUduario of listCatTipoUsuario" [value]="catTipoUduario.id_cat_usuarios" >
+                                                        {{catTipoUduario.tipoUsuario}}
+                                                    </option>
+                                                </select>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" formControlName="password"  placeholder="Contraseña">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Estatus</label>
+                                                <div class="switch">
+                                                    <label>
+                                                        <input type="checkbox" id="estatus" formControlName="estatus" checked><span class="lever switch-col-light-green"></span></label>
+                                                </div>
+                                                
+                                                 
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario1.invalid" (click)="editUsuario()">Guardar</button>
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- ==============================UN PROCESO======================= -->

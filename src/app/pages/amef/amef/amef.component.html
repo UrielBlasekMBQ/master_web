@@ -1,0 +1,733 @@
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">AMEF</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol *ngIf="procesos" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+            </ol>
+            <ol *ngIf="tabla" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item"><button class="btn btn-outline-info" (click)="backProcesos()">Procesos</button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Registros</a></button></li>
+            </ol>
+            <ol *ngIf="formulario" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item"><button class="btn btn-outline-info" (click)="backProcesos()">Procesos</button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backRegistros()"><a>Registros</a></button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>AMEF</a></button></li>
+            </ol>
+            <ol *ngIf="vistaFinal" class="breadcrumb" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item"><button class="btn btn-outline-info" (click)="backProcesos()">Procesos</button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backRegistros()"><a>Registros</a></button></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>AMEF</a></button></li>
+            </ol>
+
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+
+        <!-- Row -->
+        <div *ngIf="procesos" class="row" >           
+            <!-- column -->
+            <div *ngFor="let departamento of listProcesos" class="col-lg-3">
+                <!-- Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
+                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                        <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getTablaAMEF(departamento)" >Consultar</a></div>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <!-- column -->
+            <!-- column -->
+        </div>
+        <!-- Row -->
+
+    <!-- ============================================================== -->
+
+    <div *ngIf="tabla" class="row" >
+        <div class="col-lg-12 mb-3"><button type="button" class="btn btn-info btn-rounded" (click)="getFromAmef()" >Nuevo AMEF</button></div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Autor</th>
+                                    <th>Proceso</th>
+                                    <th>Tipo de modelo</th>
+                                    <th>Componente evaluado</th>
+                                    <th>Componente finción</th>
+                                    <th>Estatus</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let amef of listAmefPlanifica | paginate: { itemsPerPage: 10, currentPage: p }; let i =index">   
+                                    <td>{{i+1}}</td>                                                                                                                                                                             
+                                    <td>{{amef.nombre | uppercase}} {{amef.apellidos | uppercase}}</td>                                                
+                                    <td>{{amef.departamento}}</td>
+                                    <td>{{amef.amef_modelo}}</td>
+                                    <td>{{amef.amef_componente_eva}}</td>
+                                    <td>{{amef.amef_componente_func}}</td>                                    
+                                    
+                                    <td>
+                                        <span *ngIf="amef.amef_planifica_estatus == 2" class="label label-success">Terminado</span> 
+                                        <span *ngIf="amef.amef_planifica_estatus == 0 || amef.amef_planifica_estatus == 1" class="label label-warning">En proceso</span> 
+
+                                    </td>
+                                    
+
+                                    <td>
+                                            
+                                        <button *ngIf="amef.amef_planifica_estatus <= 1" type="button" class="btn btn-info btn-sm mr-2 " data-toggle="modal" data-target="#edit-contact" (click)="determinaFase(amef)" ><i class="mdi mdi-lead-pencil"></i></button>
+                                        <button *ngIf="amef.amef_planifica_estatus == 2" type="button" class="btn btn-info btn-sm mr-2 " data-toggle="modal" data-target="#edit-contact" (click)="verAmef(amef)" ><i class="mdi mdi mdi-eye fa-lg"></i></button>
+                                        
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+  <mat-stepper *ngIf="formulario" orientation="vertical" [linear]="isLinear" #stepper>
+    <!--//////////Planificacion //////////-->
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Planificación</ng-template>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Responsable: </label> 
+                                <br>                               
+                                <label >{{responsable.nombre | uppercase}} {{responsable.apellidos | uppercase}}</label>
+                                 
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="botonA">
+                            <div *ngIf="grupoA" class="form-group" >                                
+                                <button type="button" class="btn btn-danger btn-rounded  mt-4" data-toggle="modal" data-target="#grupo-trabajo"(click)="getGrupoTrabajo()">Grupo de trabajo</button>  
+                            </div>  
+                            <div *ngIf="grupoB" class="form-group" >                                
+                                <button type="button" class="btn btn-danger btn-rounded  mt-4" data-toggle="modal" data-target="#grupo-trabajo">Grupo de trabajo</button>  
+                            </div>  
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group" >
+                                <label class="control-label" >Grupo de trabajo: </label>
+                                <br>
+                                <label *ngFor="let usuario of listGrupo"> {{usuario.nombre | uppercase}} {{usuario.apellidos |uppercase}}, &nbsp;</label>
+
+                                
+                                 
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Tipo de modelo de fallo y análisis de efectos: </label>
+                                <input *ngIf="botonA" type="text" class="form-control"  placeholder="Tipo de modelo de fallo" formControlName="tipoModelo">
+                                <input *ngIf="botonB" type="text" class="form-control"  placeholder="Tipo de modelo de fallo" [disabled]="true" [value]="tipoModelo">
+                                 
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Nombre del componente evaluado: </label>
+                                <input *ngIf="botonA" type="text" class="form-control" id="componenteEvaluado" formControlName="componenteEvaluado"  placeholder="Componente" >
+                                <input *ngIf="botonB" type="text" class="form-control" id="componenteEvaluado" placeholder="Componente" [disabled]="true" [value]="Componente">
+                                 
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Componente función: </label>
+                                <input *ngIf="botonA" type="text" class="form-control" id="password" formControlName="componenteFincion" placeholder="componenteFincion" >
+                                <input *ngIf="botonB" type="text" class="form-control" id="password" placeholder="componenteFincion" [disabled]="true" [value]="componenteFincion">
+                                 
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="botonA">
+                
+                <button  matStepperNext type="button" class="btn btn-primary" *ngIf="firstFormGroup.valid && listGrupo.length>0 && nive1" (click)="addAmefPlanifica()">Continuar</button>
+            </div>
+            <div *ngIf="botonB">                
+                <button  matStepperNext type="button" class="btn btn-primary" (click)="getDataAmef()">Continuar</button>
+            </div>
+
+
+
+        </form>
+    </mat-step>
+      <!--//////////Planificacion //////////-->
+    <!---///////// AMEF //////////////////-->
+    <mat-step [stepControl]="secondFormGroup" *ngIf="formulario2" >
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>AMEF</ng-template>
+
+            <div *ngIf="amef_from" class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Modelo de fallo: </label>
+                                    <input type="text" class="form-control" id="usuario" formControlName="modelo_fallo" placeholder="Modo de fallo" required>                     
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Efecto potencial de fallo: </label>
+                                    <select class="form-control custom-select" data-placeholder="Choose a Category"  formControlName="efecto_potencial"  required>
+                                        <option *ngFor="let efecto of listEfectos " [value]="efecto.id_efecto" >
+                                            {{efecto.nom_efecto}}</option>
+                                    </select>
+                
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Ocurrencia de la posibilidad: </label>
+                                    <select class="form-control custom-select" data-placeholder="Choose a Category" (change)="calculaRPN()"  formControlName="posibilidad"  required>
+                                        <option *ngFor="let determinacion of listDeterminacion " [value]="determinacion.val_determinacion" >
+                                        {{determinacion.val_determinacion }} {{determinacion.nom_determinacion}}</option>
+                                    </select>  
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Gravedad de la insuficiencia: </label>
+                                    <select class="form-control custom-select" data-placeholder="Choose a Category" (change)="calculaRPN()" formControlName="gravedad"  required>
+                                        <option *ngFor="let gravedad of listGravedad " [value]="gravedad.val_gravedad" >
+                                        {{gravedad.val_gravedad}} {{gravedad.nom_gravedad}}</option>
+                                    </select>                     
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Capacidad de detección: </label>
+                                    <select class="form-control custom-select" data-placeholder="Choose a Category" (change)="calculaRPN()" formControlName="probabilidad"  required>
+                                        <option *ngFor="let probabilidad of listProbabilidad " [value]="probabilidad.val_probabilidad" >
+                                        {{probabilidad.val_probabilidad}} {{probabilidad.nom_probabilidad}}</option>
+                                    </select>                      
+                                </div>                
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">RPN - Riesgo(Riesgo Numero de Prioridad): </label>
+                                    <input type="text" class="form-control" id="usuario" value="{{rpn}}" placeholder="0" [disabled]="true" required>                     
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Clasificación: </label>
+                                    <input type="text" class="form-control" id="usuario"  placeholder="S/C" [value]="estatus_rpn" [disabled]="true">                     
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Planificacion de la accion Correctiva: </label>
+                                    <input type="text" class="form-control" id="usuario"  placeholder="Modo de fallo" formControlName="planificacion" required>                     
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+                <div>                
+                    <button type="button" class="btn btn-info btn-rounded" (click)="returnTabla()">Cancelar</button>
+                    <button *ngIf="amef_add" type="button" class="btn btn-success btn-rounded" [disabled]="secondFormGroup.invalid" (click)="addDaraAmef()">Agregar</button>
+                    <button *ngIf="amef_update" type="button" class="btn btn-primary btn-rounded" [disabled]="secondFormGroup.invalid" (click)="updateModeloFallo()">Actualizar</button>
+                </div>
+            </div>
+
+          
+            <div *ngIf="amef_tabla" class="table-responsive">
+                <div class="col-lg-12 mb-3"><button type="button" class="btn btn-info btn-rounded" (click)="addModoFallo()">Agregar modo de fallo</button></div><!--Desplega tabla y muestra form-->
+                <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Modo de fallo</th>
+                            <th>Efecto potencial de fallo</th>
+                            <th>Probabilidad</th>
+                            <th>Gravedad</th>
+                            <th>Deteccion</th>
+                            <th>RPM</th>
+                            <th>Clasificación</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let amef of listDataAmef; let i =index">   
+                            <td>{{i+1}}</td>                                                                                                                                                                                                        
+                            <td>{{amef.amef_modelo_fallo}}</td>
+                            <td>{{amef.nom_efecto}}</td>
+                            <td>{{amef.val_probabilidad}}</td>
+                            <td>{{amef.val_gravedad}}</td>
+                            <td>{{amef.val_determinacion}}</td>
+                            <td>{{amef.rpn_amef}}</td>
+                            <td>
+                                <span *ngIf="amef.clasificacion_amef == 1" class="label label-success">Bajo riesgo</span> 
+                                <span *ngIf="amef.clasificacion_amef == 2" class="label label-primary">Riesgo Moderado</span> 
+                                <span *ngIf="amef.clasificacion_amef == 3" class="label label-warning">Alto riesgo</span> 
+                                <span *ngIf="amef.clasificacion_amef == 4" class="label label-danger">Riesgo critico</span> 
+                                
+
+                            
+                            </td>
+                            
+
+                            <td>
+                                <button  type="button" class="btn btn-info btn-sm mr-2 " (click)="editMododFallo(amef)" ><i class="mdi mdi-lead-pencil"></i></button>
+                                <button  type="button" class="btn btn-danger  btn-sm " data-toggle="modal" data-target="#delete"(click)="dateModelo(amef)" ><i class="ti-close" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                
+                            </td>
+                            <td colspan="7">
+                                <div class="text-right">
+                                    <ul class="pagination"> </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <button  matStepperNext type="button" class="btn btn-primary" *ngIf="next_ac" (click)="nextAcciones()">Continuar</button>
+                
+            </div>
+          
+           
+
+          <div *ngIf="tabla">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+
+        </form>
+    </mat-step>
+    <!---///////// AMEF //////////////////-->
+    <!--////////// Acciones corretivas /////////////////-->
+    <mat-step [stepControl]="formAcionesCorrectivas" *ngIf="formulario3">
+        <form [formGroup]="formAcionesCorrectivas" >
+            <ng-template matStepLabel>Acciones correctivas</ng-template>
+           
+            <div *ngIf="form_ac" class="card">
+                <div class="card-body">                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Planificacion de la acción correctiva: </label>
+                                <input type="text" class="form-control" id="usuario"  placeholder="Planificación" [value]="primero" [disabled]="true">                     
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Responsable </label>
+                                <select class="form-control custom-select" data-placeholder="Choose a Category" formControlName="ac_responsable" required>
+                                    <option *ngFor="let usuario of listGrupo " [value]="usuario.id_usuario" >
+                                        {{usuario.nombre | uppercase}} {{usuario.apellidos |uppercase}}</option>
+                                </select>
+            
+                                 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Primero: </label>
+                                <input type="date" class="form-control" id="usuario" placeholder="Modo de fallo" formControlName="ac_fecha_inicio" required>                     
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Prevsión del final </label>       
+                                <input type="date" class="form-control" id="usuario" placeholder="Modo de fallo" (change)="validaFechaPrevencion()" formControlName="ac_fecha_prevision" required>                                              
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Final </label>       
+                                <input type="date" class="form-control" id="usuario" placeholder="Modo de fallo" (change)="validaFechaFinal()" formControlName="ac_fecha_final">                                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Plazo programado: </label>
+                                <input type="text" class="form-control" id="usuario"  placeholder="Planificación" [value]="fechaProgramada" [disabled]="true">                     
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Plazo elaborado: </label>
+                                <input type="text" class="form-control" id="usuario"  placeholder="Planificación" [value]="fechaElaborado" [disabled]="true">                     
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Estatus: </label>
+                                <input type="text" class="form-control" id="usuario"  placeholder="S/E" [value]="amef_estatus" [disabled]="true">                     
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>                
+                    <button type="button" class="btn btn-info btn-rounded" (click)="back_ac()">Cancelar</button>
+                    <button *ngIf="add_accion" type="button" class="btn btn-success btn-rounded" [disabled]="formAcionesCorrectivas.invalid" (click)="addAccionCorrectiva()">Agregar</button>
+                    <button *ngIf="update_accion" type="button" class="btn btn-primary btn-rounded" [disabled]="formAcionesCorrectivas.invalid" (click)="updateAccionCorrectiva()">Actualizar</button>
+                </div>  
+            </div>
+
+        </form>
+
+        <!----->
+        <div *ngIf="tabla_ac" class="table-responsive">
+            <div *ngIf="num_modelo_ac" class="col-lg-12 mb-3"><button type="button" class="btn btn-info btn-rounded" (click)="primerModelo()">Planificacion correctiva {{num_modelo_ac}}</button></div>
+            <table  id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Acción correctiva </th>
+                        <th>Responsable </th>
+
+                        <th>Plazo programado</th>
+                        <th>Plazo terminado</th>
+                        <th>Clasificación</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let accion of listAcciones; let i =index">   
+                        <td>{{i+1}}</td>                                                                                                                                            
+                                           
+                        <td>{{accion.planificacion_amef}}</td>
+                        <td>{{accion.nombre}} {{accion.apellidos}}</td>
+
+                        <td>{{accion.ac_programado}}</td>
+                        <td>{{accion.ac_elaborado}}</td>
+
+
+                         <td>
+                            <span *ngIf="accion.id_amef_estatus == 1" class="label label-danger">Proceso</span> 
+                            <span *ngIf="accion.id_amef_estatus == 2" class="label label-warning">Concluido con retraso</span> 
+                            <span *ngIf="accion.id_amef_estatus == 3" class="label label-success">Concluido</span> 
+
+                        
+                        </td> 
+                         
+
+                        <td>
+                            <button  type="button" class="btn btn-info btn-sm mr-2 " (click)="changeFrom(accion)" ><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            
+                        </td>
+                        <td colspan="7">
+                            <div class="text-right">
+                                <ul class="pagination"> </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>     
+            <div *ngIf="num_modelo_ac==0" class="col-lg-12 mb-3"><button type="button" class="btn btn-success btn-rounded" (click)="terceraFase()">Concuir AMEF</button></div>
+            <!-- <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset()">Reset</button>
+            </div> -->
+        </div>
+        <!----->
+      
+
+    </mat-step>
+    <!--////////// Acciones corretivas /////////////////-->
+    
+  </mat-stepper>
+
+  <div *ngIf="vistaFinal" class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-sm-12">
+                <h3>Planificación</h3>
+                <div class="row">
+                   
+                    <br>
+                    <div class="col sm-6">
+                        <label class="control-label">Responsable: </label>
+                        <input type="text" class="form-control" id="componenteEvaluado" value="{{responsable.nombre|uppercase}} {{responsable.apellidos|uppercase}}" [disabled]="true" >
+                    </div>
+                    <div class="col sm-6">
+                        <label class="control-label" >Grupo de trabajo: </label>
+                        <br>
+                        <label *ngFor="let usuario of listGrupo" > {{usuario.nombre | uppercase}} {{usuario.apellidos |uppercase}}, &nbsp;</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Tipo de modelo de fallo y análisis de efectos: </label>
+                            <input type="text" class="form-control"  placeholder="Tipo de modelo de fallo" [value]="now_planificacion.amef_modelo" [disabled]="true" >
+                             
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Nombre del componente evaluado: </label>
+                            <input type="text" class="form-control" id="componenteEvaluado" [value]="now_planificacion.amef_componente_eva"  [disabled]="true">
+                             
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Componente función: </label>
+                            <input type="text" class="form-control" id="password" [value]="now_planificacion.amef_componente_func" [disabled]="true">
+                             
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3>AMEF</h3>
+                    <div  class="table-responsive">
+                        
+                        <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Modo de fallo</th>
+                                    <th>Efecto de fallo</th>
+                                    <th>Ocurrencia</th>
+                                    <th>Gravedad</th>
+                                    <th>Deteccion</th>
+                                    <th>RPM</th>
+                                    <th>Clasificación</th>
+                                    <th>Planificación<th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let amef of listDataAmef; let i =index">   
+                                    <td>{{i+1}}</td>                                                                                                                                                                                                        
+                                    <td>{{amef.amef_modelo_fallo}}</td>
+                                    <td>{{amef.nom_efecto}}</td>
+                                    <td>{{amef.val_probabilidad}}</td>
+                                    <td>{{amef.val_gravedad}}</td>
+                                    <td>{{amef.val_determinacion}}</td>
+                                    <td>{{amef.rpn_amef}}</td>
+                                    <td>
+                                        <span *ngIf="amef.clasificacion_amef == 1" class="label label-success">Bajo riesgo</span> 
+                                        <span *ngIf="amef.clasificacion_amef == 2" class="label label-primary">Riesgo Moderado</span> 
+                                        <span *ngIf="amef.clasificacion_amef == 3" class="label label-warning">Alto riesgo</span> 
+                                        <span *ngIf="amef.clasificacion_amef == 4" class="label label-danger">Riesgo critico</span>                                                                             
+                                    </td>
+                                    <td>{{amef.planificacion_amef}}</td>
+                                    
+        
+                                </tr>
+        
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        
+                                    </td>
+                                    <td colspan="7">
+                                        <div class="text-right">
+                                            <ul class="pagination"> </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div  class="table-responsive">
+                        <h3>Acciones correctivas </h3>
+                        <table  id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Acción correctiva </th>
+                                    <th>Responsable </th>
+                                    <th>Inicio</th>
+                                    <th>Programado</th>
+                                    <th>Realizado</th>
+                                    <th>Plazo programado</th>
+                                    <th>Plazo terminado</th>
+                                    <th>Estatus</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let accion of listAcciones; let i =index">   
+                                    <td>{{i+1}}</td>                                                                                                                                                                                                
+                                    <td>{{accion.planificacion_amef}}</td>
+                                    <td>{{accion.nombre| uppercase}} {{accion.apellidos| uppercase}}</td>
+                                    <td>{{accion.ac_fech_inicio | date}}</td>
+                                    <td>{{accion.ac_fech_final | date}}</td>
+                                    <td>{{accion.ac_final | date}}</td>
+                                    <td>{{accion.ac_programado}}</td>
+                                    <td>{{accion.ac_elaborado}}</td>    
+                                     <td>
+                                        <span *ngIf="accion.id_amef_estatus == 1" class="label label-danger">Proceso</span> 
+                                        <span *ngIf="accion.id_amef_estatus == 2" class="label label-warning">Concluido con retraso</span> 
+                                        <span *ngIf="accion.id_amef_estatus == 3" class="label label-success">Concluido</span> 
+                                    </td> 
+                                     
+            
+
+                                </tr>
+            
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        
+                                    </td>
+                                    <td colspan="7">
+                                        <div class="text-right">
+                                            <ul class="pagination"> </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>                             
+                        <!-- <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button (click)="stepper.reset()">Reset</button>
+                        </div> -->
+                    </div>
+                    <!----->
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div id="grupo-trabajo" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myLargeModalLabel">Definir grupo de trabajo</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="table-responsive">                            
+                            <table id="demo-foo-addrow" class="table table-hover contact-list" data-page-size="10">
+                                <thead>
+                                    <tr>
+                                        <th><h3>Usuarios disponibles</h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let usuario of listUsuarios; let i =index">                                                                                                                                                                   
+                                        <td (click)="migrupo(i)">{{usuario.nombre |uppercase}} {{usuario.apellidos | uppercase}}</td>                                                
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>                    
+                    </div>
+                    <div class="col-sm-6">                    
+                        <div class="table-responsive">                            
+                            <table id="demo-foo-addrow" class="table table-hover contact-list" data-page-size="10">
+                                <thead>
+                                    <tr>
+                                        <th><h3>Mi grupo de trabajo</h3></th>
+    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let usuario of listGrupo; let i =index">                                                                                                                                                       
+                                        <td (click)="losusuarios(i)">{{usuario.nombre | uppercase}} {{usuario.apellidos |uppercase}}</td>                                                
+                                    </tr>
+    
+                                </tbody>
+                            </table>                        
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal" >Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div id="delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Eliminar Modelo de fallo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <h4>Confirmar para eliminar al Modelode fallo</h4>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal" (click)="deleteModelo()">Confirmar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+  
+
+
+
+  

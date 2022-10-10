@@ -1,0 +1,27 @@
+.perm{
+    cursor: none;
+    pointer-events: none;
+    
+}
+
+.ver{
+    cursor: pointer;
+}
+
+.responsive {
+    width: 100%;
+    height: auto;
+  }
+
+.imagen-responsiva{
+    width: 40%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.texto-centrado{
+    text-align: center;
+}
+
+

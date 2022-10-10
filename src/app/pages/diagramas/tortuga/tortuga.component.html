@@ -1,0 +1,389 @@
+    <!-- ============================================================== -->
+    <div class="row page-titles" id="inicio">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Diagrama Tortuga</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb" >   
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Tortuga</a></button></li>
+            </ol>       
+            <ol *ngIf="false" class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item"><button class="btn btn-outline-info" ><a >Procesos</a></button></li>
+
+            </ol>
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-md pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+
+
+<div class="row" id="contentToConvert">
+    <div class="col-md-12">
+        <h2 style="text-align: center;">Diagrama de tortuga</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">    
+
+                          <div class="list-group ml-5">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#conque" (click)="cleanForm()">¿Con que?</li>
+                            
+                            
+                            <ul class="list-group list-group-flush" *ngFor="let conque of listConque; let i =index">           
+                                <li class="list-group-item ver" data-toggle="modal" data-target="#conque" (click)="clicConque(conque, i)">{{conque.conque}}</li>                                                                                             
+                              </ul>
+                          </div>
+
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+
+                        <div class="list-group mr-5">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#conquien" (click)="cleanForm()">¿Con quien?</li>
+                            
+                            
+                            <ul class="list-group list-group-flush" *ngFor="let conquien of listConquien; let i =index">           
+                                <li class="list-group-item  ver" data-toggle="modal" data-target="#conquien" (click)="clicConquien(conquien, i)">{{conquien.conquien}}</li>                                                                                             
+                              </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row"><div class="div-md-12"><br></div></div>
+
+                <div class="row">                
+                    <div class="col-md-4">
+
+                        <div class="list-group">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#entrada" (click)="cleanForm()">Entrada</li>
+                            
+                            
+                            <ul class="list-group list-group-flush" *ngFor="let entrada of listEntrada; let i =index">           
+                                <li class="list-group-item  ver" data-toggle="modal" data-target="#entrada" (click)="clicEntrada(entrada, i)">{{entrada.entrada}}</li>                                                                                             
+                              </ul>
+                          </div>
+
+                    </div>
+                    <div class="col-md-4 texto-centrado">
+                        <div class="list-group">
+
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#proceso" (click)="cleanForm()">Procesos</li>
+                        
+                        
+                            <ul class="list-group list-group-flush" *ngFor="let proceso of listProceso; let i =index">           
+                                <li class="list-group-item ver" data-toggle="modal" data-target="#proceso" (click)="clicProceso(proceso, i)">{{proceso.proceso}}</li>                                                                                             
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="list-group">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#salida" (click)="cleanForm()">Salida</li>
+                        
+                        
+                            <ul class="list-group list-group-flush" *ngFor="let salida of listSalida; let i =index">           
+                                <li class="list-group-item  ver" data-toggle="modal" data-target="#salida" (click)="clicSalida(salida, i)">{{salida.salida}}</li>                                                                                             
+                            </ul>
+                          </div>
+
+                    </div>                
+                </div>
+
+                <div class="row"><div class="div-md-12"><br></div></div>
+
+                <div class="row">
+                    <div class="col-md-5">
+
+                        <div class="list-group  ml-5">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#criterio" (click)="cleanForm()">¿Con que criterios?</li>
+                        
+                        
+                            <ul class="list-group list-group-flush" *ngFor="let criterio of listCriterio; let i =index">           
+                                <li class="list-group-item  ver" data-toggle="modal" data-target="#criterio" (click)="clicCriterio(criterio, i)">{{criterio.criterio}}</li>                                                                                             
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <div class="list-group mr-5">
+                            <li class="list-group-item list-group-item-action text-blanco ver active" data-toggle="modal" data-target="#como" (click)="cleanForm()">¿Como?</li>
+                        
+                        
+                            <ul class="list-group list-group-flush" *ngFor="let como of listComo; let i =index">           
+                                <li class="list-group-item  ver" data-toggle="modal" data-target="#como" (click)="clicComo(como, i)">{{como.como}}</li>                                                                                             
+                            </ul>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div style="text-align: center;">
+    <input type="button" class="btn btn-danger" value="Generar PDF" (click)="convertToPDF()" />
+  </div>
+
+    <!-- sample modal content -->
+    <div id="conque" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="conque" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="conque">¿Con que?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formConque" [formGroup]="formConque">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">¿Con que?: </label>
+                                    <input type="text" class="form-control" id="conque" formControlName="conque"  placeholder="¿Con que?" required>
+                                     
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteConque()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formConque.invalid" (click)="updateConque()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formConque.invalid"  (click)="saveConque()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="conquien" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="conquien" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="conquien">¿Con quien?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formConque" [formGroup]="formConquien">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">¿Con quien?: </label>
+                                    <input type="text" class="form-control" id="conquien" formControlName="conquien"  placeholder="¿Con quien?" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteConquien()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formConquien.invalid" (click)="updateConquien()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formConquien.invalid"  (click)="saveConquien()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="entrada" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="entrada" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="entrada">Entrada</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formConque" [formGroup]="formEntrada">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Entrada: </label>
+                                    <input type="text" class="form-control" id="entrada" formControlName="entrada"  placeholder="Entrada" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteEntrada()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formEntrada.invalid" (click)="updateEntrada()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formEntrada.invalid"  (click)="saveEntrada()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="proceso" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="proceso" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="proceso">Proceso</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formProceso" [formGroup]="formProceso">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Proceso: </label>
+                                    <input type="text" class="form-control" id="proceso" formControlName="proceso"  placeholder="Proceso" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteProceso()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formProceso.invalid" (click)="updateProceso()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formProceso.invalid"  (click)="saveProceso()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="salida" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="salida" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="salida">Salida</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formSalida" [formGroup]="formSalida">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Salida: </label>
+                                    <input type="text" class="form-control" id="salida" formControlName="salida"  placeholder="Salida" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteSalida()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formSalida.invalid" (click)="updateSalida()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formSalida.invalid"  (click)="saveSalida()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="criterio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="criterio" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="criterio">Criterio</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formCriterio" [formGroup]="formCriterio">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">Salida: </label>
+                                    <input type="text" class="form-control" id="criterio" formControlName="criterio"  placeholder="Criterio" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteCriterio()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formCriterio.invalid" (click)="updateCriterio()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formCriterio.invalid"  (click)="saveCriterio()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- sample modal content -->
+    <div id="como" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="como" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="como">¿Como?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formComo" [formGroup]="formComo">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label">¿Como?: </label>
+                                    <input type="text" class="form-control" id="como" formControlName="como"  placeholder="¿Como?" required>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="conf" type="submit" class="btn btn-danger mx-2" data-dismiss="modal" (click)="deleteComo()">Eliminar</button>
+                    <button *ngIf="conf" type="submit" class="btn btn-primary mx-2" data-dismiss="modal" [disabled]="formComo.invalid" (click)="updateComo()"> <i class="fa fa-check"></i> Actializar</button>
+                    <button *ngIf="add" type="submit" class="btn btn-success mx-2" data-dismiss="modal" [disabled]="formComo.invalid"  (click)="saveComo()"> <i class="fa fa-check"></i> Enviar</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    
+

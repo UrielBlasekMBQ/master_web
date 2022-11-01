@@ -84,6 +84,9 @@ import { EfectoFalloComponent } from './amef/efecto-fallo/efecto-fallo.component
 import { AmefComponent } from './amef/amef/amef.component';
 import { HistorialComponent } from './historial/historial.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { ConfiguraUsuarioComponent } from './configura-usuario/configura-usuario.component';
+import { CapacitacionComponent } from './capacitacion/capacitacion.component';
+import { ContratosComponent } from './contratos/contratos.component';
 
   
 
@@ -115,6 +118,9 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
     AmefComponent,
     HistorialComponent,
     ConfiguracionComponent,
+    ConfiguraUsuarioComponent,
+    CapacitacionComponent,
+    ContratosComponent,
 
   ],
   imports: [

@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit {
     if(variable =='0'){
       localStorage.setItem('inicio', '1');
       location.reload();
+      window.location.reload();
     }else{
      //  console.log('next');
       

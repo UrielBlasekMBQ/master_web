@@ -8,6 +8,7 @@
                             <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
                             <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
                         </ol>
+                        
                         <ol class="breadcrumb" *ngIf="viewDataDepartamento" >
                             <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
                               <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backDepartamento()"><a>Procesos</a></button></li>
@@ -34,8 +35,11 @@
                                 <!-- Card -->
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
-                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}
+                                            <span *ngIf="departamento.estatus_proceso==1" class="label label-success">Activo</span>
+                                            <span *ngIf="departamento.estatus_proceso==0" class="label label-danger">Inactivo</span>
+                                        </h4>
+                                        <img class="card-img-top imagen-responsiva" src="./assets/images/big/trabajar.png" alt="Card image cap">
                                         <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="dataDepartamento(departamento)">Consultar</a></div>
                                     </div>
                                 </div>
@@ -71,6 +75,17 @@
                                             <div class="form-group">
                                                 <label class="control-label">Descripción</label>
                                                 <input type="email" class="form-control" id="descripcion" formControlName="descripcion"  placeholder="Descripción" required>
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Estatus</label>
+                                                <div class="switch">
+                                                    <label>
+                                                        <input type="checkbox" id="estatus" formControlName="estatus_proceso" ><span class="lever switch-col-light-green"></span></label>
+                                                </div>
+                                                
                                                  
                                             </div>
                                         </div>
@@ -110,6 +125,17 @@
                                                 <div class="form-group">
                                                     <label class="control-label">Descripción</label>
                                                     <input type="email" class="form-control" id="descripcion" formControlName="descripcion"  placeholder="Descripción" required>
+                                                     
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Estatus</label>
+                                                    <div class="switch">
+                                                        <label>
+                                                            <input type="checkbox" id="estatus" formControlName="estatus_proceso"><span class="lever switch-col-light-green"></span></label>
+                                                    </div>
+                                                    
                                                      
                                                 </div>
                                             </div>

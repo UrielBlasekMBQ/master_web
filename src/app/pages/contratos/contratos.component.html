@@ -1,0 +1,397 @@
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Mis contratos</h3>
+                    </div>
+                    <div class="col-md-7 align-self-center">
+
+                        <ol *ngIf="tablaContratos" class="breadcrumb"  >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active" (click)="backContratos()"><a>Contratos</a></button></li>
+                        </ol>
+
+                        <ol *ngIf="tablaEtapas" class="breadcrumb"  >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backContratos()"><a>Contratos</a></button></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Etapas</a></button></li>
+                              
+                        </ol>
+
+                        <ol *ngIf="tablaActividades" class="breadcrumb" >
+
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button  class="btn btn-outline-info" (click)="backContratos()"><a>Contratos</a></button></li>
+                            <li class="breadcrumb-item "><button  class="btn btn-outline-info" (click)="backEtapas()"><a>Etapas</a></button></li>
+                            <li class="breadcrumb-item "><button  class="btn btn-outline-info active" ><a>Actividades</a></button></li>
+                                                          
+                        </ol>
+
+                        <ol *ngIf="tablaHistorial" class="breadcrumb"  >
+                            
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info" (click)="backContratos()"><a>Contratos</a></button></li>
+                            <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Historial</a></button></li>
+                              
+                        </ol>
+                    </div>
+                    <div class="">
+                        <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+
+                
+                        <!-- Row -->
+                        <div class=" " *ngIf="tablaContratos" >
+                            <div class="col-ms-12 mb-3">
+                                <label class="mr-3" ><h3 class="text-themecolor">Contratos</h3></label>  <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contrato">Agregar contrato</button>
+                            </div>
+                            <!-- column -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                                <thead>
+                                                    <tr class="centrado">
+                                                        <th>No</th>
+                                                        <th>Compañia</th>
+                                                        <th>Horas totales</th>
+                                                        <th>Horas restantes</th>
+                                                        <th>No. etapas</th>
+                                                        <th>No. actividades</th>
+                                                        <th>Estatus</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                 <tbody>
+                                                    <tr class="centrado" *ngFor="let contrato of listaContratos | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
+                                                        <td>{{i+1}}</td>                                                                                                                                         
+                                                                                                       
+                                                        <td>{{contrato.nom_compania}}</td>
+                                                        <td>{{contrato.num_horas_total}}</td>
+                                                        <td>{{contrato.num_horas_restantes}}</td>
+                                                        <td>{{contrato.num_etapas}}</td>
+                                                        <td>{{contrato.num_actividades}}</td>
+                                                        <td>                                                    
+                                                            <span *ngIf="contrato.num_horas_restantes==0" class="label label-danger">Terminado</span> 
+                                                            <span *ngIf="contrato.num_horas_restantes>0" class="label label-success">Por terminar</span> 
+                                                        </td>
+
+                                                        
+                                                        <td>
+                                                            <button type="button" class="btn btn-info btn-sm  mr-2" (click)="getEtapas(contrato)"><i class="mdi mdi-nut"></i></button>
+                                                            <button type="button" class="btn btn-secondary btn-sm " (click)="getHistorialActividades(contrato)"><i class="mdi mdi-account-search"></i></button>
+                                                        </td>
+                                                        
+                                                    </tr>
+        
+                                                </tbody> 
+                                            </table>
+                                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- column -->
+                        </div>
+
+                         <!-- ///////Etapas/////// -->
+                         <div class=" " *ngIf="tablaEtapas" >
+                            <div class="col-ms-12 mb-2">
+                               <label class="mr-3" ><h3 class="text-themecolor">Etapas</h3></label>  <label class="ml-2" ><h3>Horas restantes {{contrato.num_horas_restantes}}</h3></label>
+                            </div>
+                            <!-- column -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Compañia</th>
+                                                        <th>Etapa</th>
+                                                        <th>Actividades</th>
+                                                        <th>Horas</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                 <tbody>
+                                                    <tr *ngFor="let etapa of listEtapasTabla | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
+                                                        <td>{{i+1}}</td>                                                                                                                                                                                                                                            
+                                                        <td>{{etapa.nom_compania}}</td>
+                                                        <td>{{etapa.nom_etapa}}</td>                                                        
+                                                        <td>{{etapa.num_actividades}}</td>  
+                                                        <td>{{etapa.num_horas_etapa}}</td> 
+                                                        
+                                                        <td>
+                                                            <button type="button" class="btn btn-info btn-sm " (click)="getActividades(etapa)"><i class="mdi mdi-nut"></i></button>
+                                                        </td>
+                                                        
+                                                    </tr>
+        
+                                                </tbody> 
+                                            </table>
+                                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- column -->
+                         </div>
+                        <!-- ///////Etapas/////// -->
+
+                         <!-- ///////Actividades/////// -->
+                         <div class="" *ngIf="tablaActividades">
+                            <div class="col-ms-12 mb-2">
+                                <label class="mr-3" ><h3 class="text-themecolor">Actividades</h3></label> <button *ngIf="contrato.num_horas_restantes > 0" type="button" class="btn btn-info btn-rounded mr-2" data-toggle="modal" data-target="#actividad">Agregar actividad</button> <label class="mr-2" ><h3>Horas restantes {{contrato.num_horas_restantes}}</h3></label>
+                                <label class="mr-2" ><h3 *ngIf="alerta" style="color: red;">*Solo cuenta con {{contrato.num_horas_restantes}} horas restantes, capture nuevamente</h3></label>
+                            </div>
+                            <!-- column -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Compañia</th>
+                                                        <th>Etapa</th>
+                                                        <th>Actividad</th>
+                                                        <th>Hrs. por actividad</th>
+                                                        <th>Documento</th>
+                                                    </tr>
+                                                </thead>
+                                                 <tbody>
+                                                    <tr *ngFor="let actividad of listActividades | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
+                                                        <td>{{i+1}}</td>                                                                                                                                         
+                                                        <td>{{actividad.nom_compania}}</td>      
+                                                        <td>{{actividad.nom_etapa}}</td>  
+                                                        <td>{{actividad.nom_actividad}}</td>
+                                                        <td>{{actividad.num_horas_actividad}}</td>
+                                                        <td>
+                                                            <a style="color:  #398bf7 ;" class="ver ml-1" href="{{downPDF+actividad.nom_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>
+                                                            <!-- {{actividad.nom_doc}} -->
+                                                            <!-- <button type="button" class="btn btn-info btn-sm " (click)="getEtapas(actividad)"><i class="mdi mdi-nut"></i></button> -->
+                                                        </td>
+                                                        
+                                                    </tr>
+        
+                                                </tbody> 
+                                            </table>
+                                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- column -->
+                         </div>
+                        <!-- ///////Actividades/////// -->
+
+                        <!-- ///////Historial/////// -->
+                        <div class="" *ngIf="tablaHistorial">
+                            <div class="col-ms-12 mb-3">
+                                <label class="mr-3" ><h3 class="text-themecolor">Historial</h3></label>  <label class="mr-2" ><h3>Horas restantes {{contrato.num_horas_restantes}}</h3></label>
+                            </div>
+                        <!-- column -->
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Compañia</th>
+                                                    <th>Etapa</th>
+                                                    <th>Actividad</th>
+                                                    <th>Hrs. por actividad</th>
+                                                    <th>Documento</th>
+
+                                                </tr>
+                                            </thead>
+                                                <tbody>
+                                                <tr *ngFor="let actividad of listHistorialActividad | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
+                                                    <td>{{i+1}}</td>                                                                                                                                         
+                                                    <td>{{actividad.nom_compania}}</td>      
+                                                    <td>{{actividad.nom_etapa}}</td>  
+                                                    <td>{{actividad.nom_actividad}}</td>
+                                                    <td>{{actividad.num_horas_actividad}}</td>
+                                                    <td>
+                                                        <a style="color:  #398bf7 ;" class="ver ml-1" href="{{downPDF+actividad.nom_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>
+                                                        <!-- {{actividad.nom_doc}} -->
+                                                        <!-- <button type="button" class="btn btn-info btn-sm " (click)="getEtapas(actividad)"><i class="mdi mdi-nut"></i></button> -->
+                                                    </td>
+
+                                                    
+                                                </tr>
+    
+                                            </tbody> 
+                                        </table>
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- column -->
+                        </div>
+                    <!-- ///////Historial/////// -->
+
+                        <div id="add-contrato" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="myLargeModalLabel">Agregar Contrato</h3>
+                                        
+                                    </div>
+                                    <div class="modal-body">
+                                        
+                                            <form name="formUsuario" [formGroup]="formUsuario" >
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nombre de la compañia</label>
+                                                        <input type="text" class="form-control" id="compania" formControlName="nom_compania"  placeholder="Campañia" required>
+                                                         
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Numero de horas</label>
+                                                        <input type="number" class="form-control" id="horas" formControlName="horas"  placeholder="Horas"required>
+                                                         
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                            <div *ngIf="formUsuario.valid" class="col-sm-12">
+                                                <button *ngIf="fContrato" type="button" class="btn btn-info btn-rounded" (click)="activaFormEtapa()">Agregar etapa</button>
+                                            </div>
+                                            </form>
+
+                                            <!--//////////////Agregar etapas//////////////-->
+
+                                                <form name="formEtapas" [formGroup]="formEtapas" *ngIf="fEtapas">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Numero de la etapa</label>
+                                                                <input type="text" class="form-control" id="horas" formControlName="nom_etapa"  placeholder="Etapa"required>
+                                                                 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            
+                                                            <label class="control-label">.</label>
+                                                            <br>
+                                                            <button *ngIf="btnAddEtapa" type="button" class="btn btn-success waves-effect submit-btn ml-2" [disabled]="formEtapas.invalid" (click)="addEtapas()">Agregar</button>
+                                                            <button *ngIf="btnEditEtapa" type="button" class="btn btn-info waves-effect submit-btn" [disabled]="formEtapas.invalid" (click)="editEtapa()">Guardar</button>
+                                                        </div>
+        
+
+                                                    </div>
+                                                    
+                                                </form>
+                                       
+                                            <!--//////////////Agregar etapas//////////////-->
+
+
+                                            <!--/////////Tabla de Etapas ///////-->
+                                            <div class="table-responsive" *ngIf="listEtapas.length > 0">
+                                                <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Etapa</th>                                                  
+                                                            <th>Action</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let estapaT of listEtapas | paginate: { itemsPerPage: 10, currentPage: p1 } ; let i =index">   
+                                                            <td>{{i+1}}</td>                                             
+                                                                                                                                                                                
+                                                            <td>{{estapaT.nom_etapa}}</td>
+
+                                                            <th>
+                                                                
+                                                                <button type="button" class="btn btn-info btn-sm " (click)="cargaEtapa(i , estapaT)" ><i class="mdi mdi-lead-pencil"></i></button>
+                                                                <button type="button" class="btn btn-danger  btn-sm ml-2" (click)="deleteEtapa(i)" ><i class="ti-close" aria-hidden="true"></i></button>
+
+                                                            </th>
+
+                                                        </tr>
+            
+                                                    </tbody>
+                                                </table>
+                                                <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+                                            </div>
+                                            <!--/////////Tabla de Etapas ///////-->
+
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" *ngIf="listEtapas.length > 0 && formUsuario.valid && fContrato" (click)="addCantrato()">Generar</button>
+                                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!--////////Actividad////////-->
+                        <div id="actividad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Agregar actividad</h4>
+                                        
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="formActividad" [formGroup]="formActividad" >
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nombre de la actividad</label>
+                                                        <input type="text" class="form-control" id="nom_actividad" formControlName="nom_actividad"  placeholder="Actividad" required>
+                                                         
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Numero de horas ocupadas</label>
+                                                        <input type="number" class="form-control" id="num_horas_actividad" formControlName="num_horas_actividad"  placeholder="Horas"required>
+                                                         
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 mt-4">
+                                                    <div class="form-group">
+                                                        <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar evidencia</span>
+                                                            <input type="file" class="upload" name="foto"  formControlName="nom_doc" (change)="capturarFile($event)" > 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </form>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success waves-effect" data-dismiss="modal" [disabled] ="formActividad.invalid" (click)="addActividad()">Agregar</button>
+                                        <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!--////////Actividad////////-->

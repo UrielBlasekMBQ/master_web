@@ -18,15 +18,15 @@ export class AuthGuard implements CanActivate {
     ){  }
 
   canActivate(): boolean{
-    console.log('Si entro');
+    //console.log('Si entro');
 
     const res =this.AuthService.isAuth();
-    // console.log(res);
+    // //console.log(res);
 
     if(res){
-      console.log('El token es valido');
+      //console.log('El token es valido');
       const token: any = localStorage.getItem('token');
-      // console.log(decode(token));
+      // //console.log(decode(token));
       
      
 

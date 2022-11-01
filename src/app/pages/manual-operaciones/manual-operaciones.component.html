@@ -37,8 +37,10 @@
                                 <!-- Card -->
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
-                                        <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                        <h4 class="card-title texto-centrado">{{departamento.departamento}}
+                                            <span *ngIf="departamento.estatus_proceso==0" class="label label-danger">Inactivo</span>
+                                        </h4>
+                                        <img class="card-img-top imagen-responsiva" src="./assets/images/big/trabajar.png" alt="Card image cap">
                                         <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getPadres(departamento)">Consultar</a></div>
                                     </div>
                                 </div>
@@ -195,7 +197,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-danger mx-2" data-dismiss="modal"  (click)="deletePadre()"> <i class="fa fa-check"></i> Eliminar</button>
-                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -218,7 +220,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-danger mx-2" data-dismiss="modal"  (click)="deletehijo()"> <i class="fa fa-check"></i> Eliminar</button>
-                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                             <!-- /.modal-content -->

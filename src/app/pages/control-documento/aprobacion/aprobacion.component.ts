@@ -6,6 +6,9 @@ import { ViewPermisosService } from 'src/app/services/view-permisos.service';
 import  decode  from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { environment } from './../../../../environments/environment';
+import { UsuariosService } from 'src/app/services/usuarios.service';
+import { EmailService } from 'src/app/services/email.service';
+
 const base = environment.api;
 
 
@@ -55,8 +58,12 @@ export class AprobacionComponent implements OnInit {
     this.viewPdf=true;
   }
 
+  
+
+
   constructor( private ProcesosService : ProcesosService, private RevicionDocumentService : RevicionDocumentService,
-     private ApruebaDocumentService : ApruebaDocumentService, private ViewPermisosService:ViewPermisosService) { }
+     private ApruebaDocumentService : ApruebaDocumentService, private ViewPermisosService:ViewPermisosService, private EmailService : EmailService,
+     private UsuariosService : UsuariosService) { }
 
   listProcesos?: any;
   //Get Procesos
@@ -102,6 +109,26 @@ export class AprobacionComponent implements OnInit {
     this.ApruebaDocumentService.updateDocumento(documento.id_documentAsig ,this.listDoc ).subscribe(res=>{
      //  console.log('Se actualizo');
      //  console.log(res);
+     let autor : any;
+     let revisa : any;
+     let body_autor ={'id_usuario' : documento.id_usuario};
+     this.UsuariosService.get_un_usuario(body_autor).subscribe((res:any)=>{
+       autor = res[0];
+       let body_revisa ={'id_usuario' : documento.aprueba_document};
+       this.UsuariosService.get_un_usuario(body_revisa).subscribe((res:any)=>{
+         revisa = res[0];
+         //////////// Email para revisor 
+         let text1 = `Se ha aprobado el documento solicitaste en el modulo de control de documentos`;
+         let texto2 =`El usuario aprobó tu documento es ${revisa.nombre} ${revisa.apellidos}`
+         let body_email1 ={'email' : autor.email, 'nombre' :autor.nombre ,
+         'apellidos' : autor.apellidos, 'mensaje1' : text1, 'mensaje2' : texto2 };
+         this.EmailService.sendData(body_email1).subscribe((res:any)=>{});
+         //////////// Email para revisor  
+         
+       });
+
+     });
+
      this.mensajeUpdate(res);
       this.getDocumentos(this.proceso);
     });
@@ -112,6 +139,26 @@ export class AprobacionComponent implements OnInit {
     this.ApruebaDocumentService.updateDocumento(documento.id_documentAsig ,this.listDoc ).subscribe(res=>{
      //  console.log('Se actualizo');
      //  console.log(res);
+     let autor : any;
+     let revisa : any;
+     let body_autor ={'id_usuario' : documento.id_usuario};
+     this.UsuariosService.get_un_usuario(body_autor).subscribe((res:any)=>{
+       autor = res[0];
+       let body_revisa ={'id_usuario' : documento.aprueba_document};
+       this.UsuariosService.get_un_usuario(body_revisa).subscribe((res:any)=>{
+         revisa = res[0];
+         //////////// Email para revisor 
+         let text1 = `Se ha rechazado la aprobación que solicitaste en el modulo de control de documentos`;
+         let texto2 =`El usuario reviso tu documento es ${revisa.nombre} ${revisa.apellidos}`
+         let body_email1 ={'email' : autor.email, 'nombre' :autor.nombre ,
+         'apellidos' : autor.apellidos, 'mensaje1' : text1, 'mensaje2' : texto2 };
+         this.EmailService.sendData(body_email1).subscribe((res:any)=>{});
+         //////////// Email para revisor  
+         
+       });
+
+     });
+
       this.mensajeUpdate(res);
       this.getDocumentos(this.proceso);
     });
@@ -146,7 +193,7 @@ export class AprobacionComponent implements OnInit {
         const token: any = localStorage.getItem('token');
         this.tipoProceso =decode(token);
        //  console.log(this.tipoProceso);
-        if(this.tipoProceso.tipoUsuario == 0){
+        if(this.tipoProceso.tipoUsuario == 1){
          //  console.log('procesos 1');
           
           this.getProcesos();

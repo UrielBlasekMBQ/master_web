@@ -425,7 +425,7 @@ export class SolicitaAcomComponent implements OnInit {
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
          //  console.log(this.tipoProceso);
-          if(this.tipoProceso.tipoUsuario == 0){
+          if(this.tipoProceso.tipoUsuario == 1){
            //  console.log('procesos 1');
             
             this.getProcesos();

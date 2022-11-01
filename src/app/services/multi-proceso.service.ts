@@ -25,5 +25,18 @@ export class MultiProcesoService {
     }
 
 
+    //GET DOCUMENTOS
+    getPermisoContrato(){
+      const base_url = `${base}/contratos_permiso/get_contrato_permiso`; 
+      return this.http.get(base_url);
+    }
+
+    //GET DOCUMENTOS
+    updatePermisoContrato(body : any){
+      const base_url = `${base}/contratos_permiso/update_contrato_permiso`; 
+      return this.http.post(base_url, body);
+    }
+
+
 
 }

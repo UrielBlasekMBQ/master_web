@@ -64,6 +64,12 @@ export class RegistrosService {
    }
 
 
+   addCarpetaHijo(body: any){
+    const base_url = `${base}/registros/addCarpetaHijo`
+    return this.http.put(base_url, body);
+   }
+
+
   editCampo(  body: any){
     const base_url = `${base}/registros/padresEdit`
     return this.http.put(base_url, body);

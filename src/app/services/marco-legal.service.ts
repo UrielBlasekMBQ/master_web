@@ -10,10 +10,6 @@ const base = environment.api;
 export class MarcoLegalService {
 
   constructor(private http :HttpClient) { }
-  url =":3000/marco_legal";
-  url1=":3000/marco_legal_vistaPadre";
-  url2=":3000/marco_legal_hijos";
-  url3=":3000/marco_legal_descarga";
 
   getPadres(id : any){
     

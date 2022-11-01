@@ -1,3 +1,5 @@
+import { CapacitacionComponent } from './pages/capacitacion/capacitacion.component';
+import { ConfiguraUsuarioComponent } from './pages/configura-usuario/configura-usuario.component';
 import { PermisosComponent } from './pages/usuarios/permisos/permisos.component';
 import { DepartamentosComponent } from './pages/departamentos/departamentos.component';
 import { NopageFoundComponent } from './pages/nopage-found/nopage-found.component';
@@ -28,6 +30,8 @@ import { EfectoFalloComponent } from './pages/amef/efecto-fallo/efecto-fallo.com
 import { AmefComponent } from './pages/amef/amef/amef.component';
 import { HistorialComponent } from './pages/historial/historial.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
+import { ContratosComponent } from './pages/contratos/contratos.component';
+
 
 
 
@@ -47,7 +51,7 @@ const routes: Routes = [
     {path: 'aprobacion-documentos', component:AprobacionComponent, canActivate: [AuthGuard]},
     {path: 'marco-legal', component:LegalComponent, canActivate: [AuthGuard]},
     {path: 'settings', component:SettingsComponent, canActivate: [AuthGuard]},
-    {path: 'resisa-acompanamiento', component:RevisaAcomComponent, canActivate: [AuthGuard]},
+    {path: 'revisa_acompanamiento', component:RevisaAcomComponent, canActivate: [AuthGuard]},
     {path: 'solicita-acompanamiento', component:SolicitaAcomComponent, canActivate: [AuthGuard]},
     {path: 'diagrama-foda', component:FodaComponent, canActivate: [AuthGuard]},
     {path: 'diagrama-tortuga', component:TortugaComponent, canActivate: [AuthGuard]},
@@ -55,6 +59,9 @@ const routes: Routes = [
     {path: 'amef', component:AmefComponent, canActivate: [AuthGuard]},
     {path: 'historial', component: HistorialComponent, canActivate: [AuthGuard]},
     {path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard]},
+    {path: 'configuracion_usuario', component: ConfiguraUsuarioComponent, canActivate: [AuthGuard]},
+    {path: 'capacitacion', component: CapacitacionComponent, canActivate: [AuthGuard]},
+    {path: 'contratos', component: ContratosComponent, canActivate: [AuthGuard]},
   ]
 },
   {path:'',redirectTo:'/dashboard',pathMatch:'full'},

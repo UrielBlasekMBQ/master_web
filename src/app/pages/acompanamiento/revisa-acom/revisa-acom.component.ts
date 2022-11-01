@@ -47,7 +47,7 @@ export class RevisaAcomComponent implements OnInit {
     const token: any = localStorage.getItem('token');
     this.tipoProceso =decode(token);
    //  console.log(this.tipoProceso);
-    if(this.tipoProceso.tipoUsuario == 0){
+    if(this.tipoProceso.tipoUsuario == 1){
      //  console.log('procesos 1');
       
       this.getProcesos();
@@ -91,18 +91,33 @@ export class RevisaAcomComponent implements OnInit {
   getProcesos(){
     this.ProcesosService.getProcesos().subscribe((res : any)=>{
       this.listProcesos =[];
-    //this.listProcesos = res;
-    console.log(this.listProcesos);
+      //this.listProcesos = res;
+    console.log(res);
     
     for (let i = 0; i < res.length; i++) {
       let body ={'id_revisor' : this.tipoProceso.id_usuario , 'id_proceso' :res[i].id_proceso };
+ 
+      
       this.RevisaAcomService.getcontador(body).subscribe((res1 : any)=>{
-        console.log(res1[0]);
-        let proceso ={'id_proceso'  :res[i].id_proceso, 'departamento' :res[i].departamento, 'direccion' :res[i].direccion,'descripcion' :res[i].descripcion , 'contador' : res1[0].contador };
+        //console.log(res1[0]);
+        let proceso ={'id_proceso'  :res[i].id_proceso, 'departamento' :res[i].departamento, 'direccion' :res[i].direccion,'descripcion' :res[i].descripcion ,'estatus_proceso' : res[i].estatus_proceso , 'contador' : res1[0].contador };
+        console.log(proceso);
         this.listProcesos.push(proceso);
+
+
       });
     }
-    console.log(this.listProcesos);
+    this.listProcesos.sort(function(a : any,d: any){
+      if (a.departamento > d.departamento) {
+        return 1;
+      }
+      
+      if(a.departamento < d.departamento){
+        return -1;
+      }
+      return 0;
+
+    })
     });
 
     
@@ -151,12 +166,12 @@ export class RevisaAcomComponent implements OnInit {
       
       if(solicitud.id_revisor_externo ==0){
         console.log('No se manda correlo');
-
+        this.sendEmailAprobacionInterna();
 
      
     }else{
      console.log('si se manda correo');
-
+      this.sendEmailAprobacionInterna();
      let autor : any ;
      // Autor 
      let au_body : any = {'id_usuario' : solicitud.id_usuario};
@@ -171,11 +186,12 @@ export class RevisaAcomComponent implements OnInit {
        console.log(revisor);
 
   
-       let text = `Se te ha asignado un documento para revisar, en este momento ya se le puede dar seguimiento`;
-       let body_email ={'email' : revisor.email, 'nombre' :revisor.nombre ,
-       'apellidos' : revisor.apellidos, 'mensaje1' : '', 'mensaje2' : text };
-       this.EmailService.sendData(body_email).subscribe((res:any)=>{});
-  
+    //////////// Email para revisor externo
+    let text = `Se te ha asignado un documento para revisar, en este momento ya puede dar seguimiento`;
+    let body_email ={'email' : revisor.email, 'nombre' :revisor.nombre ,
+    'apellidos' : revisor.apellidos, 'mensaje1' : '', 'mensaje2' : text };
+    this.EmailService.sendData(body_email).subscribe((res:any)=>{});
+    //////////// Email para revisor externo  
      });
   
      // Revisor 
@@ -191,6 +207,32 @@ export class RevisaAcomComponent implements OnInit {
       
     });
   }
+
+  //Email de aprobacion interna ////
+  sendEmailAprobacionInterna(){
+    let solicitud = this.solicitud;
+    let rev_interno : any;
+    let letbody_rev ={'id_usuario':solicitud.id_revisor_interno}
+    this.UsuariosService.get_un_usuario(letbody_rev).subscribe((res : any)=>{
+      rev_interno = res[0];
+
+    let autor : any;
+    let autor_body ={'id_usuario':solicitud.id_usuario};
+    this.UsuariosService.get_un_usuario(autor_body).subscribe((res1:any)=>{
+      autor = res1[0];
+
+    //////////// Email para revisor externo
+    let text = `Ha sido aprobada tu revisión interna por ${rev_interno.nombre} ${rev_interno.apellidos}`;
+    let body_email ={'email' : autor.email, 'nombre' :autor.nombre ,
+    'apellidos' : autor.apellidos, 'mensaje1' : '', 'mensaje2' : text };
+    this.EmailService.sendData(body_email).subscribe((res:any)=>{});
+    //////////// Email para revisor externo  
+
+    });
+    });
+
+  }
+  //Email de aprobacion interna ////
 
     // Solicitud Aprobada eXTERNA
     updateRevisarAprobadoExterno(solicitud :any){
@@ -536,7 +578,7 @@ export class RevisaAcomComponent implements OnInit {
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
          //  console.log(this.tipoProceso);
-          if(this.tipoProceso.tipoUsuario == 0){
+          if(this.tipoProceso.tipoUsuario == 1){
            //  console.log('procesos 1');
             
             this.getProcesos();

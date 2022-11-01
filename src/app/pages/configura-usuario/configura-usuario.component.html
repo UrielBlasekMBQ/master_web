@@ -1,0 +1,212 @@
+    <!-- ============================================================== -->
+    <div class="row page-titles" id="inicio">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Perfil</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb" >   
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Perfil</a></button></li>
+            </ol>       
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-md pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+
+    <div class="row">
+            <!-- Column -->
+            <div class="col-lg-4 col-xlg-3 col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="m-t-30 centrar"> <img src="./assets/images/big/usuario.png" class="img-circle centrar" width="150" />
+                            <h3 class="card-title m-t-10">{{tipoProceso.nombre | uppercase}} {{tipoProceso.apellidos | uppercase}}</h3>
+                            <h4 class="card-subtitle">Tipo de usuario: {{tipoProceso.tipoUsuario }}</h4>
+                            <h4 class="card-subtitle">Nombre de usuario: {{tipoProceso.usuario }}</h4>
+                        </div>
+                    </div>
+                    <div>
+                        <hr> </div>
+                    <div class="card-body"> 
+                        
+                        <h3 class="text-muted">Dirección email: </h3>
+                        <h4>{{tipoProceso.email}}</h4>      
+                        
+                        <h3 class="text-muted">Estatus: </h3>
+                        <h4>Activo</h4> 
+                        
+                        
+                        <br/>
+                        <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
+                        <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button>
+                        <button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-8 col-xlg-9 col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <form name="formUsuario" [formGroup]="formUsuario">
+                            <div class="row">
+
+                                <!-- <div class="col-sm-6" >
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-foto">Cambiar foto de perfil</button>
+                                </div> -->
+                                <div class="col-sm-4 mt-4 centrar">
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-password">Cambiar contraseña</button>
+                                </div>
+                                <!-- <div class="col-sm-4 mt-4 centrar">
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-foto">Cambiar foto</button>
+                                </div> -->
+                                <div class="col-sm-4 mt-4 centrar" *ngIf="tipoProceso.tipoUsuario=='Super usuario'">
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-name">Cambiar nombre</button>
+                                </div> 
+                                <div class="col-sm-4 mt-4 centrar">
+                                    <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-email">Cambiar correo</button>
+                                </div>                           
+
+                            </div>
+                            </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Column -->
+
+    </div>
+
+    <div id="add-email" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myLargeModalLabel">Cambio correo</h3>
+                    
+                </div>
+                <div class="modal-body">
+                    
+                    <form name="formUsuario1" [formGroup]="formUsuario">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Correo</label>
+                                    <input type="email" class="form-control" id="email" formControlName="email"  placeholder="Correo">
+                                     
+                                </div>
+                            </div>
+                        </div>
+                        </form>  
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario.invalid" (click)="cambioEmail()" >Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div id="add-password" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myLargeModalLabel">Cambio de contraseña</h3>
+                    
+                </div>
+                <div class="modal-body">
+                    
+                        <form name="formUsuario1" [formGroup]="formUsuario1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" formControlName="password"  placeholder="Contraseña">
+                                     
+                                </div>
+                            </div>
+                        </div>
+                        </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario1.invalid" (click)="cambioPassword()" >Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div id="add-name" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myLargeModalLabel">Cambio de nombre</h3>
+                    
+                </div>
+                <div class="modal-body">
+                    
+                        <form name="formUsuario2" [formGroup]="formUsuario2">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre</label>
+                                    <input type="nombre" class="form-control" id="nombre" formControlName="nombre"  placeholder="Nombre">
+                                     
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label">Apellidos</label>
+                                    <input type="apellidos" class="form-control" id="apellidos" formControlName="apellidos"  placeholder="Apellidos">
+                                     
+                                </div>
+                            </div>
+                        </div>
+                        </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario2.invalid" (click)="cambioNombreApellidos()" >Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div id="add-foto" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myLargeModalLabel">Cambio de foto de perfil</h3>
+                    
+                </div>
+                <div class="modal-body">
+                    
+                        <form name="formUsuario3" [formGroup]="formUsuario3">
+                        <div class="row">
+                            <div class="col-sm-6" >
+                                <div class="form-group">
+                                    <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Imagen</span>
+                                        <input type="file" class="upload" name="foto" formControlName="foto" (change)="capturarFile($event)"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect submit-btn" data-dismiss="modal" [disabled]="formUsuario3.invalid" (click)="updateFotoPerfil()" >Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    

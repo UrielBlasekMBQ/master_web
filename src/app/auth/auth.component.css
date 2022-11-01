@@ -1,5 +1,5 @@
 #fondo{
-    background-image: url(/assets/images/background/login-register.jpg);
+    
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -27,3 +27,42 @@ letra-roja{
     color: white;
     text-align: center;
 }
+
+.logo{
+    width: 60%;
+    height: 100%;
+    margin-bottom: 20px;
+    margin-left: 20%;
+}
+
+.login-register {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100%;
+    width: 100%;
+    padding: 10% 0;
+    position: fixed; }
+  
+  .login-box {
+    width: 400px;
+    margin: 0 auto; }
+    .login-box .footer {
+      width: 100%;
+      left: 0px;
+      right: 0px; }
+    .login-box .social {
+      display: block;
+      margin-bottom: 30px; }
+  
+  #recoverform {
+    display: none; }
+  
+  .login-sidebar {
+    padding: 0px;
+    margin-top: 0px; }
+    .login-sidebar .login-box {
+      right: 0px;
+      position: absolute;
+      height: 100%; }
+  

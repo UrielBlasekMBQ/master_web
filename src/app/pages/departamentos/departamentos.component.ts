@@ -20,7 +20,7 @@ export class DepartamentosComponent implements OnInit {
   
   public formUsuario1: FormGroup;
 
-  listProcesos?: Proceso[];
+  listProcesos?: any;
 
 
   
@@ -38,7 +38,8 @@ export class DepartamentosComponent implements OnInit {
     this.formUsuario.setValue({
       departamento : departamento.departamento,
       direccion : departamento.direccion,
-      descripcion : departamento.descripcion
+      descripcion : departamento.descripcion,
+      estatus_proceso : departamento.estatus_proceso
     });
    //  console.log(this.formUsuario.value);
   }
@@ -55,20 +56,23 @@ export class DepartamentosComponent implements OnInit {
       departamento: ['',[Validators.required]],
       direccion: ['',[Validators.required]],
       descripcion: ['',[Validators.required]],
+      estatus_proceso: ['',[]],
     });
 
     this.formUsuario1= this.formBuilder.group({
       departamento: ['',[Validators.required]],
       direccion: ['',[Validators.required]],
       descripcion: ['',[Validators.required]],
+      estatus_proceso: ['',[]],
     });
 
 
   }
   //Listar procesos
   listProceso(){
-    this.ProcesosService.getProcesos().subscribe(res =>{
-      this.listProcesos =<any> res;
+    this.ProcesosService.getProcesos().subscribe((res:any)=> {
+      
+      this.listProcesos =res;
      //  console.log(res);
       
     });
@@ -76,8 +80,14 @@ export class DepartamentosComponent implements OnInit {
 
   //agregar proceso
   addDepartamento(){
-    this.ProcesosService.addProceso(this.formUsuario1.value).subscribe(res=>{
-     //  console.log('Se agreco con exito');
+    let estatus ;
+    if (this.formUsuario1.value.estatus_proceso) {estatus =1;}else{ estatus = 0}
+    // console.log(estatus);
+    
+    let body ={'departamento' : this.formUsuario1.value.departamento, 'direccion' : this.formUsuario1.value.direccion,
+                'descripcion' : this.formUsuario1.value.descripcion, 'estatus_proceso' : estatus};
+    this.ProcesosService.addProceso(body).subscribe(res=>{
+     // console.log('Se agreco con exito');
      this.mensajeAdd(res);
       this.listProceso();
       this.formUsuario1.reset();
@@ -87,10 +97,13 @@ export class DepartamentosComponent implements OnInit {
 
   // Actualizar procesos
   updateProceso(){
-    
+    let estatus ;
+    if (this.formUsuario.value.estatus_proceso) {estatus =1;}else{ estatus = 0}
    //  console.log(this.departamento.id_proceso);
+   let body ={'departamento' : this.formUsuario.value.departamento, 'direccion' : this.formUsuario.value.direccion,
+              'descripcion' : this.formUsuario.value.descripcion, 'estatus_proceso' : estatus};
 
-    this.ProcesosService.updateProceso(this.departamento.id_proceso, this.formUsuario.value).subscribe(res=>{
+    this.ProcesosService.updateProceso(this.departamento.id_proceso, body).subscribe((res:any)=>{
       //this.updateProceso =<any> res;
      //  console.log('Se actualizo el Proceso');
      this.mensajeUpdate(res);
@@ -127,7 +140,7 @@ export class DepartamentosComponent implements OnInit {
       const token: any = localStorage.getItem('token');
       this.tipoProceso =decode(token);
      //  console.log(this.tipoProceso);
-      if(this.tipoProceso.tipoUsuario == 0){
+      if(this.tipoProceso.tipoUsuario == 1){
        //  console.log('procesos 1');
         
         this.listProceso();
@@ -151,7 +164,7 @@ export class DepartamentosComponent implements OnInit {
           confirmButtonText: 'confirmar'
           
         })
-  
+    
       } else {
         Swal.fire({
           title:'Error',

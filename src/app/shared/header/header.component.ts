@@ -22,18 +22,18 @@ export class HeaderComponent implements OnInit {
   getUsuario(){
     const token: any = localStorage.getItem('token');
     this.usuario =decode(token);
-    console.log(this.usuario);
+    //console.log(this.usuario);
     this.body.id_usuario=this.usuario.id_usuario;
     this.MenuService.getUsuario(this.body).subscribe((res: any)=>{
       this.usuario = res[0];
-      console.log(res[0]);
+      //console.log(res[0]);
       
     });
   }
 
   // Borrar token 
   salida(){
-    console.log('limpieza');
+    //console.log('limpieza');
     
     localStorage.setItem('token', '');
 

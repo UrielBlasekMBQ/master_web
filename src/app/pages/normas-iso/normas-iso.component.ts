@@ -150,7 +150,7 @@ export class NormasIsoComponent {
             if (res.ok) {
               Swal.fire({
                 title:'Correcto',
-                text: `Se a registrado correctamente ${this.formUsuario.value.nom_norma}`,
+                text: `Se ha registrado correctamente ${this.formUsuario.value.nom_norma}`,
                 icon: 'success',
                 confirmButtonText: 'confirmar'
                 
@@ -161,7 +161,7 @@ export class NormasIsoComponent {
             } else {
               Swal.fire({
                 title:'Error',
-                text: `Se a registrado correctamente ${this.archivos.fileName}`,
+                text: `Se ha registrado correctamente ${this.archivos.fileName}`,
                 icon: 'error',
                 confirmButtonText: 'confirmar'
               })
@@ -186,7 +186,7 @@ export class NormasIsoComponent {
         if (res.ok) {
           Swal.fire({
             title:'Correcto',
-            text: `Se a registrado correctamente ${this.archivos.fileName}`,
+            text: `Se ha registrado correctamente ${this.archivos.fileName}`,
             icon: 'success',
             confirmButtonText: 'confirmar'
             
@@ -197,7 +197,7 @@ export class NormasIsoComponent {
         } else {
           Swal.fire({
             title:'Error',
-            text: `Se a registrado correctamente ${this.archivos.fileName}`,
+            text: `Se ha registrado correctamente ${this.archivos.fileName}`,
             icon: 'error',
             confirmButtonText: 'confirmar'
           })
@@ -242,7 +242,7 @@ export class NormasIsoComponent {
                  if (res.ok) {
                    Swal.fire({
                      title:'Correcto',
-                     text: `Se a eliminado de forma correcta `,
+                     text: `Se ha eliminado de forma correcta `,
                      icon: 'success',
                      confirmButtonText: 'confirmar'
                    })
@@ -285,7 +285,7 @@ export class NormasIsoComponent {
         if (res.ok) {
           Swal.fire({
             title:'Correcto',
-            text: `Se a eliminado de forma correcta `,
+            text: `Se ha eliminado de forma correcta `,
             icon: 'success',
             confirmButtonText: 'confirmar'
           })
@@ -318,7 +318,7 @@ export class NormasIsoComponent {
           if (res.ok) {
             Swal.fire({
               title:'Correcto',
-              text: `Se a edito de forma correcta`,
+              text: `Se ha edito de forma correcta`,
               icon: 'success',
               confirmButtonText: 'confirmar'
               
@@ -428,7 +428,7 @@ export class NormasIsoComponent {
       const token: any = localStorage.getItem('token');
       this.tipoProceso =decode(token);
      //  console.log(this.tipoProceso);
-      if(this.tipoProceso.tipoUsuario == 0){
+      if(this.tipoProceso.tipoUsuario == 1){
         this.getProcesos();
       } else{
         let body ={'id_usuario' : this.tipoProceso.id_usuario};

@@ -25,7 +25,7 @@ export class AuthService {
   isAuth():boolean{
     const token: any = localStorage.getItem('token');
 
-    console.log('El token es:'+token);
+    //console.log('El token es:'+token);
     
     if(this.JwtHelper.isTokenExpired(token) || !localStorage.getItem('token')){
       return false;

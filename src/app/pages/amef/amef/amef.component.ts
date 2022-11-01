@@ -605,7 +605,7 @@ addAccionCorrectiva(){
   if (this.amef_estatus=="Proceso") {this.amef_estatus = 1}
   if (this.amef_estatus=="Concluido con retraso") {this.amef_estatus = 2}
   if (this.amef_estatus=="Concluido") {this.amef_estatus = 3}
-  if (this.formAcionesCorrectivas.value.ac_fecha_final) { fecha_fin = this.formAcionesCorrectivas.value.ac_fecha_final }else{fecha_fin =0}
+  if (this.formAcionesCorrectivas.value.ac_fecha_final) { fecha_fin = this.formAcionesCorrectivas.value.ac_fecha_final }else{fecha_fin ='0000-00-00'}
 
   
   let body ={
@@ -862,7 +862,7 @@ dataPrimerForm: any;
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
          //  console.log(this.tipoProceso);
-          if(this.tipoProceso.tipoUsuario == 0){
+          if(this.tipoProceso.tipoUsuario == 1){
            //  console.log('procesos 1');
             
             this.getProcesos();

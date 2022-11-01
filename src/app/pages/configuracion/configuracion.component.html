@@ -39,4 +39,28 @@
             </div>
         </div>
     </div>
+
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form name="formContrato" [formGroup]="formContrato">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Contratos: </label>
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" id="multi_proceso" formControlName="contrato_estatus" checked><span class="lever switch-col-light-green"></span></label>
+                                </div>                                                                                               
+                                 
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <button type="button" class="btn btn-success waves-effect submit-btn" data-dismiss="modal" (click)="updateContratos()">Guardar</button>
+                
+            </div>
+        </div>
+    </div>
 </div>

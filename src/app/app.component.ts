@@ -24,9 +24,9 @@ export class AppComponent {
 
         if (event instanceof NavigationEnd) {
             this.currentRoute = event.url;
-              console.log(event);
+              //console.log(event);
               let modulo =this.separar(event.url);
-              //console.log(modulo);
+              ////console.log(modulo);
               
               const fecha = new Date();
 
@@ -38,9 +38,9 @@ export class AppComponent {
                 'modulo_acceso' : modulo,
                 'fecha_actual' : fecha
               };
-              console.log(body);
+              //console.log(body);
               this.HistorialService.addHistorial(body).subscribe((res:any)=>{
-                console.log(res);
+                //console.log(res);
                 
               });
               

@@ -28,6 +28,7 @@
                         <div *ngIf="usuarioLog.usuarioAdd " class="col-lg-12 mb-3">
                             <button *ngIf="muitiForm ==1" type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact-multi" (click)="limpiaForm()">Agregar usuario</button>
                             <button *ngIf="muitiForm ==0" type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact" (click)="limpiaForm()">Agregar usuario</button>
+                            <button *ngIf="tipoProceso.tipoUsuario == 1 " type="button" class="btn btn-info btn-rounded ml-2" (click)="getAllUsuarios()">Ver todos los usuarios</button>
                         </div>
                         <!-- column -->
                         <div *ngFor="let departamento of listProcesos" class="col-lg-3">
@@ -35,7 +36,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title texto-centrado">{{departamento.departamento}}</h4>
-                                    <img class="card-img-top imagen-responsiva" src="../assets/images/big/trabajar.png" alt="Card image cap">
+                                    <img class="card-img-top imagen-responsiva" src="./assets/images/big/trabajar.png" alt="Card image cap">
                                     <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="lisUsuarios(departamento)" >Consultar</a></div>
                                 </div>
                             </div>
@@ -48,7 +49,7 @@
 
                 <!-- Sales overview chart -->
                 <!-- ============================================================== -->
-                <div class="row" *ngIf="viewUsuarios">
+                <div class="row" *ngIf="viewUsuarios || allUsuarios">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -70,7 +71,7 @@
                                             <tr *ngFor="let usuario of listarUsuarios | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">   
                                                 <td>{{i+1}}</td>                                                                                            
                                                 <td>
-                                                    <a href="javascript:void(0)"><img src="../assets/images/big/usuario.png" alt="user" width="40" class="img-circle" /> {{usuario.usuario}}</a>
+                                                    <a href="javascript:void(0)"><img src="./assets/images/big/usuario.png" alt="user" width="40" class="img-circle" /> {{usuario.usuario}}</a>
                                                 </td>                                                
                                                 
                                                 <td>{{usuario.nombre}} {{usuario.apellidos}}</td>                                                
@@ -221,13 +222,13 @@
                                                  
                                             </div>
                                         </div>
-                                        <div class="col-sm-6" >
+                                        <!-- <div class="col-sm-6" >
                                             <div class="form-group">
                                                 <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Imagen</span>
                                                     <input type="file" class="upload" name="foto" formControlName="foto"> 
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                     </form>
@@ -427,21 +428,12 @@
                                             <div class="form-group">
                                                 <label class="control-label">Estatus</label>
                                                 <div class="switch">
-                                                    <label>
-                                                        <input type="checkbox" id="estatus" formControlName="estatus"><span class="lever switch-col-light-green"></span></label>
+                                                    <label><input type="checkbox" id="estatus" formControlName="estatus"><span class="lever switch-col-light-green"></span></label>
                                                 </div>
                                                 
                                                  
                                             </div>
                                         </div>
-                                        <div class="col-sm-6" >
-                                            <div class="form-group">
-                                                <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Imagen</span>
-                                                    <input type="file" class="upload" name="foto" formControlName="foto"> 
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                     </form>
                                 

@@ -16,4 +16,10 @@ export class MenuService {
     const base_url = `${base}/api/datos`
     return this.http.post(base_url,body);
   }
+
+    //get procesos de usuario
+    getPermisos(body : any){
+      const base_url = `${base}/permisos/get_permisos`
+      return this.http.post(base_url, body);
+    }
 }

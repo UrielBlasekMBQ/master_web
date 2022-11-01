@@ -1,3 +1,4 @@
+import { EmailService } from 'src/app/services/email.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VigenciasService, vigencias } from 'src/app/services/catalogos/vigencias.service';
@@ -8,6 +9,7 @@ import { ViewPermisosService } from 'src/app/services/view-permisos.service';
 import  decode  from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { environment } from './../../../environments/environment';
+
 
 const base = environment.api;
 
@@ -28,7 +30,7 @@ export class ControlDocumentoComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private ProcesosService: ProcesosService, private UsuariosService: UsuariosService, private VigenciasService : VigenciasService,
-     private ControlDocumentoService :ControlDocumentoService, private ViewPermisosService: ViewPermisosService ) { 
+     private ControlDocumentoService :ControlDocumentoService, private ViewPermisosService: ViewPermisosService, private EmailService : EmailService ) { 
       
     this.formUsuario= this.formBuilder.group({
       tipoDocumento: ['',[Validators.required]],
@@ -42,7 +44,7 @@ export class ControlDocumentoComponent implements OnInit {
   }
 
   listarUsuarios?: Usuario[];
-  listProcesos?: Proceso[];
+  listProcesos?: any[];
   listVigencias?:vigencias[];
 
   public viewDepartamentos: boolean =true;
@@ -115,6 +117,42 @@ export class ControlDocumentoComponent implements OnInit {
   p: number = 1;
   //Enviar Documentos
   sendDatos(){
+
+    let autor : any;
+    let revisa : any;
+    let aprueba : any;
+
+    let body_autor ={'id_usuario': this.usuario.id_usuario};
+    this.UsuariosService.get_un_usuario(body_autor).subscribe((res:any)=>{
+      autor = res[0];
+      let body_revisa={'id_usuario':this.formUsuario.value.revisa_document};
+      this.UsuariosService.get_un_usuario(body_revisa).subscribe((res1: any)=>{
+        revisa = res1[0];
+        let body_aprueba={'id_usuario': this.formUsuario.value.revisa_document};
+        this.UsuariosService.get_un_usuario(body_aprueba).subscribe((res2:any)=>{
+          aprueba = res[0];
+
+
+        //////////// Email para revisor 
+        let text1 = `Se te ha asignado un documento para revisar en el modulo de control de documentos`;
+        let texto2 =`El usuario que solicito de su aprobación es ${autor.nombre} ${autor.apellidos}`
+        let body_email1 ={'email' : revisa.email, 'nombre' :revisa.nombre ,
+        'apellidos' : revisa.apellidos, 'mensaje1' : text1, 'mensaje2' : texto2 };
+        this.EmailService.sendData(body_email1).subscribe((res:any)=>{});
+        //////////// Email para revisor  
+
+        //////////// Email aprueba
+        let text3 = `Se te ha asignado un documento para aprobar, en el modulo de control de documentos`;
+        let texto4 =`El usuario que solicito de su aprobación es ${autor.nombre} ${autor.apellidos}`
+        let body_email3 ={'email' : aprueba.email, 'nombre' :aprueba.nombre ,
+        'apellidos' : aprueba.apellidos, 'mensaje1' : text3, 'mensaje2' : texto4 };
+        this.EmailService.sendData(body_email3).subscribe((res:any)=>{});
+        //////////// Email aprueba 
+
+        });
+      });
+    });
+
     const body = new FormData();
     body.append('myFile', this.archivos.fileRaw, this.archivos.fileName);
     body.append('generausuario',this.usuario.id_usuario);
@@ -129,6 +167,10 @@ export class ControlDocumentoComponent implements OnInit {
 
     //console.log(this.formUsuario.value);
     this.ControlDocumentoService.sendPost(body).subscribe(res=>{
+
+
+
+      
       this.mensajeAdd(res);
       this.getTabla(this.proceso);
     });
@@ -158,10 +200,10 @@ export class ControlDocumentoComponent implements OnInit {
   
   // pdfSrc ='http://3.19.235.131:3000/docAsigna/';
 
-  pdfSrc =`${base}/acompanamiento/`;
+  pdfSrc =`${base}/docAsigna/`;
 
   getPdf(documento: any){
-    this.pdfSrc =`${base}/acompanamiento/`;
+    this.pdfSrc =`${base}/docAsigna/`;
 
     this.documento = documento;
     this.pdfSrc =this.pdfSrc+documento.documento;
@@ -216,7 +258,7 @@ export class ControlDocumentoComponent implements OnInit {
     const token: any = localStorage.getItem('token');
     this.tipoProceso =decode(token);
    //  console.log(this.tipoProceso);
-    if(this.tipoProceso.tipoUsuario == 0){
+    if(this.tipoProceso.tipoUsuario == 1){
      //  console.log('procesos 1');
       
       this.getProcesos();
@@ -243,7 +285,7 @@ export class ControlDocumentoComponent implements OnInit {
         if (res.ok) {
           Swal.fire({
             title:'Correcto',
-            text: `Se agrego correctamente`,
+            text: `Se hagrego correctamente`,
             icon: 'success',
             confirmButtonText: 'confirmar'
             
@@ -263,7 +305,7 @@ export class ControlDocumentoComponent implements OnInit {
         if (res.ok) {
           Swal.fire({
             title:'Correcto',
-            text: `Se actualizo correctamente`,
+            text: `Se hactualizo correctamente`,
             icon: 'success',
             confirmButtonText: 'confirmar'
             
@@ -284,7 +326,7 @@ export class ControlDocumentoComponent implements OnInit {
         if (res.ok) {
           Swal.fire({
             title:'Correcto',
-            text: `Se actualizo correctamente`,
+            text: `Se hactualizo correctamente`,
             icon: 'success',
             confirmButtonText: 'confirmar'
             

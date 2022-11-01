@@ -81,7 +81,7 @@ export class HistorialComponent implements OnInit {
     const token: any = localStorage.getItem('token');
     this.tipoProceso =decode(token);
    //  console.log(this.tipoProceso);
-    if(this.tipoProceso.tipoUsuario == 0){
+    if(this.tipoProceso.tipoUsuario == 1){
       this.getProcesos();
     } else{
       let body ={'id_usuario' : this.tipoProceso.id_usuario};

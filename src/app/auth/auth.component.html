@@ -1,41 +1,41 @@
-<div id="fondo" class=" login-register" >
-    <div class="login-caja card">
-        <div class="card-body">
-            <form class="form-horizontal form-material mt-5" [formGroup]="formLogin">
-                <h3 class="box-title m-b-20" >Master web</h3>
-                <label style="color: red;" *ngIf="incorrecto"> El usuario o contraseña son incorrectos</label>
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="text" required="" formControlName="usuario" placeholder="Nombre de Usuario"> </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="password" required="" formControlName="password" placeholder="Contraseña"> </div>
-                </div>
-                <!-- <div class="form-group row">
-                    <div class="col-md-12">
-                        <div class="checkbox checkbox-info pull-left p-t-0">
-                            <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
-                            <label for="checkbox-signup"> Remember me </label>
-                        </div> 
+<section id="wrapper">
+    <div class="login-register" style="background-image:url(./assets/images/background/login-register.jpg);">
+        <div class="login-box card">
+            <div class="card-body">
+                <form class="form-horizontal form-material" id="loginform" action="index.html" [formGroup]="formLogin">
+                    <img class="logo" src="./assets/images/eSGI.png" alt="">
+                    <h4 class="box-title m-b-20" style="text-align: center;" >Plataforma Sistema Gestión Integral- <span style="color: rgb(0, 174, 255) ;">SAVAL</span></h4>
+                    <label style="color: red;" *ngIf="incorrecto"> El usuario o contraseña son incorrectos</label>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" required="" formControlName="usuario" placeholder="Nombre de Usuario"> </div>
                     </div>
-                </div> -->
-                <div class="form-group text-center">
-                    <div class="col-xs-12 p-b-20">
-                        
-                        <a class="list-group-item  btn-info btn-rounded" *ngIf="formLogin.valid" (click)="login()"><p class="letra-btn">Entrar</p></a>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" required="" formControlName="password" placeholder="Contraseña"> </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                        <div class="social">
-                            <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a>
-                            <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </a>
+                    <!-- <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="checkbox checkbox-info pull-left p-t-0">
+                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                                <label for="checkbox-signup"> Remember me </label>
+                            </div> 
+                        </div>
+                    </div> -->
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20">
+                            
+                            <a class="list-group-item  btn-info btn-rounded" *ngIf="formLogin.valid" (click)="login()"><p class="letra-btn">Entrar</p></a>
                         </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
+                        </div>
+                    </div>
+    
+                </form>
 
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</section>

@@ -14,6 +14,12 @@ export class UsuariosService {
 
   constructor(private http:  HttpClient) { }
 
+  //get todos los usuarios 
+  getAllUsuarios(){
+    const base_url = `${base}/api/allUsuarios`
+    return this.http.get(base_url);
+  }
+
   //get usuarios
   getUsuarios(){
     const base_url = `${base}/api`
@@ -68,11 +74,36 @@ export class UsuariosService {
     return this.http.post(base_url, body);
   }
 
-    //delete permisos de usuario
-    get_un_usuario(body : any){
-      const base_url = `${base}/api/get_un_usuario`
-      return this.http.post(base_url, body);
-    }
+  //delete permisos de usuario
+  get_un_usuario(body : any){
+    const base_url = `${base}/api/get_un_usuario`
+    return this.http.post(base_url, body);
+  }
+
+  //Cambio de contraseña
+  cambioPassword(body : any){
+    const base_url = `${base}/api/cambio_contrasena`
+    return this.http.post(base_url, body);
+  }
+
+
+  //Cambio de email
+  cambioEmail(body : any){
+    const base_url = `${base}/api/cambio_email`
+    return this.http.post(base_url, body);
+  }
+
+  //Cambio de Foto de perfin
+  cambioFoto(body : any){
+    const base_url = `${base}/api/cambio_perfil`
+    return this.http.post(base_url, body);
+  }
+
+  //Cambio de Foto de perfin
+  cambioNombreApellidos(body : any){
+    const base_url = `${base}/api/cambiar_anombre_apellidos`
+    return this.http.post(base_url, body);
+  }
 
 }
 

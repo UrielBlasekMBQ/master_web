@@ -135,9 +135,14 @@ export class PermisosComponent implements OnInit {
       permisoAdd : [false],
 
       historial : [false],
-      configuracion : [false]
+      configuracion : [false],
 
-      
+      capacitacion : [false],
+      capacitacionVer : [false],
+      capacitacionHistorial : [false],
+      capacitacionAdd : [false],
+      capacitacionUpdate : [false],
+      capacitacionDelete : [false]
 
 
     });
@@ -286,7 +291,13 @@ export class PermisosComponent implements OnInit {
       permiso : this.permisosParaForm[0].permiso,
       permisoAdd : this.permisosParaForm[0].permisoAdd,
       historial : this.permisosParaForm[0].historial,
-      configuracion : this.permisosParaForm[0].configuracion
+      configuracion : this.permisosParaForm[0].configuracion,
+      capacitacion : this.permisosParaForm[0].capacitacion,
+      capacitacionVer : this.permisosParaForm[0].capacitacionVer,
+      capacitacionHistorial : this.permisosParaForm[0].capacitacionHistorial,
+      capacitacionAdd : this.permisosParaForm[0].capacitacionAdd,
+      capacitacionUpdate : this.permisosParaForm[0].capacitacionUpdate,
+      capacitacionDelete : this.permisosParaForm[0].capacitacionDelete,
             
 
     });
@@ -401,6 +412,12 @@ export class PermisosComponent implements OnInit {
     this.permisosDB.push(this.formPermisos.value.permisoAdd);
     this.permisosDB.push(this.formPermisos.value.historial);
     this.permisosDB.push(this.formPermisos.value.configuracion);
+    this.permisosDB.push(this.formPermisos.value.capacitacion);
+    this.permisosDB.push(this.formPermisos.value.capacitacionVer);
+    this.permisosDB.push(this.formPermisos.value.capacitacionHistorial);
+    this.permisosDB.push(this.formPermisos.value.capacitacionAdd);
+    this.permisosDB.push(this.formPermisos.value.capacitacionUpdate);
+    this.permisosDB.push(this.formPermisos.value.capacitacionDelete);
 
     
 
@@ -487,6 +504,14 @@ export class PermisosComponent implements OnInit {
     this.dataSend.permisoAdd=this.permisosDB[60];
     this.dataSend.historial=this.permisosDB[61];
     this.dataSend.configuracion=this.permisosDB[62];
+    
+    this.dataSend.capacitacion=this.permisosDB[63];
+    this.dataSend.capacitacionVer=this.permisosDB[64];
+    this.dataSend.capacitacionHistorial=this.permisosDB[65];
+    this.dataSend.capacitacionAdd=this.permisosDB[66];
+    this.dataSend.capacitacionUpdate=this.permisosDB[67];
+    this.dataSend.capacitacionDelete=this.permisosDB[68];
+
 
     
 
@@ -585,11 +610,17 @@ export class PermisosComponent implements OnInit {
     "usuario": 1,
     "usuarioAdd": 1,
     "usuarioUpdate": 1,
-    "usuarioDelete": 1,
+    "usuarioDelete": 0,
     "permiso": 1,
     "permisoAdd":1,
     "historial" : 1,
-    "configuracion" : 0
+    "configuracion" : 0,
+    "capacitacion" : 1,
+    "capacitacionVer" : 1,
+    "capacitacionHistorial" : 1,
+    "capacitacionAdd" : 1,
+    "capacitacionUpdate" : 1,
+    "capacitacionDelete" : 1
 }
 
 //permisos
@@ -654,9 +685,15 @@ permisosSupervisor : any ={
   "usuarioUpdate": 0,
   "usuarioDelete": 0,
   "permiso": 0,
-  "permisoAdd": 0,
+  "permisoAdd":0,
   "historial" : 0,
-  "configuracion" : 0
+  "configuracion" : 0,
+  "capacitacion" : 1,
+  "capacitacionVer" : 1,
+  "capacitacionHistorial" : 0,
+  "capacitacionAdd" : 0,
+  "capacitacionUpdate" : 0,
+  "capacitacionDelete" : 0
 }
 
 permisosOperativo : any ={
@@ -722,7 +759,13 @@ permisosOperativo : any ={
   "permiso": 0,
   "permisoAdd":0,
   "historial" : 0,
-  "configuracion" : 0
+  "configuracion" : 0,
+  "capacitacion" : 1,
+  "capacitacionVer" : 1,
+  "capacitacionHistorial" : 0,
+  "capacitacionAdd" : 0,
+  "capacitacionUpdate" : 0,
+  "capacitacionDelete" : 0
 }
 
 usuarioLog : any;
@@ -752,7 +795,7 @@ permisosLog(){
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
          //  console.log(this.tipoProceso);
-          if(this.tipoProceso.tipoUsuario == 0){
+          if(this.tipoProceso.tipoUsuario == 1){
            //  console.log('procesos 1');
             
             this.getProcesos();

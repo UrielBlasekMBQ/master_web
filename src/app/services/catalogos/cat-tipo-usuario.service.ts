@@ -12,8 +12,9 @@ export class CatTipoUsuarioService {
 
   constructor(private http:  HttpClient) {  }
 
-  getCatTipoUsuario(){
-    return this.http.get(`${base}/catUsuarios`);
+  getCatTipoUsuario(body : any){
+    const base_url = `${base}/catUsuarios`
+    return this.http.post(base_url, body);
   }
 }
 

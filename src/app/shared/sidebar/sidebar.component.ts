@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(private ViewPermisosService : ViewPermisosService, private MenuService : MenuService) { }
 
-  usuarioLog ={
+  usuarioLog : any ={
   calidad: true,
   operacion: true,
   registros: true,
@@ -42,11 +42,25 @@ export class SidebarComponent implements OnInit {
   configuracion : true
   };
 
+  usuarioLogPermisoContrato : any = {
+    contratos : true
+  };
+
   getPermisos(){
     this.ViewPermisosService.getPermisos().subscribe((res : any)=>{
       
       this.usuarioLog= res[0];
-      console.log(this.usuarioLog);
+      //console.log(res);
+      
+    });
+  }
+
+  //Permiso de Contratos
+  getPermisoContrato(){
+    this.ViewPermisosService.getPermisoContrato().subscribe((res : any)=>{
+      
+      this.usuarioLogPermisoContrato.contratos= res[0].contrato_estatus;
+      console.log(res);
       
     });
   }
@@ -54,16 +68,16 @@ export class SidebarComponent implements OnInit {
   usuario : any;
   nombre: any;
   apellidos : any
-  body ={'id_usuario' : 0};
+
 
   getUsuario(){
     const token: any = localStorage.getItem('token');
     this.usuario =decode(token);
-    console.log(this.usuario);
-    this.body.id_usuario=this.usuario.id_usuario;
-    this.MenuService.getUsuario(this.body).subscribe((res: any)=>{
+    //console.log(this.usuario);
+    let body ={'id_usuario' : this.usuario.id_usuario};
+    this.MenuService.getUsuario(body).subscribe((res: any)=>{
       this.usuario = res[0];
-      console.log(res[0]);
+      //console.log(res[0]);
       
     });
     
@@ -71,7 +85,7 @@ export class SidebarComponent implements OnInit {
 
     // Borrar token 
     salida(){
-      console.log('limpieza');
+      //console.log('limpieza');
       
       localStorage.setItem('token', '');
   
@@ -81,6 +95,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.getPermisos();
     this.getUsuario();
+    this.getPermisoContrato();
    
   }
   

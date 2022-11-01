@@ -13,10 +13,6 @@ import { EmailService } from 'src/app/services/email.service';
 
 
 
-
-
-
-
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -50,7 +46,7 @@ export class UsuariosComponent implements OnInit {
       tipoUsuario: ['',[Validators.required]],
       password: ['',[Validators.required]],
       estatus: ['',[]],
-      foto: ['',[Validators.required]],
+      foto: ['',[]],
     });
 
     this.formUsuarioMulti1= this.formBuilder.group({
@@ -75,7 +71,7 @@ export class UsuariosComponent implements OnInit {
       tipoUsuario: ['',[Validators.required]],
       password: ['',[Validators.required]],
       estatus: ['',[]],
-      foto: ['',[Validators.required]],
+      foto: ['',[]],
     });
 
     this.formUsuario1= this.formBuilder.group({
@@ -98,7 +94,7 @@ export class UsuariosComponent implements OnInit {
 
     logProcesos? : any =[];
     listNuevo(){
-      console.log(this.logProcesos);
+      //console.log(this.logProcesos);
       
     }
     
@@ -112,25 +108,30 @@ export class UsuariosComponent implements OnInit {
   backDepartamentos(){
     this.viewDepartamentos=true;
     this.viewUsuarios=false;
+    this.allUsuarios = false;
   }
 
 
   //Get Procesos
   getProcesos(){
     this.ProcesosService.getProcesos().subscribe(res=>{
-     //  console.log('Procesos Listos');
+     //  //console.log('Procesos Listos');
       this.listProcesos =<any> res;
-     //  console.log(this.listProcesos);
+       //console.log(this.listProcesos);
       
     });
   }
 
   // Get Catalogo de Usiarios 
   getCatUuarios(){
-    this.CatTipoUsuarioService.getCatTipoUsuario().subscribe(res=>{
-     //  console.log('Catalogo listo');
+    const token: any = localStorage.getItem('token');
+    this.tipoProceso =decode(token);
+    let body ={'tipoUsurio': this.tipoProceso.tipoUsuario};
+    
+    this.CatTipoUsuarioService.getCatTipoUsuario(body).subscribe(res=>{
+     //  //console.log('Catalogo listo');
       this.listCatTipoUsuario = <any> res;
-     //  console.log(this.listCatTipoUsuario);
+     //  //console.log(this.listCatTipoUsuario);
       
       
     });
@@ -146,19 +147,36 @@ export class UsuariosComponent implements OnInit {
   permisosUsuarios(){
     this.ViewPermisosService.getPermisos().subscribe((res:any)=>{
       this.usuarioLog= res[0];
-     //  console.log(this.usuarioLog);
+     //  //console.log(this.usuarioLog);
       
     });
   }
 
+
+
   usuario : any;
+
+  /// Listar todos los permisos ///
+  allUsuarios = false;
+  getAllUsuarios(){
+    this.UsuariosService.getUsuarios().subscribe((res:any)=>{
+      this.allUsuarios = true;
+      this.viewDepartamentos = false;
+      this.listarUsuarios= res;
+      this.viewUsuarios=true;
+    });
+  }
+  /// Listar todos los permisos ///
+
+
+
 
   ///////// MULTI PROCESO ///////
   // Llenar modal multi Proceso
   llenarModalMultiProceso(usuario: any){
     this.usuario = usuario;
 
-   //  console.log(usuario);
+   //  //console.log(usuario);
     this.formUsuarioMulti1.setValue({
       usuario : usuario.usuario,
       nombre : usuario.nombre,
@@ -190,11 +208,11 @@ export class UsuariosComponent implements OnInit {
      nu.estatus=1;
     }
     nu.departamento = this.logProcesos[0].id_proceso;
-   //  console.log(nu.estatus);
+   //  //console.log(nu.estatus);
    // Eliminar procesos
    let del_body={'id_usuario' : this.usuario.id_usuario};
    this.UsuariosService.deleteProcesosUsuario(del_body).subscribe((res : any)=>{
-     console.log(res);
+     //console.log(res);
      
    });
    // Eliminar procesos
@@ -202,31 +220,31 @@ export class UsuariosComponent implements OnInit {
 
    //Eliminar Permisos
    this.UsuariosService.deletePermisosUsuario(del_body).subscribe((res:any)=>{
-    console.log(res);
+    //console.log(res);
     
    });
    //Eliminar Permisos
 
     ///////////////
-    console.log(nu);
+    //console.log(nu);
     
-    if(nu.tipoUsuario == 1){
+    if(nu.tipoUsuario == 2 || nu.tipoUsuario == 3){
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosGerencia).subscribe(res =>{
-         console.log('Se agregaron Permisoso de Gerencia');
+         //console.log('Se agregaron Permisoso de Gerencia');
         
       });
     }
 
-    if (nu.tipoUsuario == 2) {
+    if (nu.tipoUsuario == 4 || nu.tipoUsuario == 5) {
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosSupervisor).subscribe(res =>{
-         console.log('Se agregaron Permisoso de permisosSupervisor');
+         //console.log('Se agregaron Permisoso de permisosSupervisor');
         
       });
     }
 
-    if (nu.tipoUsuario == 3) {
+    if (nu.tipoUsuario == 6) {
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosOperativo).subscribe(res =>{
-         console.log('Se agregaron Permisoso de permisosOperativo');
+         //console.log('Se agregaron Permisoso de permisosOperativo');
         
       });
     }
@@ -237,18 +255,19 @@ export class UsuariosComponent implements OnInit {
      let proceso = this.logProcesos[i].id_proceso;
      let body ={'id_usuario' :this.usuario.id_usuario , 'id_proceso' : proceso};
        this.UsuariosService.addProcesos(body).subscribe((res:any)=>{
-         console.log(res);
+         //console.log(res);
          
        });
     }
    // Subir nuevos procesos
    
    this.UsuariosService.editUsuario(this.usuario.id_usuario , nu).subscribe(res =>{
-    //  console.log('Se actializo con exito');
+    //  //console.log('Se actializo con exito');
     this.mensajeUpdate(res);
      this.lisUsuarios(this.proceso);
      
    });
+   this.lisUsuarios(this.proceso);
  }
 ///////// MULTI PROCESO ///////
 
@@ -257,7 +276,7 @@ export class UsuariosComponent implements OnInit {
 llenarModal(usuario: any){
   this.usuario = usuario;
 
- //  console.log(usuario);
+ //  //console.log(usuario);
   this.formUsuario1.setValue({
     usuario : usuario.usuario,
     nombre : usuario.nombre,
@@ -272,7 +291,7 @@ llenarModal(usuario: any){
   let body ={'id_usuario' : usuario.id_usuario};
   this.UsuariosService.getProcesosUsuario(body).subscribe((res : any)=>{      
     this.logProcesos = res;
-  console.log(this.logProcesos);
+  //console.log(this.logProcesos);
   
   });
   
@@ -290,20 +309,20 @@ editUsuario(){
     nu.estatus=1;
   }
   nu.departamento = this.logProcesos[0].id_proceso;
-  //  console.log(nu.estatus);
+  //  //console.log(nu.estatus);
   // Eliminar procesos
   let del_body={'id_usuario' : this.usuario.id_usuario};
 
-  console.log('usuario : ', this.usuario);
-  console.log('nu: ', nu);
-  console.log('body: ', del_body);
-  console.log(this.logProcesos);
+  //console.log('usuario : ', this.usuario);
+  //console.log('nu: ', nu);
+  //console.log('body: ', del_body);
+  //console.log(this.logProcesos);
   
   
   
     // Eliminar procesos
   this.UsuariosService.deleteProcesosUsuario(del_body).subscribe((res : any)=>{
-    console.log(res);
+    //console.log(res);
     
   });
   // Eliminar procesos
@@ -313,7 +332,7 @@ editUsuario(){
     let proceso = this.logProcesos[i].id_proceso;
     let body ={'id_usuario' :this.usuario.id_usuario , 'id_proceso' : proceso};
       this.UsuariosService.addProcesos(body).subscribe((res:any)=>{
-        console.log(res);
+        //console.log(res);
         
       });
   }
@@ -321,31 +340,31 @@ editUsuario(){
 
      //Eliminar Permisos
      this.UsuariosService.deletePermisosUsuario(del_body).subscribe((res:any)=>{
-      console.log(res);
+      //console.log(res);
       
      });
      //Eliminar Permisos
 
       ///////////////
-    console.log(nu);
+    //console.log(nu);
     
-    if(nu.tipoUsuario == 1){
+    if(nu.tipoUsuario == 2 || nu.tipoUsuario == 3){
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosGerencia).subscribe(res =>{
-         console.log('Se agregaron Permisoso de Gerencia');
+         //console.log('Se agregaron Permisoso de Gerencia');
         
       });
     }
 
-    if (nu.tipoUsuario == 2) {
+    if (nu.tipoUsuario == 4 || nu.tipoUsuario == 5) {
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosSupervisor).subscribe(res =>{
-         console.log('Se agregaron Permisoso de permisosSupervisor');
+         //console.log('Se agregaron Permisoso de permisosSupervisor');
         
       });
     }
 
-    if (nu.tipoUsuario == 3) {
+    if (nu.tipoUsuario == 6) {
       this.PermisosService.addPermisos(this.usuario.id_usuario, this.permisosOperativo).subscribe(res =>{
-         console.log('Se agregaron Permisoso de permisosOperativo');
+         //console.log('Se agregaron Permisoso de permisosOperativo');
         
       });
     }
@@ -354,11 +373,12 @@ editUsuario(){
 
   
   this.UsuariosService.editUsuario(this.usuario.id_usuario , nu).subscribe(res =>{
-  //  console.log('Se actializo con exito');
+  //  //console.log('Se actializo con exito');
     this.lisUsuarios(this.proceso);
     this.mensajeUpdate(res);
     
   });
+  this.lisUsuarios(this.proceso);
 }
 ///////// Un proceso PROCESO ///////
 
@@ -372,14 +392,14 @@ editUsuario(){
   lisUsuarios(proceso : any){
 
     this.proceso = proceso;
-   //  console.log(this.proceso.id_proceso);
+   //  //console.log(this.proceso.id_proceso);
     
     this.viewDepartamentos=false;
     this.viewUsuarios=true;
 
     this.UsuariosService.getUnUsuairio(this.proceso.id_proceso).subscribe(res=>{
       this.listarUsuarios = <any> res;
-     //  console.log(res);
+     //  //console.log(res);
       
     });
   }
@@ -387,7 +407,7 @@ editUsuario(){
   //Eliminar Usuario
   deleteUsuario(){
     this.UsuariosService.deleteUsuario(this.usuario.id_usuario).subscribe(res=>{
-     //  console.log('Usuario eliminado');
+     //  //console.log('Usuario eliminado');
        this.lisUsuarios(this.proceso);
     });
 
@@ -404,8 +424,8 @@ editUsuario(){
   //Agregar Uusuario Multi Proceso
   addUsuarioMultiProceso(){
 
-   //  console.log(this.formUsuario.value.estatus);
-   //  console.log(this.permisosGerencia);
+   //  //console.log(this.formUsuario.value.estatus);
+   //  //console.log(this.permisosGerencia);
     let nu: any;
     nu =this.formUsuarioMulti.value;
     if(nu.estatus==false){
@@ -416,14 +436,14 @@ editUsuario(){
     }
     nu.departamento = this.logProcesos[0].id_proceso;
 
-    console.log(nu);
+    //console.log(nu);
     let text = 'Tu usuario es: '+this.formUsuarioMulti.value.usuario+ ' y tu contraseña es: ' + this.formUsuarioMulti.value.password;
     let body_email ={'email' : this.formUsuarioMulti.value.email, 'nombre' : this.formUsuarioMulti.value.nombre,
                      'apellidos' : this.formUsuarioMulti.value.apellidos, 'mensaje1' : 'Te damos la Bienvenida', 'mensaje2' : text };
     this.EmailService.sendData(body_email).subscribe((res:any)=>{});
     
     this.UsuariosService.addUsuario(nu).subscribe(res =>{
-     //  console.log('Se agrego usuario correctamente');
+     //  //console.log('Se agrego usuario correctamente');
      this.mensajeAdd(res);
       this.cargarPermisos();
       
@@ -436,8 +456,8 @@ editUsuario(){
   //Agregar Uusuario Multi Proceso
   addUsuario(){
 
-    //  console.log(this.formUsuario.value.estatus);
-    //  console.log(this.permisosGerencia);
+    //  //console.log(this.formUsuario.value.estatus);
+    //  //console.log(this.permisosGerencia);
     this.logProcesos=[];
       let nu: any;
       nu =this.formUsuario.value;
@@ -451,8 +471,8 @@ editUsuario(){
       this.logProcesos.push(logProce);
       //nu.departamento = this.logProcesos[0].id_proceso;
   
-      console.log(this.logProcesos);
-      console.log(nu);
+      //console.log(this.logProcesos);
+      //console.log(nu);
       
       let text = 'Tu usuario es: '+this.formUsuario.value.usuario+ ' y tu contraseña es: ' + this.formUsuario.value.password;
     let body_email ={'email' : this.formUsuario.value.email, 'nombre' : this.formUsuario.value.nombre,
@@ -460,14 +480,11 @@ editUsuario(){
     this.EmailService.sendData(body_email).subscribe((res:any)=>{});
       
       this.UsuariosService.addUsuario(nu).subscribe(res =>{
-      //  console.log('Se agrego usuario correctamente');
+      //  //console.log('Se agrego usuario correctamente');
       this.mensajeAdd(res);
         this.cargarPermisos();
         
       });
-  
-  
-      
     }
   
 
@@ -478,26 +495,26 @@ editUsuario(){
       let ultimo = res;
       let numero = res.length;
       this.ultimoUsuario =ultimo[numero-1]
-      console.log(this.ultimoUsuario);
+      //console.log(this.ultimoUsuario);
 
       ///////////////
-      if(this.ultimoUsuario.tipoUsuario == 1){
+      if(this.ultimoUsuario.tipoUsuario == 'Director' || this.ultimoUsuario.tipoUsuario == 'Lider'){
         this.PermisosService.addPermisos(this.ultimoUsuario.id_usuario, this.permisosGerencia).subscribe(res =>{
-           console.log('Se agregaron Permisoso de Gerencia');
+          // console.log('Se agregaron Permisoso de Gerencia');
           
         });
       }
   
-      if (this.ultimoUsuario.tipoUsuario == 2) {
+      if (this.ultimoUsuario.tipoUsuario == 'Coordinador' || this.ultimoUsuario.tipoUsuario == 'Supervisor') {
         this.PermisosService.addPermisos(this.ultimoUsuario.id_usuario, this.permisosSupervisor).subscribe(res =>{
-           console.log('Se agregaron Permisoso de permisosSupervisor');
+           //console.log('Se agregaron Permisoso de permisosSupervisor');
           
         });
       }
   
-      if (this.ultimoUsuario.tipoUsuario == 3) {
+      if (this.ultimoUsuario.tipoUsuario == 'Operativo') {
         this.PermisosService.addPermisos(this.ultimoUsuario.id_usuario, this.permisosOperativo).subscribe(res =>{
-           console.log('Se agregaron Permisoso de permisosOperativo');
+           //console.log('Se agregaron Permisoso de permisosOperativo');
           
         });
       }
@@ -508,7 +525,7 @@ editUsuario(){
       let proceso = this.logProcesos[i].id_proceso;
       let body ={'id_usuario' :this.ultimoUsuario.id_usuario , 'id_proceso' : proceso};
         this.UsuariosService.addProcesos(body).subscribe((res:any)=>{
-          console.log(res);
+          //console.log(res);
           
         });
      }
@@ -535,7 +552,7 @@ editUsuario(){
   getMuitiFormulario(){
     this.MultiProcesoService.getMultiProceso().subscribe((res:any)=>{
       this.muitiForm = res[0].multi_proceso;
-      console.log(this.muitiForm);
+      //console.log(this.muitiForm);
       
     });
   }
@@ -545,9 +562,9 @@ editUsuario(){
           /// Procesos ///
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
-         //  console.log(this.tipoProceso);
-          if(this.tipoProceso.tipoUsuario == 0){
-           //  console.log('procesos 1');
+         //  //console.log(this.tipoProceso);
+          if(this.tipoProceso.tipoUsuario == 1){
+           //  //console.log('procesos 1');
             
             this.getProcesos();
           } else{
@@ -555,12 +572,13 @@ editUsuario(){
             let body ={'id_usuario' : this.tipoProceso.id_usuario};
             this.getPreceso(body);
             
-           //  console.log('Procesos 2');
+           //  //console.log('Procesos 2');
             
           }
           /// Procesos ///
-    this.getCatUuarios();
+   
     this.permisosUsuarios();
+    this.getCatUuarios();
   }
 
   ////// Mensajes //////
@@ -688,10 +706,17 @@ editUsuario(){
     "usuarioAdd": 1,
     "usuarioUpdate": 1,
     "usuarioDelete": 0,
-    "permiso": 0,
-    "permisoAdd":0,
-    "historial" : 0,
-    "configuracion" : 0
+    "permiso": 1,
+    "permisoAdd":1,
+    "historial" : 1,
+    "configuracion" : 0,
+    "capacitacion" : 1,
+    "capacitacionVer" : 1,
+    "capacitacionHistorial" : 1,
+    "capacitacionAdd" : 1,
+    "capacitacionUpdate" : 1,
+    "capacitacionDelete" : 1
+
   }
 
   //permisos
@@ -758,7 +783,13 @@ editUsuario(){
     "permiso": 0,
     "permisoAdd":0,
     "historial" : 0,
-    "configuracion" : 0
+    "configuracion" : 0,
+    "capacitacion" : 1,
+    "capacitacionVer" : 1,
+    "capacitacionHistorial" : 0,
+    "capacitacionAdd" : 0,
+    "capacitacionUpdate" : 0,
+    "capacitacionDelete" : 0
   }
 
   permisosOperativo : any ={
@@ -824,7 +855,13 @@ editUsuario(){
     "permiso": 0,
     "permisoAdd":0,
     "historial" : 0,
-    "configuracion" : 0
+    "configuracion" : 0,
+    "capacitacion" : 1,
+    "capacitacionVer" : 1,
+    "capacitacionHistorial" : 0,
+    "capacitacionAdd" : 0,
+    "capacitacionUpdate" : 0,
+    "capacitacionDelete" : 0
   }
 
 }

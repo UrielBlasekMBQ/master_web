@@ -7,7 +7,7 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li class="user-profile"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><img src="assets/images/users/profile.png" alt="user" /><span>{{usuario.nombre | uppercase}} {{usuario.apellidos | uppercase}} </span></a>
+                        <li class="user-profile"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><img src="./assets/images/big/usuario.png" alt="user" /><span>{{usuario.nombre | uppercase}} {{usuario.apellidos | uppercase}} </span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a routerLink="/login" (click)="salida()">Salida</a></li>
                             </ul>
@@ -33,6 +33,12 @@
                                 <li *ngIf="usuarioLog.marco"><a routerLinkActive="active" routerLink="/dashboard/marco-legal" >Marco Legal</a></li>
                             </ul>
                         </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.capacitacion"> 
+                            <a class="waves-effect waves-dark" routerLink="/dashboard/capacitacion" aria-expanded="false"><i class="mdi mdi-library"></i><span class="hide-menu">Capacitación</span></a>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLogPermisoContrato.contratos"> 
+                            <a class="waves-effect waves-dark" routerLink="/dashboard/contratos" aria-expanded="false"><i class="mdi mdi-page-layout-footer"></i><span class="hide-menu">Contratos</span></a>
+                        </li>
                         <li routerLinkActive="active" *ngIf="usuarioLog.diagramas">
                             <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-chart-pie"></i><span class="hide-menu">Diagramas</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -51,7 +57,7 @@
                             <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Acompañamiento</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li *ngIf="usuarioLog.solicitaAcom"><a routerLinkActive="active" routerLink="/dashboard/solicita-acompanamiento" >Solicitud</a></li>
-                                <li *ngIf="usuarioLog.revisaAcom"><a routerLinkActive="active" routerLink="/dashboard/resisa-acompanamiento" >Revisión</a></li>                                
+                                <li *ngIf="usuarioLog.revisaAcom"><a routerLinkActive="active" routerLink="/dashboard/revisa_acompanamiento" >Revisión</a></li>                                
                             </ul>
                         </li>
                         <li routerLinkActive="active" *ngIf="usuarioLog.controlDocumento"> 

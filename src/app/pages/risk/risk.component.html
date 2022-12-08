@@ -1,0 +1,1538 @@
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Risk Assessment</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <!-- <ol class="breadcrumb" *ngIf="viewDepartamentos" >
+                <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                    <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+            </ol>
+            <ol class="breadcrumb" *ngIf="viewUsuarios" >
+                    <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                    <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info"><a>Procesos</a></button></li>
+                    <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Usuarios</a></button></li>
+            </ol> -->
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+
+        <!-- ============================================================== -->
+        
+        <div class="row"  *ngIf="viewTablaRick !==false">
+            <div class="col-sm-12 mb-3">
+                <button type="button" class="btn btn-info btn-rounded " data-toggle="modal" data-target=".add-risk" (click)="clearFormulario()">Generar Risk Assessment</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="viewTablaRick">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Tabla de Risk Assessment</h2>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Genero</th>
+                                        <th>Responde</th>
+                                        <th>Fecha</th>                                                    
+                                        <th>Estatus</th>
+                                        <th>Responder</th>
+                                        <th>Token</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let risk of listRisk | paginate: { itemsPerPage: 10, currentPage: p } ; let i =index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{risk.nom_autor}} {{risk.apell_autor}}</td>
+                                        <td>{{risk.nom_responde}} {{risk.apell_responde}}</td>
+                                        <td>{{risk.fecha |  date:'medium'}}</td>
+                                        <td>
+                                            <div class="label label-table label-success" *ngIf="risk.estatus == 1">Completado</div>
+                                            <div class="label label-table label-warning" *ngIf="risk.estatus == 0">Por terminar</div>
+                                        </td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#validar_token" (click)="extraerRisk(risk)"><i class="mdi mdi-clipboard-text fa-lg"></i></button></td>                            
+                                        <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#genera_token" (click)="extraerRisk(risk)" ><i class="mdi mdi-key fa-lg"></i></button></td>
+                                    </tr>
+        
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="row" *ngIf="viewRisk">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+
+    
+
+                <mat-stepper orientation="vertical" #stepper>
+                    <mat-step >
+                        <ng-template matStepLabel>Inicio</ng-template>
+                        <p>Recuerde guardar sus respuestas por sección.</p>
+                        <div *ngIf="riskIncompleto">
+                            <h3>Pasar a alguien mas el Risk Assessment: <button type="button" class="btn btn-success"  data-toggle="modal" data-target=".cambiar-risk" (click)="clearFormPasar()">Defenir a quien</button></h3>
+                            
+                        </div>
+                        <div *ngIf="riskCompleto">
+                            <h3>Mandar  Risk Assessment a edición, define quien realizara la edición : <button type="button" class="btn btn-success"  data-toggle="modal" data-target=".cambiar-risk" (click)="clearFormPasar()">Defenir</button></h3>
+                            
+                        </div>
+                        <div>
+                            <button mat-button matStepperNext>Next</button>                          
+                            <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
+                        </div>
+                        </mat-step>
+                    <!--////////////////UNO//////////////-->
+                    <mat-step [stepControl]="unoFormGroup">
+                        <form [formGroup]="unoFormGroup" >
+                        <ng-template matStepLabel>IS policies and Organization  <strong> Respuestas:  {{CG1}}/ 7</strong></ng-template>
+                        <div>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>1)</strong> ¿Existe una política de seguridad de la información formalizada, aprobada por la Dirección y que establezca el enfoque de la organización y sus objetivos?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>ESTRATÉGICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button" >
+                                    
+                                        <input name="group1" type="radio" id="radio_1" formControlName="group1" [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="a">
+                                        <label for="radio_1"><h5><strong>A)</strong> No, no la hay.</h5></label>
+                                        <br>
+                                    
+                                        <input name="group1" type="radio" id="radio_2" class="mt-2" formControlName="group1"  [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="b">
+                                        <label for="radio_2"><h5><strong>B)</strong> Se publicó una para hacer frente a una auditoría, revisión externa, o porque sucedió un desastre o una interrupción importante en los servicios. Es probable que no esté vigente.</h5></label>
+                                        <br>
+                                    
+                                        <input name="group1" type="radio" id="radio_3" class="mt-2" formControlName="group1" [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="c">
+                                        <label for="radio_3"><h5><strong>C)</strong> Sí pero es departamental, es decir no se conoce en toda la organización y no se ha hecho esfuerzo para que se conozca. No es seguro que se aplique.</h5></label>
+                                        <br>
+                                    
+                                        <input name="group1" type="radio" id="radio_4" class="mt-2" formControlName="group1" [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="d">
+                                        <label for="radio_4"><h5><strong>D)</strong> Sí, es organizacional, se hace una revisión periódica para mantenerla vigente y se audita su cumplimiento.</h5></label>
+                                        <br>
+                                    
+                                        <input name="group1" type="radio" id="radio_5" class="mt-2" formControlName="group1" [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="e">
+                                        <label for="radio_5"><h5><strong>E)</strong> Sí y se tienen procesos definidos para medir el grado de cumplimiento con la misma en toda la organización, así como para medir el desempeño de los procesos implementados para cumplirla.</h5></label>
+                                        <br>
+                                    
+                                        <input name="group1" type="radio" id="radio_6" class="mt-2" formControlName="group1" [(ngModel)]="resFrom[0].res" (change)="respuesta1()" value="f">
+                                        <label for="radio_6"><h5><strong>F)</strong> Sí, y se mejora continuamente con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño de los procesos implementados en la organización para cumplirla.</h5></label>
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>2)</strong> ¿Se ha delegado claramente la responsabilidad del día a día con relación a la seguridad de la información a un equipo o a un individuo en la organización? y de qué manera se les dió a conocer?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>ESTRATÉGICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_7" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="a">
+                                    <label for="radio_7"><h5><strong>A)</strong> No, no se ha delegado la responsabilidad de seguridad de la información dentro de la organización. No está formalizado el rol de responsable de seguridad de la información.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_8" class="mt-2" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="b">
+                                    <label for="radio_8"><h5><strong>B)</strong> Se delega la responsabilidad sólo para dar cumplimiento a auditorías, pero no está establecido de manera formal.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_9" class="mt-2" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="c">
+                                    <label for="radio_9"><h5><strong>C)</strong> Se delega la responsabilidad sólo a un nivel departamental, no se tienen clarlas funciones ni sus roles y responsabilidades.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_10" class="mt-2" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="d">
+                                    <label for="radio_10"><h5><strong>D)</strong> Se delega la responsabilidad a un individuo o equipo en la organización, rinden cuentas al responsable u otros interesados, las funciones, roles y responsabilidades están claramente definidos y se mantienen registros de las acrtividades que realiza.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_11" class="mt-2" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="e">
+                                    <label for="radio_11"><h5><strong>E)</strong> Se delega la responsabilidad a un individuo o equipo en la organización, rinden cuentas continuamente y se tienen indicadores de desempeño que permiten medir los resultados de una manera consistente.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group2" type="radio" id="radio_12" class="mt-2" formControlName="group2" [(ngModel)]="resFrom[1].res" (change)="respuesta2()" value="f">
+                                    <label for="radio_12"><h5><strong>F)</strong> Se delega la responsabilidad a un individuo o equipo en la organización para su seguimiento y realizan mejoras cuantitativas, con base en el resultado de los indicadores de desempeño.</h5></label>
+                                    <br>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>3)</strong> ¿Existe un inventario de activos de información? ¿Los activos son clasificados?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_13" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="a" />
+                                    <label for="radio_13"><h5><strong>A)</strong> No se ha realizado un inventario de activos, o está incompleto/desactualizado</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_14" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="b" />
+                                    <label for="radio_14"><h5><strong>B)</strong> Se realizó un inventario de activos, pero los activos no se clasifican, está sin actualizar o no vigente.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_15" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="c" />
+                                    <label for="radio_15"><h5><strong>C)</strong> Se realizó un inventario de activos, no existe un responsable o su actualización no se realiza de manera periódica, solo se controla por buenas prácticas</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_16" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="d" />
+                                    <label for="radio_16"><h5><strong>D)</strong> Se realizó un inventario de activos a nivel organizacional y se actualiza constantemente, se reporta a la Alta Dirección. Las actividades de revisión ya ctualización se encuentran documentadas en una política o procedimiento.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_17" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="e" />
+                                    <label for="radio_17"><h5><strong>E)</strong> Se realizó un inventario de activos a nivel organizacional, se reporta a la Alta Dirección. se actualiza constantemente y se tienen indicadores de desempeño</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group3" type="radio" id="radio_18" formControlName="group3"  [(ngModel)]="resFrom[2].res" (change)="respuesta3()" value="f" />
+                                    <label for="radio_18"><h5><strong>F)</strong> Se realizó un inventario de activos a nivel organizacional,se reporta a la Alta Dirección. se actualiza constantemente, se tienen indicadores de desempeño y se realizan mejoras con base en indicadores</h5></label>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>4)</strong> ¿Se ha identificado al responsable o dueño para cada activo de información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_19" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="a" />
+                                    <label for="radio_19"><h5><strong>A)</strong> No se han identiicado responsables para la seguridad cada activo</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_20" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="b" />
+                                    <label for="radio_20"><h5><strong>B)</strong> Se identificaron a los responsables para la seguridad cada activo, pero se encuentra sin actualizar o no se encuentra vigente</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_21" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="c" />
+                                    <label for="radio_21"><h5><strong>C)</strong> Se identificaron a los responsables para la seguridad cada activo a nivel departamental y se registran los dueños de los activos.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_22" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="d" />
+                                    <label for="radio_22"><h5><strong>D)</strong> Se identificaron a los responsables para la seguridad de los activos a nivel organizacional y se reporta a la Alta Dirección</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_23" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="e" />
+                                    <label for="radio_23"><h5><strong>E)</strong> Se identificaron a los responsables para la seguridad cada activo a nivel organizacional, se reporta a la Alta Direccióm y se tienen indicadores de desempeño</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group4" type="radio" id="radio_24" formControlName="group4" [(ngModel)]="resFrom[3].res" (change)="respuesta4()" value="f" />
+                                    <label for="radio_24"><h5><strong>F)</strong> Se identificaron a los responsables para la seguridad cada activo a nivel organizacional, se reporta a la Alta Direccióm, se tienen indicadores de desempeño y se realizan mejoras con base en indicadores</h5></label>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>5)</strong> ¿Se llevan a cabo análisis de riesgos con un efoque a seguridad de la información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>ESTRATÉGICO</p>
+                            </div>
+                            <div class="col-sm-7">
+
+                                <div class="demo-radio-button">
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_25" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="a" />
+                                <label for="radio_25"><h5><strong>A)</strong> No se realizan análisis de riesgos o no se incluyen riesgos de seguridad de la información</h5></label>
+                                <br>
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_26" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="b" />
+                                <label for="radio_26"><h5><strong>B)</strong> Se realizan ejercicios de análisis de riesgos y se incluyen los riesgos asociados a los activos de información, pero no se llevan a cabo de manera formal, no existe un procedimiento o metodología adoptados para llevarlos a cabo.</h5></label>
+                                <br>
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_27" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="c" />
+                                <label for="radio_27"><h5><strong>C)</strong> Se realizan ejercicios de análisis de riesgos de manera periódica, siguiendo un procedimiento y metodología documentados.</h5></label>
+                                <br>
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_28" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="d" />
+                                <label for="radio_28"><h5><strong>D)</strong> Los análisis de riesgos de seguridad de la información se ejecutan de manera periódica y formal, se mantiene evidencia de los resultados y se documentan planes de tratamiento a los riesgos y se da seguimiento a los mismos.</h5></label>
+                                <br>
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_29" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="e" />
+                                <label for="radio_29"><h5><strong>E)</strong> De los ejercicios de análisis de riesgos se generan indicadores de desempeño, para medir efectividad y tiempos de ejecución y atención de riesgos identificados.</h5></label>
+                                <br>
+
+                                <input [disabled]="validacionForm" name="group5" type="radio" id="radio_30" formControlName="group5"  [(ngModel)]="resFrom[4].res" (change)="respuesta5()" value="f" />
+                                <label for="radio_30"><h5><strong>F)</strong> Se validan los resultados,  identificando areas de oportunidad y se determinan posibles acciones de mejora para hacer mas eficiente el proceso.</h5></label>
+                                <br>
+
+                            </div>
+
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>6)</strong> ¿Se revisa periódicamente el cumplimiento de las políticas y controles de la Seguridad de la información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_31" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="a" />
+                                    <label for="radio_31"><h5><strong>A)</strong> No, no se revisa.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_32" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="b" />
+                                    <label for="radio_32"><h5><strong>B)</strong> Se revisó únicamente ante una auditoría o revisión externa.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_33" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="c" />
+                                    <label for="radio_33"><h5><strong>C)</strong> Se revisa a nivel departamental, no se ha hecho un esfuerzo por verificar que se cumpla en toda la organización.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_34" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="d" />
+                                    <label for="radio_34"><h5><strong>D)</strong> Se revisa constantemente mediante procedimientos establecidos con este fin.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_35" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="e" />
+                                    <label for="radio_35"><h5><strong>E)</strong> Se revisa constantemente mediante procedimientos establecidos con este fin, se tiene un responsable de verificar que sean ejercidos los controles y políticas.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group6" type="radio" id="radio_36" formControlName="group6" [(ngModel)]="resFrom[5].res" (change)="respuesta6()" value="f" />
+                                    <label for="radio_36"><h5><strong>F)</strong> Se revisa constantemente mediante procedimientos establecidos con este fin, se tiene un responsable de verificar que sean ejercidos los controles y políticas. Se cuenta con planes de mejora.</h5></label>
+                                    <br>
+                                    
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>7)</strong> ¿Se tiene un procedimiento para la gestión de incidentes de seguridad?
+                                    ¿Se tienen definidos los responsables para la gestión de incidentes?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>OPERACIONAL</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_37" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="a" />
+                                    <label for="radio_37"><h5><strong>A)</strong> No existe ningun procedimiento</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_38" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="b" />
+                                    <label for="radio_38"><h5><strong>B)</strong> Los incidentes de seguridad son identificados y gestionados de manera informal, no se sigue un procedimiento documentado</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_39" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="c" />
+                                    <label for="radio_39"><h5><strong>C)</strong> Tienen un procedimiento escrito, formal y autorizado para la gestión de incidentes</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_40" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="d" />
+                                    <label for="radio_40"><h5><strong>D)</strong> Tienen un procedimiento escrito, formal y autorizado para la gestión de incidentes. El procedimiento incluye establecer responsabilidades de gestión para asegurar que los procedimientos son desarrollados y comunicados adecuadamente dentro de la organización.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_41" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="e" />
+                                    <label for="radio_41"><h5><strong>E)</strong> Tienen un procedimiento escrito, formal y autorizado para la gestión de incidentes. El procedimiento incluye establecer responsabilidades de gestión para asegurar que los procedimientos son desarrollados y comunicados adecuadamente dentro de la organización. Existe un responsable que da monitoreo al procedimiento y atiende estos requerimientos.</h5></label>
+                                    <br>
+
+                                    <input [disabled]="validacionForm" name="group7" type="radio" id="radio_42" formControlName="group7" [(ngModel)]="resFrom[6].res" (change)="respuesta7()" value="f" />
+                                    <label for="radio_42"><h5><strong>F)</strong> constantemeTienen un procedimiento escrito, formal y autorizado para la gestión de incidentes. El procedimiento incluye establecer responsabilidades de gestión para asegurar que los procedimientos son desarrollados y comunicados adecuadamente dentro de la organización. Se realiza un revisión periodica del procedimiento, se mide y se mejora.nte</h5></label>
+                                    <br>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr>
+
+                        <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="unoRespuestasRisk()">Guardar Respuestas <strong> {{CG1}}/ 7</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                        </form>
+                    </mat-step>
+                    <!--////////////////UNO//////////////-->
+                    <!--////////////////DOS//////////////-->
+                    <mat-step [stepControl]="dosFormGroup">
+                        <form [formGroup]="dosFormGroup">
+                        <ng-template matStepLabel>Human Resources <strong> Respuestas: {{CG2}}/ 5</strong></ng-template>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>8)</strong> ¿Se realiza investigación de antecedentes de candidatos? ( estudio socioeconomico, estado de salud, antecedentes penales, crediticios, etc.) Los que apliquen según puesto y funciones</p>
+                                <p>¿Cómo se confirman las aptitutes académicas, historial laboral, referencias, etc?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>OPERACIONAL</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input  name="group8" type="radio" id="radio_43" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="a" />
+                                    <label for="radio_43"><h5><strong>A)</strong> No se hace ninguna investigación de antecedentes previos a la contratación</h5></label>
+                                    <br>
+
+                                    <input  name="group8" type="radio" id="radio_44" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="b" />
+                                    <label for="radio_44"><h5><strong>B)</strong> Se hicieron investigaciones sólo para una revisión o auditoría</h5></label>
+                                    <br>
+
+                                    <input  name="group8" type="radio" id="radio_45" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="c" />
+                                    <label for="radio_45"><h5><strong>C)</strong> Se investigan los antecedentes de algunos de los candidatos</h5></label>
+                                    <br>
+
+                                    <input  name="group8" type="radio" id="radio_46" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="d" />
+                                    <label for="radio_46"><h5><strong>D)</strong> Se investigan los antecedentes de todos los candidatos de la organización y se mantiene evidencia </h5></label>
+                                    <br>
+
+                                    <input  name="group8" type="radio" id="radio_47" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="e" />
+                                    <label for="radio_47"><h5><strong>E)</strong> Se investigan los antecedentes de todos los candidatos de la organización, se reporta a la Alta Dirección y se tienen indicadores de desempeño.</h5></label>
+                                    <br>
+
+                                    <input  name="group8" type="radio" id="radio_48" formControlName="group8" [(ngModel)]="resFrom[7].res" (change)="respuesta8()" value="f" />
+                                    <label for="radio_48"><h5><strong>F)</strong> Se investigan los antecedentes de todos los candidatos de la organización, se reporta a la Alta Dirección, se tienen indicadores de desempeño y se realizan mejoras con base en los indicadores</h5></label>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>9)</strong> ¿Se cuenta con acuerdos contractuales con los empleados y proveedores en donde declaran su responsabilidad hacia la seguridad de la información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input name="group9" type="radio" id="radio_49" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="a" />
+                                    <label for="radio_49"><h5><strong>A)</strong> No se cuenta con acuerdos de confidencialidad firmados con todos los empleados.</h5></label>
+                                    <br>
+
+                                    <input name="group9" type="radio" id="radio_50" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="b" />
+                                    <label for="radio_50"><h5><strong>B)</strong> Se establecieron acuerdos de confidencialidad para dar cumplimiento a una revisión o auditoría</h5></label>
+                                    <br>
+
+                                    <input name="group9" type="radio" id="radio_51" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="c" />
+                                    <label for="radio_51"><h5><strong>C)</strong> Se establecieron acuerdos de confidencialidadcon todos los empleados, existe una politica documentada para la firma de los mismos</h5></label>
+                                    <br>
+
+                                    <input name="group9" type="radio" id="radio_52" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="d" />
+                                    <label for="radio_52"><h5><strong>D)</strong> Se establecieron acuerdos de confidencialidadcon todos los empleados, existe una politica documentada para la firma de los mismos, se mantienen los acuerdos de confidencialidas y se revisan</h5></label>
+                                    <br>
+
+                                    <input name="group9" type="radio" id="radio_53" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="e" />
+                                    <label for="radio_53"><h5><strong>E)</strong> Se establecieron acuerdos de confidencialidad para todos los empleados de la organización, y se revisa de manera periódica su vigencia y cumplimiento, las anomalías  se reportan a la Alta Dirección.</h5></label>
+                                    <br>
+
+                                    <input name="group9" type="radio" id="radio_54" formControlName="group9" [(ngModel)]="resFrom[8].res" (change)="respuesta9()" value="f" />
+                                    <label for="radio_54"><h5><strong>F)</strong> Se realizan revisiones periódicas a los acuerdos de confidencialidad, se actualizan en caso de ser requerido, a fin de detectar brechas de cumplimiento y proteger la organización contra mal uso o divulgación no autorizada de información.</h5></label>
+                                    <br>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>10)</strong> ¿Los empleados y contratistas son informados sobre su responsabilidad con respecto a la seguridad de la información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input name="group10" type="radio" id="radio_55" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="a" />
+                                    <label for="radio_55"><h5><strong>A)</strong> No seinforma a todos los empleados sobre las políticas de seguridad de la información, ni de sus obligaciones referentes a este tema</h5></label>
+                                    <br>
+
+                                    <input name="group10" type="radio" id="radio_56" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="b" />
+                                    <label for="radio_56"><h5><strong>B)</strong> Se ha llevado a cabo una capacitación sobre la política de seguridad de la información para cumplir con una revisión o auditoría</h5></label>
+                                    <br>
+
+                                    <input name="group10" type="radio" id="radio_57" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="c" />
+                                    <label for="radio_57"><h5><strong>C)</strong> Se da a conocer las políticas de seguridad de la información o se ponen a disposición de los empleados para que las puedan consultar</h5></label>
+                                    <br>
+
+                                    <input name="group10" type="radio" id="radio_58" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="d" />
+                                    <label for="radio_58"><h5><strong>D)</strong> Las políticas y obligaciones en materia  de seguridad de la información se dan a conocer a los empleados de manera formal, se genera y mantiene evidencia como firma de la política por parte de los empleados o correos de confirmación de conocimiento. </h5></label>
+                                    <br>
+
+                                    <input name="group10" type="radio" id="radio_59" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="e" />
+                                    <label for="radio_59"><h5><strong>E)</strong> Se generan indicadores para verificar que el personal conoce las políticas y obligaciones en materia de seguridad de la información. Pueden relizarse mediante evaluaciones al personal.</h5></label>
+                                    <br>
+
+                                    <input name="group10" type="radio" id="radio_60" formControlName="group10"  [(ngModel)]="resFrom[9].res" (change)="respuesta10()" value="f" />
+                                    <label for="radio_60"><h5><strong>F)</strong> Se exige el cumplimiento de las politicas y obligaciones de seguridad de la información mediante los contratos a todos los empleados y contratistas, se tienen indicadores de desempeño y se realizan mejoras con base en los indicadores. Se identifican nuevas y mejores formas para difundir las políticas y obligaciones en materia de seguridad de la información.</h5></label>
+                                    <br>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>11)</strong> ¿Existen procesos de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información para empleados y proveedores?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>TÁCTICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input name="group11" type="radio" id="radio_61" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="a" />
+                                    <label for="radio_61"><h5><strong>A)</strong> No hay procesos de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información</h5></label>
+                                    <br>
+
+                                    <input name="group11" type="radio" id="radio_62" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="b" />
+                                    <label for="radio_62"><h5><strong>B)</strong> Se realizó un proceso de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información sólo para una revisión o auditoría</h5></label>
+                                    <br>
+
+                                    <input name="group11" type="radio" id="radio_63" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="c" />
+                                    <label for="radio_63"><h5><strong>C)</strong> Se realiza un proceso de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información a nivel departamental</h5></label>
+                                    <br>
+
+                                    <input name="group11" type="radio" id="radio_64" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="d" />
+                                    <label for="radio_64"><h5><strong>D)</strong> Se realiza un proceso de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información a todos los empleados y proveedores de la organización</h5></label>
+                                    <br>
+
+                                    <input name="group11" type="radio" id="radio_65" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="e" />
+                                    <label for="radio_65"><h5><strong>E)</strong> Se realiza un proceso de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información a todos los empleados y proveedores de la organización, y se tienen indicadores de desempeño</h5></label>
+                                    <br>
+
+                                    <input name="group11" type="radio" id="radio_66" formControlName="group11" [(ngModel)]="resFrom[10].res" (change)="respuesta11()" value="f" />
+                                    <label for="radio_66"><h5><strong>F)</strong> Se realiza un proceso de información, formación y sensibilización sobre las responsabilidades sobre la Seguridad de la Información a todos los empleados y proveedores de la organización, se tienen indicadores de desempeño y se hacen mejoras basadas en los indicadores</h5></label>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>12)</strong> ¿Se definen responsabilidades sobre la Seguridad de la información que se extiendan más allá de la finalización de un contrato como por ejemplo cuestiones relativas a la confidencialidad de la Información?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>OPERACIONAL</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input name="group12" type="radio" id="radio_68"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="a" />
+                                    <label for="radio_68"><h5><strong>A)</strong> No se definen responsabilidades más allá de la finalización del contrato</h5></label>
+                                    <br>
+                                    
+                                    <input name="group12" type="radio" id="radio_69"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="b" />
+                                    <label for="radio_69"><h5><strong>B)</strong> Se definieron responsabilidades más allá de la finalización del contrato, pero no está vigente o actualizado</h5></label>
+                                    <br>
+
+                                    <input name="group12" type="radio" id="radio_70"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="c" />
+                                    <label for="radio_70"><h5><strong>C)</strong> Se definieron responsabilidades más allá de la finalización del contrato a nivel departamental</h5></label>
+                                    <br>
+
+                                    <input name="group12" type="radio" id="radio_71"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="d" />
+                                    <label for="radio_71"><h5><strong>D)</strong> Se definieron responsabilidades más allá de la finalización del contrato a nivel organizacional y se reporta a la Alta Dirección</h5></label>
+                                    <br>
+
+                                    <input name="group12" type="radio" id="radio_72"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="e" />
+                                    <label for="radio_72"><h5><strong>E)</strong> Se definieron responsabilidades más allá de la finalización del contrato a nivel organizacional, se reporta a la Alta Dirección y se cuenta con indicadores.</h5></label>
+                                    <br>
+
+                                    <input name="group12" type="radio" id="radio_73"  formControlName="group12" [(ngModel)]="resFrom[11].res" (change)="respuesta12()" value="f" />
+                                    <label for="radio_73"><h5><strong>F)</strong> Se definieron responsabilidades más allá de la finalización del contrato a nivel organizacional, se reporta a la Alta Dirección, se cuenta con indicadores y se realizan mejoras con base en los indicadores</h5></label>
+                                    <br>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="dosRespuestasRisk()">Guardar Respuestas <strong>{{CG2}}/ 5</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                        </form>
+                    </mat-step>
+                    <!--////////////////DOS//////////////-->
+                    <!--////////////////TRES//////////////-->
+                    <mat-step [stepControl]="tresFormGroup">
+                        <form [formGroup]="tresFormGroup">
+                            <ng-template matStepLabel>Physical Security and Business Continuity <strong> Respuestas: {{CG3}}/ 4</strong></ng-template>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>13)</strong> ¿Se establecen perímetros de seguridad física donde sea necesario con barreras de acceso? ¿ Está establecido en alguna política?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group13" type="radio" id="radio_74" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="a" />
+                                        <label for="radio_74"><h5><strong>A)</strong> No, no se encuentran identificadas las zonas de seguridad donde se resguardan activos de información</h5></label>
+                                        <br>
+
+                                        <input name="group13" type="radio" id="radio_75" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="b" />
+                                        <label for="radio_75"><h5><strong>B)</strong> Se cuentan con zonas restringidas pero no se han definido los criterios para su clasificación o identificación, no hay una política documentada.</h5></label>
+                                        <br>
+
+                                        <input name="group13" type="radio" id="radio_76" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="c" />
+                                        <label for="radio_76"><h5><strong>C)</strong> Existe una política y/o procedimiento para la definición de zonas de seguridad, se identifican pero no existe un registro de las mismas.</h5></label>
+                                        <br>
+
+                                        <input name="group13" type="radio" id="radio_77" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="d" />
+                                        <label for="radio_77"><h5><strong>D)</strong> Existe una política y/o procedimiento para la definición de zonas de seguridad, se restringe el acceso a estas zonas y se cuenta con un registro de las mismas y se revisan periódicamente a fin de mantenerlas identificadas y actualizadas</h5></label>
+                                        <br>
+
+                                        <input name="group13" type="radio" id="radio_78" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="e" />
+                                        <label for="radio_78"><h5><strong>E)</strong> Se verifica que las zonas de seguridad cumplen con los criterios establecidos para continuar siendo consideradas como zonas de seguridad o identificar otras areas que requieran ser protegidas mediante mecanismos de seguridad.</h5></label>
+                                        <br>
+
+                                        <input name="group13" type="radio" id="radio_79" formControlName="group13" [(ngModel)]="resFrom[12].res" (change)="respuesta13()" value="f" />
+                                        <label for="radio_79"><h5><strong>F)</strong> Se lleva a cabo la evaluación de las condiciones físicas de las zonas seguras a fin de implementar mejoras requeridas.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>14)</strong> ¿Existen controles de acceso a personas autorizadas en áreas restringidas?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group14" type="radio" id="radio_80" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="a" />
+                                        <label for="radio_80"><h5><strong>A)</strong> No hay controles de acceso definidos para todas las zonas seguras</h5></label>
+                                        <br>
+
+                                        <input name="group14" type="radio" id="radio_81" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="b" />
+                                        <label for="radio_81"><h5><strong>B)</strong> Se restringen los accesos a las zonas seguras de manera informal, no se cuenta con pliticas y procedimientos documentados</h5></label>
+                                        <br>
+
+                                        <input name="group14" type="radio" id="radio_82" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="c" />
+                                        <label for="radio_82"><h5><strong>C)</strong> Existen políticas y procedimientos para restringir el acceso a zonas seguras, pero no se guardan registros de  solicitud y autorización de accesos</h5></label>
+                                        <br>
+
+                                        <input name="group14" type="radio" id="radio_83" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="d" />
+                                        <label for="radio_83"><h5><strong>D)</strong> Existen políticas y procedimientos para restringir el acceso a zonas seguras, se conservan registros y evidencia sobre las solicitudes y autorización de accesos,</h5></label>
+                                        <br>
+
+                                        <input name="group14" type="radio" id="radio_84" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="e" />
+                                        <label for="radio_84"><h5><strong>E)</strong> Se realizan revisiones para medir el grado de cumplimiento de los controles y el desempeño de los procesos implementados.</h5></label>
+                                        <br>
+
+                                        <input name="group14" type="radio" id="radio_85" formControlName="group14" [(ngModel)]="resFrom[13].res" (change)="respuesta14()" value="f" />
+                                        <label for="radio_85"><h5><strong>F)</strong> Los controles  de acceso se mejoran continuamente con base en los resultados de las mediciones de desempeño.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>15)</strong> ¿Cuentan con planes de emergencia para proteger los activos de información contra contingencias ambientales como incendio, inundación, sismo o disturbios en las instalaciones?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>ESTRATÉGICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group15" type="radio" id="radio_86" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="a" />
+                                        <label for="radio_86"><h5><strong>A)</strong> No existen planes de emergencia para reaccionar en caso de presentarse emergencias ambientales</h5></label>
+                                        <br>
+
+                                        <input name="group15" type="radio" id="radio_87" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="b" />
+                                        <label for="radio_87"><h5><strong>B)</strong> Se estableció protección para hacer frente a una auditoría. Es probable que no esté vigente.</h5></label>
+                                        <br>
+
+                                        <input name="group15" type="radio" id="radio_88" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="c" />
+                                        <label for="radio_88"><h5><strong>C)</strong> Se estableció protección a nivel departamental, no se conoce en toda la organización y no se ha hecho esfuerzo para que se conozca. No es seguro que se aplique.</h5></label>
+                                        <br>
+
+                                        <input name="group15" type="radio" id="radio_89" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="d" />
+                                        <label for="radio_89"><h5><strong>D)</strong> Se estableció protección a nivel organizacional y se hace una revisión periódica para mantenerla vigente y se audita su cumplimiento.</h5></label>
+                                        <br>
+
+                                        <input name="group15" type="radio" id="radio_90" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="e" />
+                                        <label for="radio_90"><h5><strong>E)</strong> Se estableció protección a nivel organizacional y se tienen procesos definidos para medir el grado de cumplimiento con la misma en toda la organización, así como para medir el desempeño de los procesos implementados para cumplirla.</h5></label>
+                                        <br>
+
+                                        <input name="group15" type="radio" id="radio_91" formControlName="group15" [(ngModel)]="resFrom[14].res" (change)="respuesta15()" value="f" />
+                                        <label for="radio_91"><h5><strong>F)</strong> Se estableció protección a nivel organizacional, y se mejora continuamente con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño de los procesos implementados en la organización para cumplirla.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>16)</strong> ¿Se cuenta con sistemas redundantes para mantener la operación de la infraestructura tecnológica que soporta los activos de seguridad de la información?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>ESTRATÉGICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group16" type="radio" id="radio_92" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="a"/>
+                                        <label for="radio_92"><h5><strong>A)</strong> No se cuenta con sistemas de redundancia para mantener la operación de los activos de información utilizados para procesar, almacenar o transmitir información.</h5></label>
+                                        <br>
+
+                                        <input name="group16" type="radio" id="radio_93" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="b"/>
+                                        <label for="radio_93"><h5><strong>B)</strong> Se implementan medidas y sistemas redundantes para mantener la seguridad de la información dentro de la organización, sin embargo, no se cuentan con politicas y procedimientos </h5></label>
+                                        <br>
+
+                                        <input name="group16" type="radio" id="radio_94" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="c"/>
+                                        <label for="radio_94"><h5><strong>C)</strong> Se cuenta con lineamientos definidos  para la implementación de sistemas redundantes, se implementan las medidas y sistemas redundantes para mantener la operación de la infraestructura de seguridad de la información. </h5></label>
+                                        <br>
+
+                                        <input name="group16" type="radio" id="radio_95" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="d"/>
+                                        <label for="radio_95"><h5><strong>D)</strong> Se cuenta con lineamientos definidos  para la implementación de sistemas redundantes, se implementan las medidas y sistemas redundantes para mantener la operación de la infraestructura de seguridad de la información. Se cuenta con evidencia de implementación, mantenimiento y pruebas a los mismos.</h5></label>
+                                        <br>
+
+                                        <input name="group16" type="radio" id="radio_96" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="e"/>
+                                        <label for="radio_96"><h5><strong>E)</strong> Se tienen  relacionados los sistemas redundantes con  los escenarios de interrupción que soportan y sus dependencias. Se tienen procesos para mantener al día dichos arreglos, y se tiene cuantificado el impacto de no contar con estos. </h5></label>
+                                        <br>
+
+                                        <input name="group16" type="radio" id="radio_97" formControlName="group16" [(ngModel)]="resFrom[15].res" (change)="respuesta16()" value="f"/>
+                                        <label for="radio_97"><h5><strong>F)</strong> Sí, se tienen relacionados los sistemas redundantes con los escenarios de interrupción que soportan y sus dependencias Se tienen procesos para mantener al día dichos arreglos, y se tiene cuantificado el impacto de no contar con estos, y se mejoran consistentemente de acuerdo con los resultados del programa de continuidad</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="tresRespuestasRisk()">Guardar Respuestas <strong> {{CG3}}/ 4</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                    <!--////////////////TRES//////////////-->
+                    <!--////////////////CUATRO//////////////-->
+                        <mat-step [stepControl]="cuatroFormGroup">
+                        <form [formGroup]="cuatroFormGroup">
+                            <ng-template matStepLabel>Identity and Access Management <strong> Respuestas: {{CG4}}/ 5</strong></ng-template>
+                            
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>17)</strong> ¿Cómo se gestionan los accesos físicos y lógicos a las areas e infraestructura de TI?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group17" type="radio" id="radio_98" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="a" />
+                                        <label for="radio_98"><h5><strong>A)</strong> No se gestionan o son gestionados parcialmente, no hay controles establecidos para el acceso a todas las areas e infraestructura de TI.</h5></label>
+                                        <br>
+
+                                        <input name="group17" type="radio" id="radio_99" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="b" />
+                                        <label for="radio_99"><h5><strong>B)</strong> Se gestionan de manera informal bajo buenas prácticas basadas en la experiencia del personal responsable, no hay procedimientos documentados.</h5></label>
+                                        <br>
+
+                                        <input name="group17" type="radio" id="radio_100" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="c" />
+                                        <label for="radio_100"><h5><strong>C)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles.</h5></label>
+                                        <br>
+
+                                        <input name="group17" type="radio" id="radio_101" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="d" />
+                                        <label for="radio_101"><h5><strong>D)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles. Se registran las actividades y se genera evidencia de cumplimiento, la cual se conserva por un período establecido.</h5></label>
+                                        <br>
+
+                                        <input name="group17" type="radio" id="radio_102" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="e" />
+                                        <label for="radio_102"><h5><strong>E)</strong> Se tienen procesos definidos para medir el grado de cumplimiento de los controles, y para medir su desempeño.</h5></label>
+                                        <br>
+
+                                        <input name="group17" type="radio" id="radio_103" formControlName="group17" [(ngModel)]="resFrom[16].res" (change)="respuesta17()" value="f" />
+                                        <label for="radio_103"><h5><strong>F)</strong> Se planean y ejecutan mejoras con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño del proceso implementado en la organización.</h5></label>
+                                        <br>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>18)</strong> ¿Existen procesos formales para asignación de perfiles de acceso?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group18" type="radio" id="radio_104" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="a"/>
+                                        <label for="radio_104"><h5><strong>A)</strong> No hay procesos formales establecidos</h5></label>
+                                        <br>
+
+                                        <input name="group18" type="radio" id="radio_105" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="b"/>
+                                        <label for="radio_105"><h5><strong>B)</strong> Se gestionan de manera informal bajo buenas prácticas basadas en la experiencia del personal responsable, no hay procedimientos documentados.</h5></label>
+                                        <br>
+
+                                        <input name="group18" type="radio" id="radio_106" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="c"/>
+                                        <label for="radio_106"><h5><strong>C)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles.</h5></label>
+                                        <br>
+
+                                        <input name="group18" type="radio" id="radio_107" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="d"/>
+                                        <label for="radio_107"><h5><strong>D)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles. Se registran las actividades y se genera evidencia de cumplimiento, la cual se conserva por un período establecido.</h5></label>
+                                        <br>
+
+                                        <input name="group18" type="radio" id="radio_108" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="e"/>
+                                        <label for="radio_108"><h5><strong>E)</strong> Se tienen procesos definidos para medir el grado de cumplimiento de los controles, y para medir su desempeño.</h5></label>
+                                        <br>
+
+                                        <input name="group18" type="radio" id="radio_109" formControlName="group18" [(ngModel)]="resFrom[17].res" (change)="respuesta18()" value="f"/>
+                                        <label for="radio_109"><h5><strong>F)</strong> Se planean y ejecutan mejoras con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño del proceso implementado en la organización.</h5></label>
+                                        <br>
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>19)</strong> ¿Se cuenta con un proceso  para la asignación y autorización de permisos especiales de administración de accesos (accesos privilegiados)?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group19" type="radio" id="radio_111" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="a"/>
+                                        <label for="radio_111"><h5><strong>A)</strong> No hay procesos formales establecidos</h5></label>
+                                        <br>
+
+                                        <input name="group19" type="radio" id="radio_112" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="b"/>
+                                        <label for="radio_112"><h5><strong>B)</strong> Se gestionan de manera informal bajo buenas prácticas basadas en la experiencia del personal responsable, no hay procedimientos documentados.</h5></label>
+                                        <br>
+
+                                        <input name="group19" type="radio" id="radio_113" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="c"/>
+                                        <label for="radio_113"><h5><strong>C)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles. Los accesos privilegiados se gestionan mediante los mismos lineamientos y procedimientos que los accesos normales.</h5></label>
+                                        <br>
+
+                                        <input name="group19" type="radio" id="radio_114" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="d"/>
+                                        <label for="radio_114"><h5><strong>D)</strong> Existen procedimientos documentados que son seguidos al aplicar los controles. Se registran las actividades y se genera evidencia de cumplimiento, la cual se conserva por un período establecido.</h5></label>
+                                        <br>
+
+                                        <input name="group19" type="radio" id="radio_115" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="e"/>
+                                        <label for="radio_115"><h5><strong>E)</strong> Se tienen procesos definidos para medir el grado de cumplimiento de los controles, y para medir su desempeño.</h5></label>
+                                        <br>
+
+                                        <input name="group19" type="radio" id="radio_116" formControlName="group19" [(ngModel)]="resFrom[18].res" (change)="respuesta19()" value="f"/>
+                                        <label for="radio_116"><h5><strong>F)</strong> Se planean y ejecutan mejoras con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño del proceso implementado en la organización.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>20)</strong> ¿Existe una política en donde se establecen medidas para controlar el establecimiento de contraseñas seguras?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>TÁCTICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group20" type="radio" id="radio_117" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="a"/>
+                                        <label for="radio_117"><h5><strong>A)</strong> No existen lineamientos establecidos para el uso de contraseñas.</h5></label>
+                                        <br>
+
+                                        <input name="group20" type="radio" id="radio_118" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="b"/>
+                                        <label for="radio_118"><h5><strong>B)</strong> La composición de contraseñas se aplica mediante características que brindan seguridad y robustez,p. ej. longitud minima, uso de caracteres alfanuméricos, simbolos, no está establecido en una política.</h5></label>
+                                        <br>
+
+                                        <input name="group20" type="radio" id="radio_119" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="c"/>
+                                        <label for="radio_119"><h5><strong>C)</strong> Se cuenta con politicas y procedimientos documentados para la composición de contraseñas, se controla a través de la configuración de políticas en los sistemas. </h5></label>
+                                        <br>
+
+                                        <input name="group20" type="radio" id="radio_120" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="d"/>
+                                        <label for="radio_120"><h5><strong>D)</strong> Las contraseñas se controlan desde la configuración dentro de los sistemas, se mantienen controles como establecimiento de vigencia, no reutilización</h5></label>
+                                        <br>
+
+                                        <input name="group20" type="radio" id="radio_121" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="e"/>
+                                        <label for="radio_121"><h5><strong>E)</strong> Se llevan a cabo revisiones periódicas para medir el grado de cumplimiento con la misma en toda la organización, así como para medir el desempeño de los procesos implementados para cumplirla.</h5></label>
+                                        <br>
+
+                                        <input name="group20" type="radio" id="radio_122" formControlName="group20" [(ngModel)]="resFrom[19].res" (change)="respuesta20()" value="f"/>
+                                        <label for="radio_122"><h5><strong>F)</strong> Con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño de los procesos implementados en la organización para cumplirla.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>21)</strong> ¿Existen procesos formales de registro, cambio y eliminación de usuarios?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group21" type="radio" id="radio_124" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="a"/>
+                                        <label for="radio_124"><h5><strong>A)</strong> No hay procesos. No se gestionan usuarios de acceso a los sistemas.</h5></label>
+                                        <br>
+
+                                        <input name="group21" type="radio" id="radio_125" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="b"/>
+                                        <label for="radio_125"><h5><strong>B)</strong> Las altas bajas y cambios de usuarios se realizan de acuerdo a buenas prácticas, sin seguir un procedimiento formal.</h5></label>
+                                        <br>
+
+                                        <input name="group21" type="radio" id="radio_126" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="c"/>
+                                        <label for="radio_126"><h5><strong>C)</strong> Existe un procedimiento formal, y documentado, el cual es seguido por el personal, pero no en todos los casos.</h5></label>
+                                        <br>
+
+                                        <input name="group21" type="radio" id="radio_127" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="d"/>
+                                        <label for="radio_127"><h5><strong>D)</strong> El procedimiento se sigue y es aplicado en todos los casos, se documentan las solicitudes y autorizaciones de altas, bajas y cambios, se mantienen registros como evidencia de cumplimiento.</h5></label>
+                                        <br>
+
+                                        <input name="group21" type="radio" id="radio_128" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="e"/>
+                                        <label for="radio_128"><h5><strong>E)</strong> Se realizan revisiones periódicas al procedimiento para medir el grado de cumplimiento con el mismo en toda la organización, así como para medir el desempeño y verificar su eficiencia.</h5></label>
+                                        <br>
+
+                                        <input name="group21" type="radio" id="radio_129" formControlName="group21" [(ngModel)]="resFrom[20].res" (change)="respuesta21()" value="f"/>
+                                        <label for="radio_129"><h5><strong>F)</strong> Con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño del proceso implementado en la organización, se identifican areas de oportunidad y se realizan mejoras al procedimiento.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="cuatroRespuestasRisk()">Guardar Respuestas <strong> {{CG4}}/ 5</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                    <!--////////////////CUATRO//////////////-->
+                    <!--////////////////CINCO//////////////-->
+                        <mat-step [stepControl]="cincoFormGroup">
+                        <form [formGroup]="cincoFormGroup">
+                            <ng-template matStepLabel>IT Security / Cyber Security <strong> Respuestas: {{CG5}}/ 4</strong></ng-template>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>22)</strong> ¿Existe una política para el establecimiento y uso de controles criptográficos? </p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group22" type="radio" id="radio_130" formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="a"/>
+                                        <label for="radio_130"><h5><strong>A)</strong> No se aplican controles criptográficos para la información almacenada o transmitida a través de los equipos e infraestructura tecnológica de la organización.</h5></label>
+                                        <br>
+
+                                        <input name="group22" type="radio" id="radio_131" formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="b"/>
+                                        <label for="radio_131"><h5><strong>B)</strong> Se aplican controles criptográficos solo en algunos casos específicos, no se ha realizado alguna identificación de riesgos por lo que estos controles se aplican por buenas prácticas o conocimientos de los responsables.</h5></label>
+                                        <br>
+
+                                        <input name="group22" type="radio" id="radio_132" formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="c"/>
+                                        <label for="radio_132"><h5><strong>C)</strong> Existen procedimientos documentados para implementación de controles criptográficos en el almacenamiento, se han implementado estos controles omo resultado de la identificación de riesgos asociados.</h5></label>
+                                        <br>
+
+                                        <input name="group22" type="radio" id="radio_133" formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="d"/>
+                                        <label for="radio_133"><h5><strong>D)</strong> Se siguen procedimientos para uso de controles criptográficos, se lleva un control de los medios y activos de información a los cuales deben ser aplicados estos controles, y se genera evidencia de su aplicación.</h5></label>
+                                        <br>
+
+                                        <input name="group22" type="radio" id="radio_134" formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="e"/>
+                                        <label for="radio_134"><h5><strong>E)</strong> Se siguen procedimientos para uso de controles criptográficos, se realizan revisiones para medir su cumplimiento y se mantienen indicadores de desempeño</h5></label>
+                                        <br>
+
+                                        <input name="group22" type="radio" id="radio_135"formControlName="group22" [(ngModel)]="resFrom[21].res" (change)="respuesta22()" value="f"/>
+                                        <label for="radio_135"><h5><strong>F)</strong> Con base en los resultados de las evaluaciones, se identifican areas de oportunidad y se implementan las mejoras correspondientes.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>23)</strong> ¿Se cuenta con un procedimiento para la gestión de cambios en los sistemas e infraestructura de TI,  donde se evalue el impacto en la seguridad de información?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>ESTRATÉGICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group23" type="radio" id="radio_136" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="a" />
+                                        <label for="radio_136"><h5><strong>A)</strong> No se gestionan los cambios a la infraestructura de TI</h5></label>
+                                        <br>
+
+                                        <input name="group23" type="radio" id="radio_137" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="b" />
+                                        <label for="radio_137"><h5><strong>B)</strong> Los cambios se registran de manera informal, no se sigue un procedimiento documentado.</h5></label>
+                                        <br>
+
+                                        <input name="group23" type="radio" id="radio_138" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="c" />
+                                        <label for="radio_138"><h5><strong>C)</strong> Si tienen definidos y documentados los procedimientos de control de cambios y son conocidos por las personas responsables de su ejecución</h5></label>
+                                        <br>
+
+                                        <input name="group23" type="radio" id="radio_139" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="d" />
+                                        <label for="radio_139"><h5><strong>D)</strong> Si se tienen definidos y documentados los procedimientos de control de cambios y son conocidos por las personas responsables de su ejecución. Se generan los registros y formatos establecidos en el procedimiento. Adicionalmente los procedimientos son revisados y actualizados periódicamente.</h5></label>
+                                        <br>
+
+                                        <input name="group23" type="radio" id="radio_140" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="e" />
+                                        <label for="radio_140"><h5><strong>E)</strong> Si se tienen definidos y documentados los procedimientos de control de cambios y son conocidos por las personas responsables de su ejecución. Adicionalmente los procedimientos son revisados, actualizados y medidos periódicamente.</h5></label>
+                                        <br>
+
+                                        <input name="group23" type="radio" id="radio_141" formControlName="group23" [(ngModel)]="resFrom[22].res" (change)="respuesta23()" value="f" />
+                                        <label for="radio_141"><h5><strong>F)</strong> Si se tienen definidos y documentados los procedimientos de control de cambios, son conocidos por las personas responsables de su ejecución. Adicionalmente los procedimientos son revisados, actualizados y medidos periódicamente para verificar que alcanzan el objetivo y se sigue un procedimiento de actualización y mejora de los procedimientos.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>24)</strong> ¿Se definen y documentan los requisitos de Seguridad de la Información para los nuevos sistemas de Información ?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>ESTRATÉGICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                                        
+                                        <input name="group24" type="radio" id="radio_142" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="a"/>
+                                        <label for="radio_142"><h5><strong>A)</strong> No se consideran requisitos de seguridad en la adquisición y desarrollo y nuevas herramientas.</h5></label>
+                                        <br>
+
+                                        <input name="group24" type="radio" id="radio_143" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="b"/>
+                                        <label for="radio_143"><h5><strong>B)</strong> Al momento de requerir nuevos sistemas o desarrollos, se identifican los riesgos y requisitos de seguridad de la información de manera informal, no siempre se documentan o se registran.</h5></label>
+                                        <br>
+
+                                        <input name="group24" type="radio" id="radio_144" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="c"/>
+                                        <label for="radio_144"><h5><strong>C)</strong> Los requerimientos de seguridad de la información para nuevas adquisiciones y desarrollos de infraestructura de TI, se identifican siguiendo un procedimiento formal.</h5></label>
+                                        <br>
+
+                                        <input name="group24" type="radio" id="radio_145" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="d"/>
+                                        <label for="radio_145"><h5><strong>D)</strong> Los requerimientos de seguridad de la información para nuevas adquisiciones y desarrollos de infraestructura de TI, se identifican siguiendo un procedimiento formal y se deja un registro sobre la identificación y aplicación de estos requisitos de seguridad identificados.</h5></label>
+                                        <br>
+
+                                        <input name="group24" type="radio" id="radio_146" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="e"/>
+                                        <label for="radio_146"><h5><strong>E)</strong> Se asegura el cumplimiento de los requisitos de seguridad de la información identificados, se monitorea y se definen indicacadores de desempeño.</h5></label>
+                                        <br>
+
+                                        <input name="group24" type="radio" id="radio_147" formControlName="group24" [(ngModel)]="resFrom[23].res" (change)="respuesta24()" value="f"/>
+                                        <label for="radio_147"><h5><strong>F)</strong> Se realiza un revisión periodica del procedimiento, se validanlos indicadores de desempeño, se identifican las oportunidades y s eimplementan las mejoras.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>25)</strong> ¿Se establecen  e implementan requisitos de seguridad en los servicios de red tanto propios como subcontratados y se verifican mediante SLA's?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>OPERACIONAL</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+                    
+                                        <input name="group25" type="radio" id="radio_148" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()" value="a"/>
+                                        <label for="radio_148"><h5><strong>A)</strong> No se tienen definidos requerimientos de seguridad de la información para la gestión de redes, y no se cuenta con SLA's definidos</h5></label>
+                                        <br>
+
+                                        <input name="group25" type="radio" id="radio_149" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()" value="b"/>
+                                        <label for="radio_149"><h5><strong>B)</strong> Se identifican y establecen requerimientos de seguridad de la información para los servicios de red de acuerdo a necesidades identificadas de manera informal.</h5></label>
+                                        <br>
+
+                                        <input name="group25" type="radio" id="radio_150" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()" value="c"/>
+                                        <label for="radio_150"><h5><strong>C)</strong> Se establecen requerimientos de seguridad de la información para los servicios de red siguiendo un procedimiento o política documentada.</h5></label>
+                                        <br>
+
+                                        <input name="group25" type="radio" id="radio_151" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()" value="d"/>
+                                        <label for="radio_151"><h5><strong>D)</strong> Los requerimientos de seguridad de la información para los servicios de red están establecidos y documentados, se mantienen registros y se verifica su cumplimiento a traves de SLA's</h5></label>
+                                        <br>
+
+                                        <input name="group25" type="radio" id="radio_152" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()" value="e"/>
+                                        <label for="radio_152"><h5><strong>E)</strong> Se tienen procesos definidos para medir el grado de cumplimiento de los requerimientos de seguridad de la información para los servicios de red toda la organización, así como para medir el desempeño de los procesos implementados para cumplir los SLA's.</h5></label>
+                                        <br>
+
+                                        <input name="group25" type="radio" id="radio_153" formControlName="group25" [(ngModel)]="resFrom[24].res" (change)="respuesta25()"  value="f"/>
+                                        <label for="radio_153"><h5><strong>F)</strong> Se identifican nuevos requerimientos o se  mejoran continuamente con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño de los SLA's implementados en la organización.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="cincoRespuestasRisk()">Guardar Respuestas <strong> {{CG5}}/ 4</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                        <!--////////////////CINCO//////////////-->
+                        <!--////////////////SEIS//////////////-->
+                        <mat-step [stepControl]="seisFormGroup">
+                        <form [formGroup]="seisFormGroup">
+                            <ng-template matStepLabel>Supplier Relationships <strong> Respuestas: {{CG6}}/ 2</strong></ng-template>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>26)</strong> ¿Existe una política de Seguridad de la información para proveedores que acceden a activos de la información de la empresa?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>TÁCTICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group26" type="radio" id="radio_154" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="a"  />
+                                        <label for="radio_154"><h5><strong>A)</strong> No se cuenta con requerimientos de seguridad de la información aplicables a proveedores a fin de proteger la información compartida con los mismos.</h5></label>
+                                        <br>
+
+                                        <input name="group26" type="radio" id="radio_156" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="b"  />
+                                        <label for="radio_156"><h5><strong>B)</strong> Se establecen acuerdos y requerimientos de seguridad de la información al establecer relaciones con proveedores, no existe un lineamiento o politica documentada para la identificación de estos requisitos de seguridad.</h5></label>
+                                        <br>
+
+                                        <input name="group26" type="radio" id="radio_157" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="c"  />
+                                        <label for="radio_157"><h5><strong>C)</strong> Se establecen acuerdos y requerimientos de seguridad de la información al establecer relaciones con proveedores, se tienen documentada una política que obligue a establecer  requisitos de seguridad de la información.</h5></label>
+                                        <br>
+
+                                        <input name="group26" type="radio" id="radio_158" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="d"  />
+                                        <label for="radio_158"><h5><strong>D)</strong> Se establecen acuerdos y requerimientos de seguridad de la información al establecer relaciones con proveedores, se tienen documentada una política que obligue a establecer  requisitos de seguridad de la información. Se documentan los requisitos de seguridad con cada proveedor, se incluyen en los contratos como clausulas o anexos, se mantiene un control para verificar su cumplimiento.</h5></label>
+                                        <br>
+
+                                        <input name="group26" type="radio" id="radio_159" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="e"  />
+                                        <label for="radio_159"><h5><strong>E)</strong> Se mantiene un control para registrar y verificar los requisitos de seguridad de la información establecidos con cada cliente, se generan indicadores y se verifica su cimplimiento.</h5></label>
+                                        <br>
+
+                                        <input name="group26" type="radio" id="radio_160" formControlName="group26" [(ngModel)]="resFrom[25].res" (change)="respuesta26()" value="f"  />
+                                        <label for="radio_160"><h5><strong>F)</strong> Con los resultados de las revisiones a los Requisitos de seguridad de la información, se identifican oportunidades y se implementan mejoras con base en los resultados del monitoreo, evaluación, medición y análisis del desempeño de los procesos implementados en la organización.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>27)</strong> ¿Existen acuerdos de confidencialidad firmados con los clientes a fin de proteger la información compartida con estos?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>TÁCTICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group27" type="radio" id="radio_161" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="a"/>
+                                        <label for="radio_161"><h5><strong>A)</strong> No se cuenta con Acuerdos de confidencialidad.</h5></label>
+                                        <br>
+
+                                        <input name="group27" type="radio" id="radio_162" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="b"/>
+                                        <label for="radio_162"><h5><strong>B)</strong> Se firman acuerdos de confidencialidad, no existe una obligación establecida para la firma de estos acuerdos.</h5></label>
+                                        <br>
+
+                                        <input name="group27" type="radio" id="radio_163" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="c"/>
+                                        <label for="radio_163"><h5><strong>C)</strong> Existe una politica donde se establece que deben establecerse y firmarse los acuerdos de confidencialidad con los proveedores</h5></label>
+                                        <br>
+
+                                        <input name="group27" type="radio" id="radio_164" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="d"/>
+                                        <label for="radio_164"><h5><strong>D)</strong> Se sigue una política documentada para establecer la obligación de firmar acuerdos de confidencialidad con los proveedores, se mantiene evidencia de la firma de estos acuerdos, y se verifica su aplicación.</h5></label>
+                                        <br>
+
+                                        <input name="group27" type="radio" id="radio_165" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="e"/>
+                                        <label for="radio_165"><h5><strong>E)</strong> Los acuerdos de confidencialidad se revisan periódicamente a fin de identificar que hayan sido firmados por todos los proveedores a quienes sea aplicable, y que cubran de manera integral los requisitos  de confidencialidad establecidos por la organización.</h5></label>
+                                        <br>
+
+                                        <input name="group27" type="radio" id="radio_166" formControlName="group27" [(ngModel)]="resFrom[26].res" (change)="respuesta27()" value="f"/>
+                                        <label for="radio_166"><h5><strong>F)</strong> Se actualizan los acuerdos de confidencialidad como parte del proceso de mejora, a fin de asegurar el cumplimiento con los requisitos legales y contractuales referentes a la seguridad de la información</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="seisRespuestasRisk()">Guardar Respuestas <strong> {{CG6}}/ 2</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                        <!--////////////////SEIS//////////////-->
+                        <!--////////////////SIETE//////////////-->
+                        <mat-step [stepControl]="sieteFormGroup">
+                        <form [formGroup]="sieteFormGroup">
+                            <ng-template matStepLabel>Compliance <strong> Respuestas: {{CG7}}/ 1</strong></ng-template>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p><strong>28)</strong> ¿Están identificados todos los requisitos legislativos, regulatorios, contractuales con los que debe cumplir la Organización?</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>TÁCTICO</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="demo-radio-button">
+
+                                        <input name="group28" type="radio" id="radio_167" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="a" />
+                                        <label for="radio_167"><h5><strong>A)</strong> No han sido identificados los requerimientos legales, contractuales o regulatorios a los que está obligada la organización.</h5></label>
+                                        <br>
+
+                                        <input name="group28" type="radio" id="radio_168" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="b" />
+                                        <label for="radio_168"><h5><strong>B)</strong> Se tiene identificados y se procura dar cumplimiento conforme son requeridos, no existe ninguna politica o lineamiento para llevar a cabo esta actividad.</h5></label>
+                                        <br>
+
+                                        <input name="group28" type="radio" id="radio_169" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="c" />
+                                        <label for="radio_169"><h5><strong>C)</strong> El monitoreo y cumplimiento de los requerimientos legales, contractuales o regulatorios de la organización se lleva a cabo como parte de una política o procedimiento formal.</h5></label>
+                                        <br>
+
+                                        <input name="group28" type="radio" id="radio_170" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="d" />
+                                        <label for="radio_170"><h5><strong>D)</strong> Se lleva un control para llevar a cabo el monitoreo de actualizaciones y cumplimiento a los requerimientos legales, contractuales o regulatorios. Estas actividades  se llevan a cabo como parte de una política o procedimiento formal.</h5></label>
+                                        <br>
+
+                                        <input name="group28" type="radio" id="radio_171" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="e" />
+                                        <label for="radio_171"><h5><strong>E)</strong> Se tienen identificados todos los requisitos, documentados y se monitorea su cumplimiento mediante mediciones e indicadores.</h5></label>
+                                        <br>
+
+                                        <input name="group28" type="radio" id="radio_172" formControlName="group28" [(ngModel)]="resFrom[27].res" (change)="respuesta28()" value="f" />
+                                        <label for="radio_172"><h5><strong>F)</strong> Se tienen identificados todos los requisitos, documentados y se monitorea su cumplimiento.  Adicionalmente se tienen indicadores de desempeño y se implementan mejoras con base en los indicadores de desempeño.</h5></label>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="sieteRespuestasRisk()">Guardar Respuestas <strong> {{CG7}}/ 1</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                        <!--////////////////SIETE//////////////-->
+                        <!--////////////////OCHO//////////////-->
+                        <mat-step [stepControl]="ochoFormGroup">
+                        <form [formGroup]="ochoFormGroup">
+                            <ng-template matStepLabel>Data Protection <strong> Respuestas: {{CG8}}/ 1</strong></ng-template>
+
+                            <div class="row">
+                            <div class="col-sm-3">
+                                <p><strong>29)</strong> ¿Se aseguran los datos personales de acuerdo a la legislación  que aplique a la organización?</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>ESTRATÉGICO</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="demo-radio-button">
+
+                                    <input name="group29" type="radio" id="radio_173" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="a" />
+                                    <label for="radio_173"><h5><strong>A)</strong> No se tienen implementados controles para proteger los datos personales de acuerdo a la legislación aplicable, se desconocen las obligaciones que se deben cumplir por parte del personal que maneja esta información.</h5></label>
+                                    <br>
+
+                                    <input name="group29" type="radio" id="radio_174" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="b" />
+                                    <label for="radio_174"><h5><strong>B)</strong> Se cumple con algunas de las obligaciones regulatorias en materia de protección de datos personales (p. ej. avisos de privacidad, atención a solicitudes de derechos ARCO), no se tiene designado a un responsable del cumplimiento en la organización, por lo que no se verifica el cumplimiento integral a la regulación.</h5></label>
+                                    <br>
+
+                                    <input name="group29" type="radio" id="radio_175" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="c" />
+                                    <label for="radio_175"><h5><strong>C)</strong> Existe una política de datos personales apegada a la legislación correspondiente, la cual es seguidapor los responsables y se da cumplimiento a las obligaciones regulatorias..</h5></label>
+                                    <br>
+
+                                    <input name="group29" type="radio" id="radio_176" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="d" />
+                                    <label for="radio_176"><h5><strong>D)</strong> Está designado un responsable de la protección de datos a nivel organización, existe una política documentada de protección de datos interna de la empresa, se tienen procedimientos para su ejecución, y es conocida y aplicada por el personal interno de la organización. </h5></label>
+                                    <br>
+
+                                    <input name="group29" type="radio" id="radio_177" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="e" />
+                                    <label for="radio_177"><h5><strong>E)</strong> El responsable de la protección de datos personales de la organización se encarga de monitorear y verificar el cumplimiento de la regulación en materia de protección de datos personales, se realizan evaluaciones periódicas y se lleva un control de los hallazgos detectados.</h5></label>
+                                    <br>
+
+                                    <input name="group29" type="radio" id="radio_178" formControlName="group29" [(ngModel)]="resFrom[28].res" (change)="respuesta29()" value="f" />
+                                    <label for="radio_178"><h5><strong>F)</strong> Se implementan acciones de mejora como resultado de las revisiones a fin de hacer mas eficientes los controles y asegurar en la medida de lo posible el cumplimiento a las obligaciones regulatorias.</h5></label>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+
+                            <div>
+                            <!-- <button type="button" class="btn btn-success" (click)="ochoRespuestasRisk()">Guardar Respuestas<strong> {{CG8}}/ 1</strong></button> -->
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                        </mat-step>
+                    <!--////////////////OCHO//////////////-->
+                    </mat-stepper>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- sample modal content -->
+<div class="modal fade add-risk" tabindex="-1" role="dialog" aria-labelledby="add-risk" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="add-risk">Generar Risk Assessment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="solicitaRiskForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Proceso</label>
+                                <select class="form-control" formControlName="proceso" (change)="capturaProceso()">
+                                    <option value="volvo" disabled selected >Seleccione el proceso</option>
+                                    <option *ngFor="let proceso of listProcesos" 
+                                        [value]="proceso.id_proceso">{{proceso.departamento}} 
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Quien responde: </label>
+                                <select class="form-control" formControlName="id_responde">
+                                    <option value="volvo" disabled selected>Selecciona quien va a responder</option>
+                                    <option *ngFor="let usuario of listUsuarios" 
+                                        [value]="usuario.id_usuario">{{usuario.nombre}} {{usuario.apellidos}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="generaRisk()" [disabled]="solicitaRiskForm.invalid">Generar</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="genera_token" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Solicitar Token </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="riskIncompleto">
+                    <h4>Sen enviara un token a su correo </h4>
+                    <p>El token que se solicita servirá para ver el proceso del Risk Assessment y sus respuestas.</p>
+                    <p>Hacer clic en  "Enviar token".</p>
+                </div>
+
+                <div *ngIf="riskCompleto">
+                    <h4>El Risk Assessment ya esta completado </h4>
+                    <p>Al solicitar el token podra ver las respuestas o mandar a edición el Risk Assessment</p>
+                    <p>Hacer clic en  "Enviar token".</p>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="riskIncompleto" type="button" class="btn btn-success" data-dismiss="modal" (click)="generaTokenRiskAdmin()">Enviar token </button>
+                <button *ngIf="riskCompleto" type="button" class="btn btn-success" data-dismiss="modal" (click)="generaTokenRiskAdministrador()">Enviar token </button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div id="validar_token" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Validar Token </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formValidaToken">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Token</label>
+                                <input type="text" class="form-control" id="token" formControlName="token"  placeholder="token"required>
+                                 <p *ngIf="textExpiroToken" style="color : red">El token que ingreso ha caducado</p>
+                                 <p *ngIf="textNoToken" style="color : red">El token no corresponde al Assessment </p>
+                                 <p *ngIf="continuar" style="color: rgb(15, 129, 110) ;">El token fue validado con exito</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" *ngIf="!continuar && riskIncompleto" [disabled]="formValidaToken.invalid" (click)="validaTokenRiskGenera()" >Validar token</button>
+                <button type="button" class="btn btn-success" *ngIf="!continuar && riskCompleto" [disabled]="formValidaToken.invalid" (click)="validaTokenRiskAdministrador()" >Validar token completo</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" *ngIf="continuar" (click)="continuarRisk()">Continuar</button>
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- sample modal content -->
+<div class="modal fade cambiar-risk" tabindex="-1" role="dialog" aria-labelledby="cambiar-risk" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 *ngIf="riskIncompleto" class="modal-title" id="cambiar-risk">Pasar Risk Assessment</h4>
+                <h4 *ngIf="riskCompleto" class="modal-title" id="cambiar-risk">Mandar a edición Risk Assessment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="solicitaRiskForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Proceso</label>
+                                <select class="form-control" formControlName="proceso" (change)="capturaProceso()">
+                                    <option value="volvo" disabled selected >Seleccione el proceso</option>
+                                    <option *ngFor="let proceso of listProcesos" 
+                                        [value]="proceso.id_proceso">{{proceso.departamento}} 
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Quien responde: </label>
+                                <select class="form-control" formControlName="id_responde">
+                                    <option value="volvo" disabled selected>Selecciona quien va a responder</option>
+                                    <option *ngFor="let usuario of listUsuarios" 
+                                        [value]="usuario.id_usuario">{{usuario.nombre}} {{usuario.apellidos}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" *ngIf="riskIncompleto" [disabled]="solicitaRiskForm.invalid" (click)="cambioPersonaRisk()">Pasar Risk</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" *ngIf="riskCompleto" [disabled]="solicitaRiskForm.invalid" (click)="sendEdithRisk()">Mandar Risk</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -8,16 +8,17 @@
       <!-- Bootstrap Core CSS -->
       <link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="./assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+      <link rel="stylesheet" href="./assets/plugins/dropify/dist/css/dropify.min.css">
     <!-- This page CSS -->
     <!-- chartist CSS -->
     <link href="./assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
     <link href="./assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
 
-        <!--c3 CSS -->
-        <link href="./assets/plugins/c3-master/c3.min.css" rel="stylesheet">
-        <!--Toaster Popup message CSS -->
-        <link href="./assets/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
-            <!-- Custom CSS -->
+    <!--c3 CSS -->
+    <link href="./assets/plugins/c3-master/c3.min.css" rel="stylesheet">
+    <!--Toaster Popup message CSS -->
+    <link href="./assets/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link href="./assets/css/style.css" rel="stylesheet">
     <!-- Dashboard 1 Page CSS -->
     <link href="./assets/css/pages/dashboard1.css" rel="stylesheet">
@@ -55,6 +56,8 @@
     <script src="./assets/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./assets/js/custom.min.js"></script>
+    <!-- jQuery file upload -->
+    <script src="./assets/plugins/dropify/dist/js/dropify.min.js"></script>
 
     <!-- This page plugins -->
     <!-- ============================================================== -->
@@ -77,5 +80,47 @@
     <!-- Style switcher -->
     <!-- ============================================================== -->
     <script src="./assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+     <script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+    </script>
 </body>
 </html>

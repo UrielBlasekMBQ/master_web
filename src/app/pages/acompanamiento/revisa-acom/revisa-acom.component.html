@@ -1,12 +1,18 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h3 class="text-themecolor">Revisión Acompañamiento</h3>
+                        <h3 class="text-themecolor">Revisión Acompañamiento <button *ngIf="viewDepartamentos" type="button" class="btn btn-info btn-rounded ml-2" data-toggle="modal" data-target="#add-contact" (click)="getReporteGeneral()">Reporte de actividad</button></h3>
+                        
                     </div>
                     <div class="col-md-7 align-self-center">
                         <ol class="breadcrumb" *ngIf="viewDepartamentos" >
                             <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
                               <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Procesos</a></button></li>
+                        </ol>
+                        <ol class="breadcrumb" *ngIf="viewRportes" >
+                            <li class="breadcrumb-item"><a routerLink="/dashboard"><button class="btn btn-outline-info">Inicio</button></a></li>
+                            <li class="breadcrumb-item "><button (click)="backDepartamentos()" class="btn btn-outline-info "><a>Procesos</a></button></li>
+                              <li class="breadcrumb-item "><button class="btn btn-outline-info active"><a>Reporte</a></button></li>
                         </ol>
                         <ol class="breadcrumb" *ngIf="viewTabla" >
                             
@@ -55,7 +61,7 @@
                         <!-- Row -->
 
             
-                        <div class="col-sm-12" *ngIf="viewTabla">
+                        <div class="col-sm-12" *ngIf="viewTabla">                     
                             
                             <div class="card" >
                                 <div class="card-body">
@@ -87,50 +93,50 @@
                                                     <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
                                                                                                                                                         
                                                     <th class="texto-centrado">
-                                                        <span *ngIf="solicitud.revision_interna == 0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-primary">Observación</span>
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 4" class="label label-primary">Observación</span>
                                                     </th>
                                                     <th class="texto-centrado" >
-                                                        <span *ngIf="solicitud.revision_externa == 0 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-primary">Observación</span>                                                        
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 4 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-primary">Observación</span>                                                        
                                                     </th>
                                                     <th class="texto-centrado">
                                                         <a style="color:  #398bf7 ;" class="ver ml-1" href="{{downPDF+solicitud.solicita_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>
                                                     </th>
                                                     <!---///////////Revision interna/////////-->
                                                     <th *ngIf="usuario.id_usuario == solicitud.id_revisor_interno" class="texto-centrado">
-                                                      <div *ngIf="solicitud.revision_interna == 0">
+                                                      <div *ngIf="solicitud.revision_interna == 1">
                                                         <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion_interna" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
                                                         <button type="button" class="btn btn-success btn-circle btn-sm mx-2" (click)="updateRevisarAprobadoInterno(solicitud)"><i class="mdi mdi-check "></i> </button>
                                                         <button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#Rechazo_interno" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-close"></i> </button>
                                                       </div>
-                                                      <div *ngIf="solicitud.revision_interna > 1">
+                                                      <div *ngIf="solicitud.revision_interna > 2">
                                                         <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion" (click)="getObservacion(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
                                                       </div>
                                                     </th>
                                                     
                                                     <th  *ngIf="usuario.id_usuario == solicitud.id_revisor_interno" class="texto-centrado">
-                                                        <button *ngIf="solicitud.revision_interna > 1" type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#eliminar" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-delete"></i> </button>
+                                                        <button *ngIf="solicitud.revision_interna > 2" type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#eliminar" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-delete"></i> </button>
                                                     </th>
                                                     <!---///////////Revision interna/////////-->
                                                     <!---///////////Revision Externa/////////-->
-                                                    <th *ngIf="usuario.id_usuario == solicitud.id_revisor_externo && solicitud.revision_interna == 1" class="texto-centrado">
-                                                        <div *ngIf="solicitud.revision_externa == 0">
+                                                    <th *ngIf="usuario.id_usuario == solicitud.id_revisor_externo && solicitud.revision_interna == 2" class="texto-centrado">
+                                                        <div *ngIf="solicitud.revision_externa == 1">
                                                             <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion_externa" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
                                                             <button type="button" class="btn btn-success btn-circle btn-sm mx-2" (click)="updateRevisarAprobadoExterno(solicitud)"><i class="mdi mdi-check "></i> </button>
                                                             <button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#Rechazo_externa" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-close"></i> </button>
                                                         </div>
-                                                        <div *ngIf="solicitud.revision_externa > 1">
+                                                        <div *ngIf="solicitud.revision_externa > 2">
                                                             <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion" (click)="getObservacion(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
                                                         </div>
                                                     </th>
                                                         
                                                         <th *ngIf="usuario.id_usuario == solicitud.id_revisor_externo" class="texto-centrado">
-                                                            <button *ngIf="solicitud.revision_externa > 1" type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#eliminar" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-delete"></i> </button>
+                                                            <button *ngIf="solicitud.revision_externa > 2" type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#eliminar" (click)="extraerSolicitud(solicitud)"><i class="mdi mdi-delete"></i> </button>
                                                         </th>
                                                         <!---///////////Revision Externa/////////-->
                                                 </tr>
@@ -138,6 +144,287 @@
                                             </tbody>
                                         </table>
                                         <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--////////Reporte de actualizacion ////////-->
+                        <div *ngIf="viewRportes" class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="table-responsive">
+                                        <button *ngIf="usuarioLog.reporte_acompanamiento==1" type="button" class="btn btn-primary" (click)="exporter1.exportTable('csv')"> <i class="mdi mdi-arrow-down"></i> Excel</button>
+                                            <table mat-table matTableExporter [dataSource]="reporte"  id="myTable" class="table table-bordered table-striped" #exporter1="matTableExporter">
+                                               <tbody>
+                                                 <!-- User name Definition -->
+                                                 <ng-container matColumnDef="index">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>No</th>
+                                                    <td class="texto-centrado" *matCellDef="let element; let i = index"> {{i+1}} </td>
+                                                </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="nom_autor">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>Autor </th>
+                                                    <tr>
+                                                        <td class="texto-centrado" *matCellDef="let element"> {{element.nom_autor}} {{element.ape_autor}} </td>
+                                                    </tr>
+                                                </ng-container>
+
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="nom_interno">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>R. interno </th>
+                                                    <td class="texto-centrado" *matCellDef="let element">{{element.nom_interno}} {{element.ape_interno}} </td>
+                                                </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="nom_externo">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>R. externo </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> {{element.nom_externo}} {{element.ape_externo}} </td>
+                                                </ng-container>
+                                        
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="nom_proceso">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>Proceso </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> {{element.nom_proceso}} </td>
+                                                    </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="solicita_nom">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>Documento </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> {{element.solicita_nom}} </td>
+                                                </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="revision_interna">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>R. interna </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> 
+                                                        <span *ngIf="element.revision_interna == 1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="element.revision_interna == 2" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="element.revision_interna == 3" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="element.revision_interna == 4" class="label label-primary">Observación</span>
+                                                    </td>
+                                                </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="revision_externa">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>R. externa </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> 
+                                                        <span *ngIf="element.revision_externa == 1 && element.revision_interna == 2 && element.id_revisor_externo >1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="element.revision_externa == 2 && element.revision_interna == 2 && element.id_revisor_externo >1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="element.revision_externa == 3 && element.revision_interna == 2 && element.id_revisor_externo >1" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="element.revision_externa == 4 && element.revision_interna == 2 && element.id_revisor_externo >1" class="label label-primary">Observación</span>
+                                                    </td>
+                                                </ng-container>
+
+                                                <!-- UserDefinition -->
+                                                <ng-container matColumnDef="solicita_doc">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>Descarga </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> 
+                                                        <a style="color: #398bf7 ;" class="ver ml-1" href="{{downPDF+element.solicita_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>    
+                                                    </td>
+                                                </ng-container>
+
+                                                                                            <!-- UserDefinition -->
+                                                <ng-container matColumnDef="fecha">
+                                                    <th class="texto-centrado"  *matHeaderCellDef>Ultima actualización </th>
+                                                    <td class="texto-centrado" *matCellDef="let element"> 
+                                                        {{element.fecha |  date:'medium'}}
+                                                    </td>
+                                                </ng-container>
+                                            
+
+
+                                                <tr mat-header-row *matHeaderRowDef="reporteColums"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: reporteColums;"></tr>
+                                               </tbody>
+                                            </table>
+                                        </div>  
+                                        
+                                        </div>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--////////Reporte de actualizacion ////////-->
+
+                         <!--////////Reporte de general ////////-->
+                         <div *ngIf="viewRportes" class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <button *ngIf="usuarioLog.reporte_acompanamiento==1" type="button" class="btn btn-primary" (click)="exporter.exportTable('csv')"><i class="mdi mdi-arrow-down"></i>Excel</button>
+                                        <table mat-table matTableExporter [dataSource]="dataSource" class="mat-elevation-z8" #exporter="matTableExporter">
+
+                                            <!--- Note that these columns can be defined in any order.
+                                                  The actual rendered columns are set as a property on the row definition" -->
+
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="index">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>No </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="departamento">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>Proceso </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"> {{element.departamento}} </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="reg">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>Total registros </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"> {{element.reg}} </td>
+                                              </ng-container>
+                                             <!-- Position Column -->
+                                            <ng-container matColumnDef="revinter0">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. I.(Proceso) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-warning">{{element.revinter0}}</span> </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="revinter1">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. I.(Revisado) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-success">{{element.revinter1}}</span> </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="revinter2">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. I.(Rechazado) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-danger">{{element.revinter2}}</span> </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="revinter3">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. I.(Observación) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-primary">{{element.revinter3}}</span> </td>
+                                              </ng-container>
+                                            <!-- Position Column -->
+                                            <ng-container matColumnDef="revexter0">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. E.(Proceso) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-warning">{{element.revexter0}}</span> </td>
+                                              </ng-container>
+                                            
+                                              <!-- Position Column -->
+                                            <ng-container matColumnDef="revexter1">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. E.(Revisado) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-success">{{element.revexter1}}</span> </td>
+                                              </ng-container>
+                                            
+                                              <!-- Position Column -->
+                                            <ng-container matColumnDef="revexter2">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. E.(Rechazado) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-danger">{{element.revexter2}}</span></td>
+                                              </ng-container>
+                                            
+                                              <!-- Position Column -->
+                                            <ng-container matColumnDef="revexter3">
+                                                <th class="texto-centrado" mat-header-cell *matHeaderCellDef>R. E.(Observación) </th>
+                                                <td class="texto-centrado" mat-cell *matCellDef="let element"><span class="label label-primary">{{element.revexter3}}</span> </td>
+                                              </ng-container>
+                                
+                                          
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                          </table>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--////////Reporte de general ////////-->
+
+                        <div *ngIf="usuarioLog.reporte_acompanamiento==1"  class="row">
+                            <div class="col-sm-12" *ngIf="viewRportes">
+                                <div class="card">
+                                    <div class="card-body" >
+                                        
+                                        <form name="formGrafica" [formGroup]="formGrafica">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Seleccione proceso:</label>
+                                                        <select class="form-control " data-placeholder="Choose a Category" id="proceso" formControlName="proceso" required>
+                                                            
+                                                            <option *ngFor="let catTipoUduario of reporteGeneral " [value]="catTipoUduario.id_proceso" >
+                                                                {{catTipoUduario.departamento}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Mostrar grafica:</label><br>
+                                                                        <button type="button" class="btn btn-primary" (click)="generaDataProcesoGrafica()"><i class="mdi mdi-chart-histogram"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Todos los procesos:</label><br>
+                                                                        <button type="button" class="btn btn-primary" (click)="mostrarGraficasProcesos()"><i class="mdi mdi-chart-histogram"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <ngx-charts-bar-vertical-2d 
+                                                [view]="view"
+                                                [scheme]="colorScheme"
+                                                [results]="multi1"
+                                                [gradient]="gradient"
+                                                [xAxis]="showXAxis"
+                                                [yAxis]="showYAxis"
+                                                [legend]="showLegend"
+                                                [showDataLabel] ="showDataLabel"
+                                                [showXAxisLabel]="showXAxisLabel"
+                                                [showYAxisLabel]="showYAxisLabel"
+                                                [xAxisLabel]="xAxisLabel"
+                                                [yAxisLabel]="yAxisLabel"
+                                                
+                                                (select)="onSelect($event)"
+                                                (activate)="onActivate($event)"
+                                                (deactivate)="onDeactivate($event)"
+                                                 *ngIf="grafica1">
+                                              </ngx-charts-bar-vertical-2d>
+                                         
+                                        </div>
+
+                                        <div class="row" *ngIf="verGraficas">
+
+                                          <ngx-charts-bar-horizontal-2d
+                                          [view]="view1"
+                                          [scheme]="colorScheme"
+                                          [results]="multi"
+                                          [gradient]="gradient"
+                                          [xAxis]="showXAxis"
+                                          [yAxis]="showYAxis"
+                                          [legend]="showLegend"
+                                          [showDataLabel] ="showDataLabel"
+                                          [showXAxisLabel]="showXAxisLabel"
+                                          [showYAxisLabel]="showYAxisLabel"
+                                          [xAxisLabel]="xAxisLabel"
+                                          [yAxisLabel]="yAxisLabel"
+                                          (select)="onSelect($event)"
+                                          (activate)="onActivate($event)"
+                                          (deactivate)="onDeactivate($event)"
+                                          *ngIf="grafica">
+                                        </ngx-charts-bar-horizontal-2d>
+
+                                            
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

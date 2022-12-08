@@ -38,8 +38,9 @@
                               {{padre.nom_registro}}
                               <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1"  data-toggle="modal" data-target="#delete" (click)="validarArrayBacio(padre)" ><i class="mdi mdi-delete fa-lg"></i></a>
                               <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(padre)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                              <a *ngIf="usuarioLog.registrosUpdate" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel2(padre)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                              <a *ngIf="usuarioLog.registrosUpdate" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel2(padre)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                              
+                              <a *ngIf="usuarioLog.registrosUpdate" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel2(padre)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                              <a *ngIf="usuarioLog.registrosUpdate" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel2(padre)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
                             </li>
 
                             <!--/////Segundo nivel///-->
@@ -48,14 +49,15 @@
                                 <li class="ml-2 header-hijo" >
 
                                 <button *ngIf="hijo.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelTres(hijo)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo.nom_registro}}</button>                                      
-                                <label *ngIf="hijo.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo.nom_registro}}</label>  
+                                <label *ngIf="hijo.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo.nom_registro}}</label>  
 
                                   <a *ngIf="usuarioLog.registrosDescargar && hijo.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                  <a *ngIf="usuarioLog.registrosVer && hijo.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo)"><i class="mdi mdi-eye fa-lg"></i></a>
-                                  <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo)" ><i class="mdi mdi-delete fa-lg"></i></a>
+                                  <!--<a *ngIf="usuarioLog.registrosVer && hijo.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo)"><i class="mdi mdi-eye fa-lg"></i></a>-->
+                                  <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo)" ><i class="mdi mdi-delete fa-lg"></i></a>                                 
                                   <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                  <a *ngIf="usuarioLog.registrosUpdate && hijo.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel3(hijo)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                  <a *ngIf="usuarioLog.registrosUpdate && hijo.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel3(hijo)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                  
+                                  <a *ngIf="usuarioLog.registrosUpdate && hijo.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel3(hijo)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                  <a *ngIf="usuarioLog.registrosUpdate && hijo.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel3(hijo)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
                                 </li> 
                                     <!--/////Tercer nivel///-->
                                     <div *ngIf="hijo.id_vista">
@@ -64,14 +66,15 @@
                                             <div *ngFor="let hijo1 of listHijos1">
                                                 <li class="ml-2 header-hijo-1">
                                                     <button *ngIf="hijo1.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelCuatro(hijo1)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo1.nom_registro}}</button>                                      
-                                                    <label *ngIf="hijo1.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo1.nom_registro}}</label>  
+                                                    <label *ngIf="hijo1.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo1.nom_registro}}</label>  
                     
                                                       <a *ngIf="usuarioLog.registrosDescargar && hijo1.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo1.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                      <a *ngIf="usuarioLog.registrosVer && hijo1.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo1)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                      <!--<a *ngIf="usuarioLog.registrosVer && hijo1.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo1)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                       <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo1)" ><i class="mdi mdi-delete fa-lg"></i></a>
-                                                      <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo1)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                      <a *ngIf="usuarioLog.registrosUpdate && hijo1.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel4(hijo1)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                      <a *ngIf="usuarioLog.registrosUpdate && hijo1.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel4(hijo1)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                      <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo1)" ><i class="mdi mdi-border-color fa-lg"></i></a>                                                      
+                                                     
+                                                      <a *ngIf="usuarioLog.registrosUpdate && hijo1.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel4(hijo1)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                      <a *ngIf="usuarioLog.registrosUpdate && hijo1.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel4(hijo1)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                 </li>
 
@@ -82,14 +85,15 @@
                                                                 <div *ngFor="let hijo2 of listHijos2">
                                                                     <li class="ml-2 header-hijo-2">
                                                                         <button *ngIf="hijo2.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelQuinto(hijo2)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo2.nom_registro}}</button>                                      
-                                                                        <label *ngIf="hijo2.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo2.nom_registro}}</label>  
+                                                                        <label *ngIf="hijo2.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo2.nom_registro}}</label>  
                                         
                                                                             <a *ngIf="usuarioLog.registrosDescargar && hijo2.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo2.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                            <a *ngIf="usuarioLog.registrosVer && hijo2.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo2)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                           <!--<a *ngIf="usuarioLog.registrosVer && hijo2.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo2)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                             <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo2)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                             <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo2)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo2.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel5(hijo2)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo2.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel5(hijo2)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                           
+                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo2.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel5(hijo2)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo2.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel5(hijo2)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                                     </li>
 
@@ -100,14 +104,15 @@
                                                                                 <div *ngFor="let hijo3 of listHijos3">
                                                                                     <li class="ml-2 header-hijo-3">
                                                                                         <button *ngIf="hijo3.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelSexto(hijo3)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo3.nom_registro}}</button>                                      
-                                                                                        <label *ngIf="hijo3.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo3.nom_registro}}</label>  
+                                                                                        <label *ngIf="hijo3.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo3.nom_registro}}</label>  
                                                         
                                                                                             <a *ngIf="usuarioLog.registrosDescargar && hijo3.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo3.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                            <a *ngIf="usuarioLog.registrosVer && hijo3.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo3)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                            <!--<a *ngIf="usuarioLog.registrosVer && hijo3.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo3)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                             <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo3)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                             <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo3)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo3.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel6(hijo3)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo3.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel6(hijo3)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                                                                                      
+                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo3.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel6(hijo3)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo3.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel6(hijo3)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                                                     </li>
                                                                                      <!--/////Sexto nivel///-->
@@ -117,14 +122,15 @@
                                                                                                 <div *ngFor="let hijo4 of listHijos4">
                                                                                                     <li class="ml-2 header-hijo-4">
                                                                                                         <button *ngIf="hijo4.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelSeptimo(hijo4)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo4.nom_registro}}</button>                                      
-                                                                                                        <label *ngIf="hijo4.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo4.nom_registro}}</label>  
+                                                                                                        <label *ngIf="hijo4.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo4.nom_registro}}</label>  
                                                                         
                                                                                                             <a *ngIf="usuarioLog.registrosDescargar && hijo4.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo4.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                                            <a *ngIf="usuarioLog.registrosVer && hijo4.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo4)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                                            <!--<a *ngIf="usuarioLog.registrosVer && hijo4.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo4)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                                             <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo4)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                                             <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo4)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo4.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel7(hijo4)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo4.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel7(hijo4)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                            
+                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo4.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel7(hijo4)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo4.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel7(hijo4)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                                                                     </li>
                                                                                                     <!--/////Septimo nivel///-->
@@ -134,14 +140,15 @@
                                                                                                             <div *ngFor="let hijo5 of listHijos5">
                                                                                                                 <li class="ml-2 header-hijo-5">
                                                                                                                     <button *ngIf="hijo5.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelOctavo(hijo5)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo5.nom_registro}}</button>                                      
-                                                                                                                    <label *ngIf="hijo5.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo5.nom_registro}}</label>  
+                                                                                                                    <label *ngIf="hijo5.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo5.nom_registro}}</label>  
                                                                                     
                                                                                                                         <a *ngIf="usuarioLog.registrosDescargar && hijo5.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo5.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                                                        <a *ngIf="usuarioLog.registrosVer && hijo5.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo5)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                                                        <!---<a *ngIf="usuarioLog.registrosVer && hijo5.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo5)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                                                         <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo5)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                                                         <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo5)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                                                                                        <a *ngIf="usuarioLog.registrosUpdate && hijo5.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel8(hijo5)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                                                                                        <a *ngIf="usuarioLog.registrosUpdate && hijo5.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel8(hijo5)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                        
+                                                                                                                        <a *ngIf="usuarioLog.registrosUpdate && hijo5.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel8(hijo5)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                        <a *ngIf="usuarioLog.registrosUpdate && hijo5.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel8(hijo5)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                                                                                 </li>
                                                                                                                 <!--/////Octavo nivel///-->
@@ -151,14 +158,15 @@
                                                                                                                     <div *ngFor="let hijo6 of listHijos6">
                                                                                                                         <li class="ml-2 header-hijo-6">
                                                                                                                             <button *ngIf="hijo6.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelNoveno(hijo6)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo6.nom_registro}}</button>                                      
-                                                                                                                            <label *ngIf="hijo6.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo6.nom_registro}}</label>  
+                                                                                                                            <label *ngIf="hijo6.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo6.nom_registro}}</label>  
                                                                                             
                                                                                                                                 <a *ngIf="usuarioLog.registrosDescargar && hijo6.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo6.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                                                                <a *ngIf="usuarioLog.registrosVer && hijo6.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo6)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                                                                <!--<a *ngIf="usuarioLog.registrosVer && hijo6.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo6)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                                                                 <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo6)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                                                                 <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo6)" ><i class="mdi mdi-border-color fa-lg"></i></a>
-                                                                                                                                <a *ngIf="usuarioLog.registrosUpdate && hijo6.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel9(hijo6)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
-                                                                                                                                <a *ngIf="usuarioLog.registrosUpdate && hijo6.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel9(hijo6)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                               
+                                                                                                                                <a *ngIf="usuarioLog.registrosUpdate && hijo6.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel9(hijo6)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                                <a *ngIf="usuarioLog.registrosUpdate && hijo6.carp_registro" style="color: #A436F0 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel9(hijo6)" ><i class="mdi mdi-folder-plus fa-lg"></i></a>
 
                                                                                                                         </li>
 
@@ -169,14 +177,14 @@
                                                                                                                                 <div *ngFor="let hijo7 of listHijos7">
                                                                                                                                     <li class="ml-2 header-hijo-7">
                                                                                                                                         <button *ngIf="hijo7.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelDiez(hijo7)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo7.nom_registro}}</button>                                      
-                                                                                                                                        <label *ngIf="hijo7.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo7.nom_registro}}</label>  
+                                                                                                                                        <label *ngIf="hijo7.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo7.nom_registro}}</label>  
                                                                                                         
                                                                                                                                             <a *ngIf="usuarioLog.registrosDescargar && hijo7.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo7.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                                                                            <a *ngIf="usuarioLog.registrosVer && hijo7.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo7)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                                                                            <!--<a *ngIf="usuarioLog.registrosVer && hijo7.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo7)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                                                                             <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo7)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                                                                             <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo7)" ><i class="mdi mdi-border-color fa-lg"></i></a>
                                                                                                                                             <!-- <a *ngIf="usuarioLog.registrosUpdate && hijo7.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel9(hijo7)" ><i class="mdi mdi-folder-plus fa-lg"></i></a> -->
-                                                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo7.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel10(hijo7)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo7.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel10(hijo7)" ><i class="mdi mdi-file-export fa-lg"></i></a>
             
                                                                                                                                     </li>
  
@@ -187,14 +195,14 @@
                                                                                                                                 <div *ngFor="let hijo8 of listHijos8">
                                                                                                                                     <li class="ml-2 header-hijo-8">
                                                                                                                                         <button *ngIf="hijo8.carp_registro" class="btn-no-borde mr-2 ver" (click)="getNivelDiez(hijo8)"><i class="mdi mdi-folder fa-lg" style="color: #FFCC41 ;"></i> {{hijo8.nom_registro}}</button>                                      
-                                                                                                                                        <label *ngIf="hijo8.file_registro"><i class="mdi mdi-file-pdf" style="color: red ;"></i> {{hijo8.nom_registro}}</label>  
+                                                                                                                                        <label *ngIf="hijo8.file_registro"><i class="mdi mdi-file-document" style="color: #398bf7 ;"></i> {{hijo8.nom_registro}}</label>  
                                                                                                         
                                                                                                                                             <a *ngIf="usuarioLog.registrosDescargar && hijo8.file_registro" style="color: #06d79c ;" class="ver ml-2" href="{{downPDFHijo+hijo8.dir_registro}}" ><i class="mdi mdi-download fa-lg"></i></a>
-                                                                                                                                            <a *ngIf="usuarioLog.registrosVer && hijo8.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo8)"><i class="mdi mdi-eye fa-lg"></i></a>
+                                                                                                                                            <!--<a *ngIf="usuarioLog.registrosVer && hijo8.file_registro" style="color: #398bf7 ;" class="ver ml-1" (click)="getPdfHijo(hijo8)"><i class="mdi mdi-eye fa-lg"></i></a>-->
                                                                                                                                             <a *ngIf="usuarioLog.registrosDelete" style="color: red ;" class="ver ml-1" data-toggle="modal" data-target="#deletehijo" (click)="validarArrayBacio(hijo8)" ><i class="mdi mdi-delete fa-lg"></i></a>
                                                                                                                                             <a *ngIf="usuarioLog.registrosUpdate" style="color: #398bf7 ;" class="ver ml-1" data-toggle="modal" data-target="#edit-document" (click)="cargarModalEdit(hijo8)" ><i class="mdi mdi-border-color fa-lg"></i></a>
                                                                                                                                             <!-- <a *ngIf="usuarioLog.registrosUpdate && hijo8.carp_registro" style="color: #FFCC41 ;" class="ver ml-1" data-toggle="modal" data-target="#add-contact" (click)="changeNivel9(hijo8)" ><i class="mdi mdi-folder-plus fa-lg"></i></a> -->
-                                                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo8.carp_registro" style="color: #06d79c ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel10(hijo8)" ><i class="mdi mdi-file-export fa-lg"></i></a>
+                                                                                                                                            <a *ngIf="usuarioLog.registrosUpdate && hijo8.carp_registro" style="color: #1ED760 ;" class="ver ml-1" data-toggle="modal" data-target="#add-document" (click)="changeNivel10(hijo8)" ><i class="mdi mdi-file-export fa-lg"></i></a>
             
                                                                                                                                     </li>
  
@@ -346,7 +354,7 @@
                                 <div class="col-lg-6 mt-4">
                                   <div class="form-group">
                                       <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Cargar Documento</span>
-                                          <input type="file" class="upload" name="foto" accept="application/pdf" formControlName="documento" (change)="capturarFile($event)" > 
+                                          <input type="file" class="upload" name="foto" formControlName="documento" (change)="capturarFile($event)" > 
                                       </div>
                                   </div>
                               </div>

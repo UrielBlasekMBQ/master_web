@@ -111,7 +111,7 @@ export class ConfiguraUsuarioComponent implements OnInit {
     console.log(body);
 
     this.UsuariosService.cambioFoto(body).subscribe((res:any)=>{
-      this.formUsuario2.reset();
+      this.formUsuario3.reset();
     });
 
 

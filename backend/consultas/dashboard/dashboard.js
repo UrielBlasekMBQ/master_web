@@ -22,7 +22,33 @@ router.post('/documentos',(req,res)=>{
     JOIN usuarios externo ON externo.id_usuario = ac.id_revisor_externo
     JOIN procesos proc ON proc.id_proceso  = ac.id_proceso
     WHERE (ac.id_revisor_interno = '${id_usuario}' OR ac.id_revisor_externo = '${id_usuario}' ) 
-    AND (ac.revision_interna = 0 OR ac.revision_externa = 0) `;
+    AND (ac.revision_interna = 1 OR ac.revision_externa = 1 OR ac.revision_externa = 0 ) `;
+    conexion.query(sql,(err,rows,fields)=>{
+        if (err) { throw err
+            
+        }
+        else{
+            res.json(rows);
+        }
+    });
+})
+
+//Resoltados
+router.post('/documentosResultados',(req,res)=>{
+    const {id_usuario} = req.body
+    let sql = `SELECT ac.*,  
+    autor.nombre AS nom_autor, autor.apellidos AS apell_autor,
+    interno.nombre AS nom_interno, interno.apellidos AS ape_interno,
+    externo.nombre AS nom_externo, externo.apellidos AS ape_externo,
+    proc.departamento
+    FROM acompanamiento ac
+    JOIN usuarios autor ON autor.id_usuario = ac.id_usuario
+    JOIN usuarios interno ON interno.id_usuario = ac.id_revisor_interno
+    JOIN usuarios externo ON externo.id_usuario = ac.id_revisor_externo
+    JOIN procesos proc ON proc.id_proceso  = ac.id_proceso
+    WHERE (revision_interna = 3 OR revision_externa = 3 OR revision_interna = 4 OR revision_externa = 4 OR revision_interna = 1 OR revision_externa = 1)
+    AND ac.id_usuario = '${id_usuario}'  
+    `;
     conexion.query(sql,(err,rows,fields)=>{
         if (err) { throw err
             

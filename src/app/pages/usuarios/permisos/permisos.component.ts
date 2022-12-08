@@ -142,7 +142,8 @@ export class PermisosComponent implements OnInit {
       capacitacionHistorial : [false],
       capacitacionAdd : [false],
       capacitacionUpdate : [false],
-      capacitacionDelete : [false]
+      capacitacionDelete : [false],
+      reporte_acompanamiento : [false]
 
 
     });
@@ -298,6 +299,7 @@ export class PermisosComponent implements OnInit {
       capacitacionAdd : this.permisosParaForm[0].capacitacionAdd,
       capacitacionUpdate : this.permisosParaForm[0].capacitacionUpdate,
       capacitacionDelete : this.permisosParaForm[0].capacitacionDelete,
+      reporte_acompanamiento : this.permisosParaForm[0].reporte_acompanamiento
             
 
     });
@@ -418,6 +420,7 @@ export class PermisosComponent implements OnInit {
     this.permisosDB.push(this.formPermisos.value.capacitacionAdd);
     this.permisosDB.push(this.formPermisos.value.capacitacionUpdate);
     this.permisosDB.push(this.formPermisos.value.capacitacionDelete);
+    this.permisosDB.push(this.formPermisos.value.reporte_acompanamiento);
 
     
 
@@ -511,6 +514,7 @@ export class PermisosComponent implements OnInit {
     this.dataSend.capacitacionAdd=this.permisosDB[66];
     this.dataSend.capacitacionUpdate=this.permisosDB[67];
     this.dataSend.capacitacionDelete=this.permisosDB[68];
+    this.dataSend.reporte_acompanamiento=this.permisosDB[69];
 
 
     
@@ -620,7 +624,8 @@ export class PermisosComponent implements OnInit {
     "capacitacionHistorial" : 1,
     "capacitacionAdd" : 1,
     "capacitacionUpdate" : 1,
-    "capacitacionDelete" : 1
+    "capacitacionDelete" : 1,
+    "reporte_acompanamiento" : 1
 }
 
 //permisos
@@ -693,7 +698,8 @@ permisosSupervisor : any ={
   "capacitacionHistorial" : 0,
   "capacitacionAdd" : 0,
   "capacitacionUpdate" : 0,
-  "capacitacionDelete" : 0
+  "capacitacionDelete" : 0,
+  "reporte_acompanamiento" : 0
 }
 
 permisosOperativo : any ={
@@ -765,7 +771,8 @@ permisosOperativo : any ={
   "capacitacionHistorial" : 0,
   "capacitacionAdd" : 0,
   "capacitacionUpdate" : 0,
-  "capacitacionDelete" : 0
+  "capacitacionDelete" : 0,
+  "reporte_acompanamiento" : 0
 }
 
 usuarioLog : any;

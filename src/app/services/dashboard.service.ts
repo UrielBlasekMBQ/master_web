@@ -17,6 +17,12 @@ export class DashboardService {
     return this.http.post(base_url, body);
     }
 
+  //GET Acompañamiento
+  getAcompanamientoResultados(body: any){
+    const base_url = `${base}/dashboard/documentosResultados`
+    return this.http.post(base_url, body);
+    }
+
   //GET Doc aprueba
     getDocAprueba(body: any){
       const base_url = `${base}/dashboard/docaprueba`

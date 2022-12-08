@@ -7,7 +7,10 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li class="user-profile"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><img src="./assets/images/big/usuario.png" alt="user" /><span>{{usuario.nombre | uppercase}} {{usuario.apellidos | uppercase}} </span></a>
+                        <li class="user-profile">
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                                <img src="./assets/images/big/usuario.png" alt="user" /><span>{{usuario.nombre | uppercase}} {{usuario.apellidos | uppercase}} </span>
+                            </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a routerLink="/login" (click)="salida()">Salida</a></li>
                             </ul>
@@ -38,6 +41,13 @@
                         </li>
                         <li routerLinkActive="active" *ngIf="usuarioLogPermisoContrato.contratos"> 
                             <a class="waves-effect waves-dark" routerLink="/dashboard/contratos" aria-expanded="false"><i class="mdi mdi-page-layout-footer"></i><span class="hide-menu">Contratos</span></a>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="usuarioLog.diagramas">
+                            <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-page-layout-footer"></i><span class="hide-menu">Risk Assessment</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                               <li *ngIf="usuarioLog.foda"><a routerLinkActive="active" routerLink="/dashboard/risk" >Risks Generados</a></li>
+                               <li *ngIf="usuarioLog.toruga"><a routerLinkActive="active" routerLink="/dashboard/risk_responde" >Responder Risk</a></li>
+                           </ul>
                         </li>
                         <li routerLinkActive="active" *ngIf="usuarioLog.diagramas">
                             <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="mdi mdi-chart-pie"></i><span class="hide-menu">Diagramas</span></a>

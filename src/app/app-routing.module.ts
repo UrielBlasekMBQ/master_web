@@ -6,7 +6,7 @@ import { NopageFoundComponent } from './pages/nopage-found/nopage-found.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, CanActivate } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { ManualCalidadComponent } from './pages/manual-calidad/manual-calidad.component';
 import { PagesComponent } from './pages/pages.component';
@@ -31,6 +31,8 @@ import { AmefComponent } from './pages/amef/amef/amef.component';
 import { HistorialComponent } from './pages/historial/historial.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 import { ContratosComponent } from './pages/contratos/contratos.component';
+import { RiskComponent } from './pages/risk/risk.component';
+import { RiskRespondeComponent } from './pages/risk-responde/risk-responde.component';
 
 
 
@@ -62,6 +64,8 @@ const routes: Routes = [
     {path: 'configuracion_usuario', component: ConfiguraUsuarioComponent, canActivate: [AuthGuard]},
     {path: 'capacitacion', component: CapacitacionComponent, canActivate: [AuthGuard]},
     {path: 'contratos', component: ContratosComponent, canActivate: [AuthGuard]},
+    {path: 'risk', component: RiskComponent, canActivate: [AuthGuard]},
+    {path: 'risk_responde', component: RiskRespondeComponent, canActivate: [AuthGuard]},
   ]
 },
   {path:'',redirectTo:'/dashboard',pathMatch:'full'},

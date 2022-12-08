@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   constructor(private DashboardService: DashboardService, private EmailService : EmailService) { }
 
   listAcompanamiento : any;
+  listAcompanamientoResultado : any;
   listAprueba : any;
   listRevisa : any;
   listAmef : any;
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
   body ={ 'id_usuario' : 0 };
   usuario : any;
 
+  numApruebaRsultado : any ;
   numAcompana : any;
   numAprueba : any;
   numRevisa : any;
@@ -45,6 +47,30 @@ export class DashboardComponent implements OnInit {
       
     });
   }
+
+
+   //get acompañamiento
+   getAcompanamientoResultado(){
+    const token: any = localStorage.getItem('token');
+    this.usuario =decode(token);
+   //  console.log(this.usuario);
+
+    this.body.id_usuario = this.usuario.id_usuario;
+
+    this.DashboardService.getAcompanamientoResultados(this.body).subscribe((res:any)=>{
+      this.listAcompanamientoResultado = res;
+     //  console.log(this.listAcompanamiento);
+      this.numApruebaRsultado = this.listAcompanamientoResultado.length;
+     //  console.log(this.numAcompana);
+      
+      
+    });
+  }
+
+
+
+
+
 
     //get aprueba
     getDocAprueba(){
@@ -114,7 +140,9 @@ export class DashboardComponent implements OnInit {
      //  console.log('next');
       
     }
+
     this.getAcompanamiento();
+    this.getAcompanamientoResultado();
     this.getDocAprueba();
     this.getDocRevisa();
     this.getAmef();

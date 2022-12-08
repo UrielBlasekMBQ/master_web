@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './../shared/shared.module';
@@ -16,6 +16,9 @@ import { TreeGridModule } from '@syncfusion/ej2-angular-treegrid';
 import  { PdfViewerModule  }  from  'ng2-pdf-viewer';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 import {A11yModule} from '@angular/cdk/a11y';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
@@ -69,6 +72,7 @@ import { NormasIsoComponent } from './normas-iso/normas-iso.component';
 import { DepartamentosComponent } from './departamentos/departamentos.component';
 import { PermisosComponent } from './usuarios/permisos/permisos.component';
 
+
 import { AprobacionComponent } from './control-documento/aprobacion/aprobacion.component';
 import { RevisionComponent } from './control-documento/revision/revision.component';
 import { LegalComponent } from './normas-iso/legal/legal.component';
@@ -87,6 +91,9 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { ConfiguraUsuarioComponent } from './configura-usuario/configura-usuario.component';
 import { CapacitacionComponent } from './capacitacion/capacitacion.component';
 import { ContratosComponent } from './contratos/contratos.component';
+import { RiskComponent } from './risk/risk.component';
+import { RiskRespondeComponent } from './risk-responde/risk-responde.component';
+
 
   
 
@@ -121,6 +128,9 @@ import { ContratosComponent } from './contratos/contratos.component';
     ConfiguraUsuarioComponent,
     CapacitacionComponent,
     ContratosComponent,
+    RiskComponent,
+    RiskRespondeComponent,
+    
 
   ],
   imports: [
@@ -181,7 +191,9 @@ import { ContratosComponent } from './contratos/contratos.component';
     PdfViewerModule,
     NgxPaginationModule,
     NgSelectModule,
-
+    MatTableExporterModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
     
     
     BrowserModule,

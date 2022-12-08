@@ -412,6 +412,8 @@ this.date_modelo = amef;
 deleteModelo(){
   let body ={'id_amef_amef' : this.date_modelo.id_amef_amef };
 this.AmefService.deleteDataAmef(body).subscribe((res : any)=>{
+  console.log(res);
+  
   this.mensajeDelete(res);
   this.getDataAmef();
 })

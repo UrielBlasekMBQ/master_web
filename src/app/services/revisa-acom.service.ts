@@ -69,12 +69,26 @@ export class RevisaAcomService {
       return this.http.post(base_url,body);
     }
 
-      //get contador 
-      getcontador( body: any ){
-      const base_url = `${base}/acompanamiento/contador`; 
-      return this.http.post(base_url, body);
+  //get contador 
+  getcontador( body: any ){
+  const base_url = `${base}/acompanamiento/contador`; 
+  return this.http.post(base_url, body);
 
   }
+
+  //get Reporte 
+  getReporte(){
+    const base_url = `${base}/acompanamiento/reporte`; 
+    return this.http.get(base_url);
+  
+    }
+
+  //get Reporte 
+  getReporteGeneral(){
+    const base_url = `${base}/acompanamiento/reporteProcesos`; 
+    return this.http.get(base_url);
+  
+    }
 
 
 

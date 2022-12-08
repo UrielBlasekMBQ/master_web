@@ -43,7 +43,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title texto-centrado">{{departamento.departamento}}
-                                            <span *ngIf="departamento.estatus_proceso==0" class="label label-danger">Inactivo</span>
+                                            <span class="label label-success">{{departamento.contador}}</span> <span *ngIf="departamento.estatus_proceso==0" class="label label-danger">Inactivo</span>
                                         </h4>
                                         <img class="card-img-top imagen-responsiva" src="./assets/images/big/trabajar.png" alt="Card image cap">
                                         <div class="text-center mt-2"><a style="color: white ;" class="btn btn-primary" (click)="getSolicitudes(departamento)" >Consultar</a></div>
@@ -91,25 +91,25 @@
                                                     <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
                                                                                                                                                         
                                                     <th class="texto-centrado">
-                                                        <span *ngIf="solicitud.revision_interna == 0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-primary">Observación</span>
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 4" class="label label-primary">Observación</span>
                                                     </th>
                                                     <th class="texto-centrado">
-                                                        <span *ngIf="solicitud.revision_externa == 0 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-primary">Observación</span>
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 4 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-primary">Observación</span>
                                                         
                                                     </th>
                                                     <th class="texto-centrado"> 
                                                         <a style="color: #398bf7 ;" class="ver ml-1" href="{{downPDF+solicitud.solicita_doc}}" ><i class="mdi mdi-file-document fa-lg" ></i></a>
                                                     </th>
-                                                    <th *ngIf="solicitud.revision_interna > 1 || solicitud.revision_externa >1 " class="texto-centrado">
+                                                    <th *ngIf="solicitud.revision_interna > 2 || solicitud.revision_externa >2 " class="texto-centrado">
                                                         <button type="button" class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#Observacion" (click)="getObservacion(solicitud)"><i class="mdi mdi-message-alert"></i> </button>
                                                     </th>
-                                                    <th *ngIf="solicitud.revision_interna > 1 || solicitud.revision_externa >1 " class="texto-centrado">
+                                                    <th *ngIf="solicitud.revision_interna > 2 || solicitud.revision_externa >2 " class="texto-centrado">
                                                         <button type="button" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#corregir" (click)="getSolicitud(solicitud)"><i class="mdi mdi-wrench"></i> </button>
                                                     </th>
                                                 </tr>
@@ -121,6 +121,8 @@
                                 </div>
                             </div>
                         </div>
+
+
 
                          <!-- Sales overview chart -->
                          <div class="col-md-12"  *ngIf="viewPdf" >

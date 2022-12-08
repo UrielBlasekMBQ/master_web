@@ -34,23 +34,57 @@ router.post('/singin',(req,res)=>{
 })
 
 
-router.post('/test',verifyToken,(req,res)=>{
+router.post('/test',(req,res)=>{
+    const {token, id_risk, id_responde} =req.body;
+    const token_risk = `${token}`;
+    const id_risk1 = `${id_risk}`;
+    const id_responde1 = `${id_responde}`;
+
+    try {
+        //console.log(token_risk);
+        if (`${token}`!=='') {
+            const content= jwt.verify(token_risk,'master_web');
+            req.data=content;
+            //console.log(req.data.id_risk1);
+            if (id_risk1 == req.data.id_risk1 && id_responde1 == req.data.id_risk1) {
+                res.json({"respuesta" : true});
+            }else{
+                res.json({"respuesta-no-corresponde-risk" : false});
+            }
+        }else{
+            res.status(401).json('Token vacio');
+        }
     
-    res.json('Informacion secreta');
+    } catch (error) {
+        res.status(401).json('Expiro el token');
+    }
+ 
+    
+    //res.json(req.data);
 });
 
 
 function verifyToken(req,res,next){
-    if(!req.headers.authorization) return res.status(401).json('no autorizado');
 
-    const token = req.headers.authorization.substr(7);
-    if (token!=='') {
-        const content= jwt.verify(token,'master_web');
-        req.data=content;
-        next();
-    }else{
+    try {
+        if(!req.headers.authorization) return res.status(401).json('no autorizado');
+
+        const token = req.headers.authorization.substr(7);
+        console.log(token);
+        if (token!=='') {
+            const content= jwt.verify(token,'master_web');
+            req.data=content;
+            console.log(req.data);
+            next();
+        }else{
+            res.status(401).json('Token vacio');
+        }
+    } catch (error) {
+        
         res.status(401).json('Token vacio');
     }
+
+
     
 }
  

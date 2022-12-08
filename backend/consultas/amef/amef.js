@@ -143,7 +143,7 @@ router.post('/delete_data_amef',(req,res)=>{
             
         }
         else{
-            res.json(rows)
+            res.json({msg: 'Carpeta eliminada', ok : true});
         }
     });
     

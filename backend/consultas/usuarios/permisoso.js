@@ -95,7 +95,8 @@ router.post('/:id',(req,res)=>{
         capacitacionHistorial,
         capacitacionAdd,
         capacitacionUpdate,
-        capacitacionDelete
+        capacitacionDelete,
+        reporte_acompanamiento
     } = req.body;
 
 
@@ -169,7 +170,8 @@ capacitacionVer,
 capacitacionHistorial,
 capacitacionAdd,
 capacitacionUpdate,
-capacitacionDelete
+capacitacionDelete,
+reporte_acompanamiento
           ) 
           VALUES ( '${id}',
           '${calidad}',
@@ -240,7 +242,8 @@ capacitacionDelete
           '${capacitacionHistorial}',
           '${capacitacionAdd}',
           '${capacitacionUpdate}',
-          '${capacitacionDelete}'
+          '${capacitacionDelete}',
+          '${reporte_acompanamiento}'
           );`;
 
 
@@ -331,7 +334,8 @@ router.put('/:id',(req,res)=>{
         capacitacionHistorial,
         capacitacionAdd,
         capacitacionUpdate,
-        capacitacionDelete
+        capacitacionDelete,
+        reporte_acompanamiento
         } = req.body; 
 
     let sql =`UPDATE permisos SET  
@@ -403,7 +407,8 @@ router.put('/:id',(req,res)=>{
         capacitacionHistorial = '${capacitacionHistorial}',
         capacitacionAdd = '${capacitacionAdd}',
         capacitacionUpdate = '${capacitacionUpdate}',
-        capacitacionDelete = '${capacitacionDelete}'
+        capacitacionDelete = '${capacitacionDelete}',
+        reporte_acompanamiento = '${reporte_acompanamiento}'
         
     WHERE id_usuario = ${id}`
 

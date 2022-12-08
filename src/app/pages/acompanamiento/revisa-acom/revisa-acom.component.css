@@ -32,3 +32,14 @@
 .ver{
     cursor: pointer;
 }
+
+table {
+    width: 100%;
+  }
+
+.grafica {
+
+    height : 50%;
+    width: 100%;
+    
+}

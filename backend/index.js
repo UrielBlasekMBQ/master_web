@@ -148,6 +148,8 @@ app.use('/contratos', require('./consultas/contratos/contratos'))
 // Contrato permisos
 app.use('/contratos_permiso', require('./consultas/contratos_permiso/contrato_permiso'))
 
+// Risk
+app.use('/risk', require('./consultas/risk/risk'))
 
 
 

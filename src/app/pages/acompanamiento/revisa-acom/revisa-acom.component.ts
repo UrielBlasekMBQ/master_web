@@ -7,6 +7,7 @@ import  decode  from 'jwt-decode';
 import { RevisaAcomService } from 'src/app/services/revisa-acom.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { EmailService } from 'src/app/services/email.service';
+import { ViewPermisosService } from 'src/app/services/view-permisos.service';
 
 const base = environment.api;
 
@@ -20,9 +21,11 @@ export class RevisaAcomComponent implements OnInit {
 
   public formObservacion: FormGroup; 
   public formObservacion1: FormGroup; 
+  public formGrafica: FormGroup; 
 
   constructor(private formBuilder: FormBuilder, private ProcesosService : ProcesosService, private EmailService : EmailService,
-              private RevisaAcomService: RevisaAcomService, private UsuariosService : UsuariosService) { 
+              private RevisaAcomService: RevisaAcomService, private UsuariosService : UsuariosService, private ViewPermisosService : ViewPermisosService
+              ) { 
     this.formObservacion= this.formBuilder.group({
       observacion: ['',[Validators.required]]
     });
@@ -31,16 +34,22 @@ export class RevisaAcomComponent implements OnInit {
       observacion: ['',[Validators.required]]
     });
 
+    this.formGrafica= this.formBuilder.group({
+      proceso: ['',[Validators.required]]
+    });
+
   }
  
 
   public viewDepartamentos: boolean =true;
   public viewTabla: boolean=false;
   public viewPdf: boolean=false;
+  public viewRportes : boolean = false;
   public departamento: any;
 
   backDepartamentos(){
     this.viewDepartamentos=true;
+    this.viewRportes = false;
     this.viewTabla=false;
     this.viewPdf=false;
 
@@ -66,6 +75,8 @@ export class RevisaAcomComponent implements OnInit {
     this.viewPdf=false;
   }
 
+  
+
 
   pdfSrc =`${base}/acompanamiento/`;
   downPDF =`${base}/acompanamiento/`;
@@ -89,37 +100,11 @@ export class RevisaAcomComponent implements OnInit {
   
   //Get Procesos
   getProcesos(){
-    this.ProcesosService.getProcesos().subscribe((res : any)=>{
-      this.listProcesos =[];
-      //this.listProcesos = res;
-    console.log(res);
-    
-    for (let i = 0; i < res.length; i++) {
-      let body ={'id_revisor' : this.tipoProceso.id_usuario , 'id_proceso' :res[i].id_proceso };
- 
-      
-      this.RevisaAcomService.getcontador(body).subscribe((res1 : any)=>{
-        //console.log(res1[0]);
-        let proceso ={'id_proceso'  :res[i].id_proceso, 'departamento' :res[i].departamento, 'direccion' :res[i].direccion,'descripcion' :res[i].descripcion ,'estatus_proceso' : res[i].estatus_proceso , 'contador' : res1[0].contador };
-        console.log(proceso);
-        this.listProcesos.push(proceso);
 
-
-      });
-    }
-    this.listProcesos.sort(function(a : any,d: any){
-      if (a.departamento > d.departamento) {
-        return 1;
-      }
-      
-      if(a.departamento < d.departamento){
-        return -1;
-      }
-      return 0;
-
-    })
+    let body ={'id_revisor' : this.tipoProceso.id_usuario };
+    this.RevisaAcomService.getcontador(body).subscribe((res : any)=>{
+      this.listProcesos = res;
     });
-
     
   }
 
@@ -130,6 +115,7 @@ export class RevisaAcomComponent implements OnInit {
 
   //Get Solicitudes
   getSolicitudes(departamento : any){
+    
     this.proceso= departamento;
    //  console.log(this.proceso);
     const token: any = localStorage.getItem('token');
@@ -159,12 +145,25 @@ export class RevisaAcomComponent implements OnInit {
 
 
      ////////////Correo//////////
-
+     const fecha : any = new Date();
          let bodyEstatus={
-      'id_solicitud' : this.solicitud.id_solicitud ,'revision_interna' : 1};
+          'id_solicitud' : this.solicitud.id_solicitud ,
+          'revision_interna' : 2,
+          'revision_externa' : 1,
+          'fecha' : fecha
+
+        };
     this.RevisaAcomService.updateSolicitud(bodyEstatus).forEach((res: any)=>{
       
       if(solicitud.id_revisor_externo ==0){
+        bodyEstatus={
+          'id_solicitud' : this.solicitud.id_solicitud ,
+          'revision_interna' : 2,
+          'revision_externa' : 0,
+          'fecha' : fecha
+
+        };
+        this.RevisaAcomService.updateSolicitud(bodyEstatus).forEach((res: any)=>{});
         console.log('No se manda correlo');
         this.sendEmailAprobacionInterna();
 
@@ -238,8 +237,12 @@ export class RevisaAcomComponent implements OnInit {
     updateRevisarAprobadoExterno(solicitud :any){
       this.solicitud = solicitud;
      //  console.log(this.solicitud);
+      const fecha : any = new Date();
            let bodyEstatus={
-        'id_solicitud' : this.solicitud.id_solicitud ,'revision_externa' : 1};
+        'id_solicitud' : this.solicitud.id_solicitud ,
+        'revision_externa' : 2,
+        'fecha' : fecha
+      };
       this.RevisaAcomService.updateSolicitudExterno(bodyEstatus).forEach((res: any)=>{
         
         if(solicitud.id_revisor_externo ==0){console.log('No se manda correlo');
@@ -282,10 +285,13 @@ export class RevisaAcomComponent implements OnInit {
 
   //Solicitud Rechazada
   updateRevisarReprobado(solicitud : any){
+    const fecha : any = new Date();
     this.solicitud = solicitud;
      let bodyEstatus={
       'id_solicitud' : this.solicitud.id_solicitud ,
-      'revision_interna' : 2};
+      'revision_interna' : 3,      
+      'fecha' : fecha
+    };
     this.RevisaAcomService.updateSolicitud(bodyEstatus).forEach((res: any)=>{
       
         if(solicitud.id_revisor_externo ==0){console.log('No se manda correlo');
@@ -328,9 +334,12 @@ export class RevisaAcomComponent implements OnInit {
   //Solicitud Rechazada
   updateRevisarReprobado_externo(solicitud : any){
     this.solicitud = solicitud;
+    const fecha : any = new Date();
       let bodyEstatus={
       'id_solicitud' : this.solicitud.id_solicitud ,
-      'revision_externa' : 2};
+      'revision_externa' : 3,
+      'fecha' : fecha
+    };
     this.RevisaAcomService.updateSolicitudExterno(bodyEstatus).forEach((res: any)=>{
        if(solicitud.id_revisor_externo ==0){console.log('No se manda correlo');
       }else{
@@ -371,8 +380,12 @@ export class RevisaAcomComponent implements OnInit {
   //Solicitud con Observaciones
   updateRevisarObservacion(solicitud : any){
     this.solicitud = solicitud;
+    const fecha : any = new Date();
     let bodyEstatus={
-      'id_solicitud' : this.solicitud.id_solicitud ,'revision_interna' : 3};
+      'id_solicitud' : this.solicitud.id_solicitud ,
+      'revision_interna' : 4,
+      'fecha' :  fecha
+    };
     this.RevisaAcomService.updateSolicitud(bodyEstatus).forEach((res: any)=>{
       // Revisor 
        if(solicitud.id_revisor_externo ==0){console.log('No se manda correlo');
@@ -411,8 +424,12 @@ export class RevisaAcomComponent implements OnInit {
   //Solicitud con Observaciones
   updateRevisarObservacionExterna(solicitud : any){
     this.solicitud = solicitud;
+    const fecha : any = new Date();
     let bodyEstatus={
-      'id_solicitud' : this.solicitud.id_solicitud ,'revision_externa' : 3};
+      'id_solicitud' : this.solicitud.id_solicitud ,
+      'revision_externa' : 4,
+      'fecha' : fecha
+    };
     this.RevisaAcomService.updateSolicitudExterno(bodyEstatus).forEach((res: any)=>{
          // Revisor 
             if(solicitud.id_revisor_externo ==0){console.log('No se manda correlo');
@@ -570,10 +587,50 @@ export class RevisaAcomComponent implements OnInit {
   
   tipoProceso : any;
 
+  reporte : any ;
+  reporteGeneral : any =[];
+  displayedColumns: string[] = ['index','departamento','reg','revinter0','revinter1','revinter2','revinter3','revexter0','revexter1','revexter2','revexter3'];
+  reporteColums : string[] =['index','nom_autor','nom_interno','nom_externo','nom_proceso','solicita_nom','revision_interna','revision_externa','solicita_doc','fecha'];
+  dataSource : any;
+
+  getReporteGeneral (){
+    this.RevisaAcomService.getReporte().subscribe((res:any)=>{
+      this.reporte = res; 
+    });
+
+    this.RevisaAcomService.getReporteGeneral().subscribe((res:any)=>{
+      this.reporteGeneral = res; 
+      console.log(this.reporteGeneral);
+      
+       this.dataSource= this.reporteGeneral;
+       this.generaDataGrafi();
+       
+       
+    });
+
+
+
+    this.viewRportes = true;
+    this.viewDepartamentos = false;
+
+    
+  }
+
+  usuarioLog : any=[];
+  permisoUsuario(){
+    this.ViewPermisosService.getPermisos().subscribe((res :any)=>{
+      this.usuarioLog = res[0];
+       //console.log(this.usuarioLog);
+      
+    });
+  }
+
 
 
 
   ngOnInit(): void {
+    
+    this.permisoUsuario();
           /// Procesos ///
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
@@ -656,5 +713,181 @@ export class RevisaAcomComponent implements OnInit {
       }
       
       ////// Mensajes //////
+      
+      view: any = [900, 400];
+
+      view1: any = [900, 1300];
+    
+      // options
+  // options
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  gradient: boolean = false;
+  showDataLabel : boolean = true;
+  showLegend: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Proceso';
+  showYAxisLabel: boolean = true;
+  yAxisLabel: string = 'Registros';
+
+
+    
+      colorScheme : any = {
+        domain: ['#A6B7BF', '#ffb22b', '#06d79c', '#ef5350', '#745af2', '#ffb22b', '#06d79c', '#ef5350', '#745af2']
+      };
+    
+      // constructor() {
+      //   Object.assign(this, { single });
+      // }
+    
+      onSelect(data : any): void {
+        console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+      }
+    
+      onActivate(data: any): void {
+        console.log('Activate', JSON.parse(JSON.stringify(data)));
+      }
+    
+      onDeactivate(data: any): void {
+        console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+      }
+
+
+      multi : any = [];
+      grafica = false;
+
+      grafica1 = false;
+      multi1 : any = [];
+      
+      data1 : any ={};
+
+      verGraficas =false;
+
+      mostrarGraficasProcesos(){
+
+        this.grafica1 = false;
+
+        if (this.verGraficas) {
+          this.verGraficas = false
+        }else if(this.verGraficas== false){
+          this.verGraficas = true
+        }
+
+      }
+
+      generaDataProcesoGrafica (){
+        this.verGraficas = false;
+        this.multi1 =[];
+        this.grafica1 = false;
+
+        for (let i = 0; i < this.reporteGeneral.length; i++) {
+          if (this.reporteGeneral[i].id_proceso == this.formGrafica.value.proceso) {
+            this.data1 ={
+              "name" : this.reporteGeneral[i].departamento , 
+                "series" : [
+                  {
+                    "name" : "Total registros",
+                    "value": this.reporteGeneral[i].reg
+                  },
+                  {
+                    "name" : "Revisor. I.(Proceso)",
+                    "value": this.reporteGeneral[i].revinter0
+                  },
+                  {
+                    "name" : "Revisor I.(Revisado)",
+                    "value": this.reporteGeneral[i].revinter1
+                  },
+                  {
+                    "name" : "Revisor I.(Rechazado)",
+                    "value": this.reporteGeneral[i].revinter2
+                  },
+                  {
+                    "name" : "Revisor I.(Observación)",
+                    "value": this.reporteGeneral[i].revinter3
+                  },
+                  {
+                    "name" : "Revisor E.(Proceso)",
+                    "value": this.reporteGeneral[i].revexter0
+                  },
+                  {
+                    "name" : "Revisor E.(Revisado)",
+                    "value": this.reporteGeneral[i].revexter1
+                  },
+                  {
+                    "name" : "Revisor E.(Rechazado)",
+                    "value": this.reporteGeneral[i].revexter2
+                  },
+                  {
+                    "name" : "Revisor E.(Observación)",
+                    "value": this.reporteGeneral[i].revexter3
+                  }
+                ]
+  
+            };
+            this.multi1.push(this.data1);
+          }
+
+    
+        }
+        this.grafica1 = true;
+        
+      }
+
+      generaDataGrafi(){
+        this.grafica = true;
+        console.log(2);
+        
+        for (let i = 0; i < this.reporteGeneral.length; i++) {
+          
+          const  data12 ={
+            "name" : this.reporteGeneral[i].departamento , 
+              "series" : [
+                {
+                  "name" : "Total registros",
+                  "value": this.reporteGeneral[i].reg
+                },
+                {
+                  "name" : "Revisor. I.(Proceso)",
+                  "value": this.reporteGeneral[i].revinter0
+                },
+                {
+                  "name" : "Revisor I.(Revisado)",
+                  "value": this.reporteGeneral[i].revinter1
+                },
+                {
+                  "name" : "Revisor I.(Rechazado)",
+                  "value": this.reporteGeneral[i].revinter2
+                },
+                {
+                  "name" : "Revisor I.(Observación)",
+                  "value": this.reporteGeneral[i].revinter3
+                },
+                {
+                  "name" : "Revisor E.(Proceso)",
+                  "value": this.reporteGeneral[i].revexter0
+                },
+                {
+                  "name" : "Revisor E.(Revisado)",
+                  "value": this.reporteGeneral[i].revexter1
+                },
+                {
+                  "name" : "Revisor E.(Rechazado)",
+                  "value": this.reporteGeneral[i].revexter2
+                },
+                {
+                  "name" : "Revisor E.(Observación)",
+                  "value": this.reporteGeneral[i].revexter3
+                }
+              ]
+
+          };
+          this.multi.push(data12);
+      
+          
+        }
+        
+      }
+
+
 
 }

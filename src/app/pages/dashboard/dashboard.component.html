@@ -21,6 +21,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <div *ngIf="numApruebaRsultado>0" class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex no-block">
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="./assets/images/icon/income.png" alt="Income" /></div>
+                                    <div class="align-self-center">
+                                        <h4 class="text-muted m-t-10 m-b-0">Acompañameinto/Solicitud</h4>
+                                        <h2 class="m-t-0">{{numApruebaRsultado}}</h2></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div *ngIf="numAprueba>0" class="col-lg-4">
                         <div class="card">
                             <div class="card-body">
@@ -49,7 +63,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex no-block">
-                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/expense.png" alt="Income" /></div>
+                                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="./assets/images/icon/expense.png" alt="Income" /></div>
                                     <div class="align-self-center">
                                         <h4 class="text-muted m-t-10 m-b-0">AMEF/Por terminar </h4>
                                         <h2 class="m-t-0">{{numAmef}}</h2></div>
@@ -97,16 +111,78 @@
                                                     <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
                                                                                                                                                         
                                                     <th class="texto-centrado">
-                                                        <span *ngIf="solicitud.revision_interna == 0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-primary">Observación</span>
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 4" class="label label-primary">Observación</span>
                                                     </th>
                                                     <th class="texto-centrado">
-                                                        <span *ngIf="solicitud.revision_externa == 0 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-warning">Proceso</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-success">Revisado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-danger">Rechazado</span> 
-                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 1 && solicitud.id_revisor_externo >0" class="label label-primary">Observación</span>
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 4 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-primary">Observación</span>
+                                                        
+                                                    </th>
+                                                
+                                            </tr>
+
+                                        </tbody>
+        
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+
+            <div *ngIf="numApruebaRsultado>0"  class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Acompañameinto/Solicitud</h3>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                       
+                                <div class="table-responsive">
+                                    <table id="myTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="texto-centrado">No</th>                                                
+                                                <th class="texto-centrado">Autor</th>
+                                                <th class="texto-centrado">R. interno</th>                                                    
+                                                <th class="texto-centrado">R. externo</th>                                                    
+                                                <th class="texto-centrado">Proceso</th>
+                                                <th class="texto-centrado">Documento</th>                                                    
+                                                <th class="texto-centrado">R. interna</th>                              
+                                                <th class="texto-centrado">R. externa</th>
+                                                                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>   
+                                                <tr class="texto-centrado" *ngFor="let solicitud of listAcompanamientoResultado; let i=index">
+                                                    <th class="texto-centrado">{{i+1}}</th>                                                
+                                                    <th class="texto-centrado">{{solicitud.nom_autor}} {{solicitud.apell_autor}}</th>
+                                                    <th class="texto-centrado">{{solicitud.nom_interno}} {{solicitud.ape_interno}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.nom_externo}} {{solicitud.ape_externo}} </th> 
+                                                    <th class="texto-centrado">{{solicitud.departamento}}</th>                                                     
+                                                    <th class="texto-centrado">{{solicitud.solicita_nom}}</th>                                                    
+                                                                                                                                                        
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_interna == 1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 2" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 3" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_interna == 4" class="label label-primary">Observación</span>
+                                                    </th>
+                                                    <th class="texto-centrado">
+                                                        <span *ngIf="solicitud.revision_externa == 1 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-warning">Proceso</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 2 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-success">Revisado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 3 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-danger">Rechazado</span> 
+                                                        <span *ngIf="solicitud.revision_externa == 4 && solicitud.revision_interna == 2 && solicitud.id_revisor_externo >1" class="label label-primary">Observación</span>
                                                         
                                                     </th>
                                                 

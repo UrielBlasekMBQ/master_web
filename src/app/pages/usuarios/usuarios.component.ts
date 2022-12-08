@@ -715,7 +715,8 @@ editUsuario(){
     "capacitacionHistorial" : 1,
     "capacitacionAdd" : 1,
     "capacitacionUpdate" : 1,
-    "capacitacionDelete" : 1
+    "capacitacionDelete" : 1,
+    "reporte_acompanamiento" : 1
 
   }
 
@@ -789,7 +790,8 @@ editUsuario(){
     "capacitacionHistorial" : 0,
     "capacitacionAdd" : 0,
     "capacitacionUpdate" : 0,
-    "capacitacionDelete" : 0
+    "capacitacionDelete" : 0,
+    "reporte_acompanamiento" : 0
   }
 
   permisosOperativo : any ={
@@ -861,7 +863,8 @@ editUsuario(){
     "capacitacionHistorial" : 0,
     "capacitacionAdd" : 0,
     "capacitacionUpdate" : 0,
-    "capacitacionDelete" : 0
+    "capacitacionDelete" : 0,
+    "reporte_acompanamiento" : 0
   }
 
 }

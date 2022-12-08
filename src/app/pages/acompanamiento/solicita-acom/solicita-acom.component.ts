@@ -89,10 +89,15 @@ export class SolicitaAcomComponent implements OnInit {
   p : number =1;
   
   //Get Procesos
-  getProcesos(){
-    this.ProcesosService.getProcesos().subscribe(res=>{
-      this.listProcesos = <any> res;
+  getProcesos(body : any){
+    // this.ProcesosService.getProcesos().subscribe(res=>{
+    //   this.listProcesos = <any> res;
+    // });
+
+    this.SolicitaAcomService.getProcesos_admin(body).subscribe((res: any) =>{
+      this.listProcesos = res;
     });
+
   }
 
   proceso : any ={};
@@ -195,7 +200,7 @@ export class SolicitaAcomComponent implements OnInit {
     let revsior_externa = '0';
     let revsion_externa = '0';
     if(this.rev_externa == false){
-      revsion_externa ='1';
+      revsion_externa ='0';
       console.log('revsior_externa: ',revsior_externa);
       console.log('revsion_externa: ', revsion_externa);
     }else{
@@ -203,6 +208,7 @@ export class SolicitaAcomComponent implements OnInit {
       console.log('revsior_externa: ',revsior_externa);
       console.log('revsion_externa: ', revsion_externa);
     }
+    const fecha : any = new Date();
 
     let body_from={
   'myFile1' : this.archivos.fileRaw,
@@ -212,7 +218,8 @@ export class SolicitaAcomComponent implements OnInit {
   'id_revisor_externo' : revsior_externa,
   'id_proceso' : this.proceso.id_proceso,
   'solicita_nom' : this.formUsuario.value.solicita_nom,
-  'revision_externa' : revsion_externa
+  'revision_externa' : revsion_externa,
+  'fecha' : fecha,
 
     };
 
@@ -253,6 +260,7 @@ export class SolicitaAcomComponent implements OnInit {
     body.append('id_proceso',body_from.id_proceso);
     body.append('solicita_nom',body_from.solicita_nom);
     body.append('revision_externa', body_from.revision_externa);
+    body.append('fecha', body_from.fecha);
     console.log(body);
     
 
@@ -273,7 +281,7 @@ export class SolicitaAcomComponent implements OnInit {
     let revsior_externa = '0';
     let revsion_externa = '0';
     if(this.rev_externa == false){
-      revsion_externa ='1';
+      revsion_externa ='0';
       console.log('revsior_externa: ',revsior_externa);
       console.log('revsion_externa: ', revsion_externa);
     }else{
@@ -281,6 +289,7 @@ export class SolicitaAcomComponent implements OnInit {
       console.log('revsior_externa: ',revsior_externa);
       console.log('revsion_externa: ', revsion_externa);
     }
+    const fecha : any = new Date();
 
     let body_from={
   'myFile1' : this.archivos.fileRaw,
@@ -290,7 +299,8 @@ export class SolicitaAcomComponent implements OnInit {
   'id_revisor_externo' : revsior_externa,
   'id_proceso' : this.proceso.id_proceso,
   'solicita_nom' : this.formUsuario1.value.solicita_nom,
-  'revision_externa' : revsion_externa
+  'revision_externa' : revsion_externa,
+  'fecha' : fecha,
 
     };
 
@@ -333,6 +343,7 @@ export class SolicitaAcomComponent implements OnInit {
     body.append('id_proceso',body_from.id_proceso);
     body.append('solicita_nom',body_from.solicita_nom);
     body.append('revision_externa', body_from.revision_externa);
+    body.append('fecha', body_from.fecha);
     console.log(body);
     
 
@@ -408,10 +419,14 @@ export class SolicitaAcomComponent implements OnInit {
   }
 
   getPreceso(body : any){
-    this.ProcesosService.getProcesosUsuario(body).subscribe((res : any)=>{
-      this.listProcesos = res;
-     //  console.log(res);
+    // this.ProcesosService.getProcesosUsuario(body).subscribe((res : any)=>{
+    //   this.listProcesos = res;
+    //  //  console.log(res);
       
+    // });
+
+    this.SolicitaAcomService.getProcesos_usuarios(body).subscribe((res : any)=>{
+      this.listProcesos= res;
     });
    };
   
@@ -421,14 +436,15 @@ export class SolicitaAcomComponent implements OnInit {
   
 
   ngOnInit(): void {
+    
           /// Procesos ///
           const token: any = localStorage.getItem('token');
           this.tipoProceso =decode(token);
          //  console.log(this.tipoProceso);
           if(this.tipoProceso.tipoUsuario == 1){
            //  console.log('procesos 1');
-            
-            this.getProcesos();
+           let body ={'id_usuario' : this.tipoProceso.id_usuario};
+            this.getProcesos(body);
           } else{
             let body ={'id_usuario' : this.tipoProceso.id_usuario};
             this.getPreceso(body);

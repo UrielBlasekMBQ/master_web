@@ -145,6 +145,9 @@ router.post('/prueba',(req,res)=>{
     
         <p>Se le sugiere  dar seguimiento a los posibles pendientes que pueda tener dentro del sistema.</p>
         <p>Se le desea un exelente día </p>
+        <p>Plataforma Sistema Gestión Integral- GRIMALDI</p>
+        <p>https://esgi.elearntech.mx/grimaldi/login</p>
+        
     </body>
     
     <footer class="footer-distributed">
